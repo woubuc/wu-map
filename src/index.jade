@@ -1,0 +1,26 @@
+doctype html
+html
+	head
+		title Sklotopolis Map
+
+		link(rel='stylesheet' href='style.css')
+		script(src='http://cdnjs.cloudflare.com/ajax/libs/transparency/0.11.0/transparency.min.js')
+
+	body
+		#infobar
+			//- #searchbox
+			//- 	input#search(type='text' placeholder='Find location')
+
+			#locations
+				.location
+					.name New Town
+					a.view(href='#' onclick='show_on_map(907, 760)') View
+
+
+		#map
+		#coords
+			span#coordsc X0, Y0
+
+		script(src='locations.js')
+		script(src='map.js')
+		script(src='https://maps.googleapis.com/maps/api/js?signed_in=false&callback=init' async defer)
