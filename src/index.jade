@@ -8,8 +8,8 @@ html
 
 	body
 		#infobar
-			//- #searchbox
-			//- 	input#search(type='text' placeholder='Find location')
+			#searchbox
+				input#search(type='text' placeholder='Find location' onkeyup='update_locations()')
 
 			#locations
 				.location
@@ -20,6 +20,11 @@ html
 		#map
 		#coords
 			span#coordsc X0, Y0
+
+		a#addbtn(href='#' onclick='show_add_form()') Add your deed
+
+		#addform(onclick='this.style.display=\'none\'')
+			iframe(src='about:blank')
 
 		script(src='locations.js')
 		script(src='map.js')

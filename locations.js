@@ -6,10 +6,12 @@ locations = [
     tag: 'new-town',
     top: true,
     x: 907,
-    y: 760
+    y: 760,
+    features: ['starter']
   }, {
     name: 'Little Patch of Heaven',
     tag: 'little-patch-of-heaven',
+    mayor: 'Jaede',
     x: 1115,
     y: 775
   }, {
@@ -42,5 +44,10 @@ locations = [
     tag: 'demecia',
     x: 828,
     y: 1662
+  }, {
+    name: 'Cedar Grove',
+    tag: 'cedar-grove',
+    x: 1586,
+    y: 1027
   }
 ];

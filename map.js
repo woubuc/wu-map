@@ -1,10 +1,12 @@
-var infowin, init, map, marker, projection, show_on_map;
+var infowin, init, location_tags, map, marker, projection, share_location, show_add_form, show_on_map, update_locations;
 
 map = '';
 
 marker = '';
 
 infowin = '';
+
+location_tags = {};
 
 projection = {
   size: 4096,
@@ -72,7 +74,7 @@ projection = {
 };
 
 init = function() {
-  var Sklotopolis, coordsDiv;
+  var Sklotopolis, coordsDiv, i, j, k, len;
   map = new google.maps.Map(document.getElementById('map'), {
     center: {
       lat: -50.1416015625,
@@ -109,6 +111,10 @@ init = function() {
     if (typeof console !== "undefined" && console !== null) {
       console.log('Lat: ' + e.latLng.lat() + ', Long: ' + e.latLng.lng());
     }
+    if (marker !== '') {
+      marker.setMap(null);
+      marker = '';
+    }
     if (infowin !== '') {
       infowin.close();
       infowin = '';
@@ -137,20 +143,22 @@ init = function() {
         return 0;
     }
   });
-  return Transparency.render(document.getElementById('locations'), locations, {
-    view: {
-      onclick: function() {
-        return 'show_on_map(' + this.x + ', ' + this.y + ')';
-      }
+  for (j = k = 0, len = locations.length; k < len; j = ++k) {
+    i = locations[j];
+    location_tags[i.tag] = j;
+    if (window.location.hash.substr(1) === i.tag) {
+      show_on_map(i.tag);
     }
-  });
+  }
+  return update_locations();
 };
 
-show_on_map = function(x, y) {
-  var latLng;
+show_on_map = function(tag) {
+  var latLng, location;
+  location = locations[location_tags[tag]];
   latLng = projection.fromPointToLatLng({
-    x: x,
-    y: y
+    x: location.x,
+    y: location.y
   });
   if (marker !== '') {
     marker.setMap(null);
@@ -164,8 +172,76 @@ show_on_map = function(x, y) {
     map: map,
     draggable: false,
     animation: google.maps.Animation.DROP,
-    position: latLng
+    position: latLng,
+    title: location.name
+  });
+  marker.addListener('click', function(e) {
+    var props;
+    if (infowin !== '') {
+      infowin.close();
+      infowin = '';
+    }
+    props = [];
+    if (location.mayor != null) {
+      props.push('<p>Mayor: ' + location.mayor + '</p>');
+    }
+    infowin = new google.maps.InfoWindow({
+      content: '<div id="content"> <h2>' + location.name + '</h2> <div id="bodyContent"> <p>Coordinates: X' + location.x + ', Y' + location.y + '</p>' + props.join('') + '<p style="padding-top:10px"><a href="#' + location.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_location(\'' + location.tag + '\', this)">Share this location</a></p> </div> </div>'
+    });
+    infowin.open(map, marker);
+    return infowin.open(map, marker);
   });
   map.panTo(latLng);
   return false;
+};
+
+share_location = function(tag, el) {
+  el.style.backgroundColor = 'white';
+  el.style.padding = 0;
+  el.innerHTML = '<input type="text" value="http://woubuc.github.io/wu-map/#' + tag + '" style="width:280px;padding:2px;border-radius:3px;border:1px solid #dedede;font-size:12px" onclick="this.select()" />';
+  el.childNodes[0].select();
+  return false;
+};
+
+show_add_form = function() {
+  document.getElementById('addform').style.display = 'block';
+  if (document.getElementById('addform').childNodes[0].src === 'about:blank') {
+    return document.getElementById('addform').childNodes[0].src = 'https://docs.google.com/forms/d/1-GW1P_ImiqjYxCFSQGw_kFRbmDRbbpkCFpRbO82jb8Q/viewform?embedded=true&hl=en';
+  }
+};
+
+update_locations = function() {
+  var filter, i, k, len, toShow;
+  filter = document.getElementById('search').value;
+  if (filter === '') {
+    return Transparency.render(document.getElementById('locations'), locations, {
+      view: {
+        href: function() {
+          return '#' + this.tag;
+        },
+        onclick: function() {
+          return 'show_on_map(\'' + this.tag + '\')';
+        }
+      }
+    });
+  } else {
+    toShow = [];
+    filter = filter.toLowerCase();
+    for (k = 0, len = locations.length; k < len; k++) {
+      i = locations[k];
+      if (i.name.toLowerCase().indexOf(filter) !== -1) {
+        toShow.push(i);
+      }
+    }
+    return Transparency.render(document.getElementById('locations'), toShow, {
+      view: {
+        href: function() {
+          return '#' + this.tag;
+        },
+        onclick: function() {
+          return 'show_on_map(\'' + this.tag + '\')';
+        }
+      }
+    });
+  }
 };
