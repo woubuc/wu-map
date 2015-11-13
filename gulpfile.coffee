@@ -8,17 +8,17 @@ coffee = require 'gulp-coffee'
 gulp.task 'compile', ->
 	gulp.src './src/**/*.coffee'
 		.pipe coffee(bare: yes).on('error', gutil.log)
-		.pipe gulp.dest('./site/')
+		.pipe gulp.dest('./')
 		.on 'error', gutil.log
 
 	gulp.src './src/**/*.jade'
 		.pipe jade().on('error', gutil.log)
-		.pipe gulp.dest('./site/')
+		.pipe gulp.dest('./')
 		.on 'error', gutil.log
 
 	gulp.src './src/**/*.sass'
 		.pipe sass().on('error', gutil.log)
-		.pipe gulp.dest('./site/')
+		.pipe gulp.dest('./')
 		.on 'error', gutil.log
 
 
