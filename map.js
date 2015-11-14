@@ -228,6 +228,9 @@ show_on_map = function(tag) {
     if (location.mayor != null) {
       props.push('<p>Mayor: ' + location.mayor + '</p>');
     }
+    if (location.note != null) {
+      props.push('<p style="font-style:italic">' + location.note + '</p>');
+    }
     infowin = new google.maps.InfoWindow({
       content: '<div id="content"> <h2>' + location.name + '</h2> <div id="bodyContent"> <p>Coordinates: X' + location.x + ', Y' + location.y + '</p>' + props.join('') + '<p style="padding-top:10px"><a href="#' + location.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_location(\'' + location.tag + '\', this)">Share this location</a></p> </div> </div>'
     });

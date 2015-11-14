@@ -95,8 +95,8 @@ locations = [
 	tag: 'highwater'
 	type: 'small'
 	mayor: 'Kezei'
-	x: 2628
-	y: 346
+	x: 2650
+	y: 3495
 	features: ['harbour', 'resources', 'recruiting']
 ,
 	name: 'Deathlands'
@@ -105,10 +105,11 @@ locations = [
 	mayor: 'Death'
 	x: 1059
 	y: 704
+	note: 'This is where the farting happens'
 ,
 	name: 'Castleton'
 	tag: 'castleton'
-	mayor: 'Rikkko'
+	mayor: 'Rikko'
 	x: 1220
 	y: 1006
 ,
@@ -165,4 +166,10 @@ locations = [
 	x: 2976
 	y: 480
 	features: ['recruiting']
+,
+	name: 'Castle Glittertown'
+	tag: 'castle-glittertown'
+	mayor: 'Capi'
+	x: 345
+	y: 310
 ]

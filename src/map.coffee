@@ -156,6 +156,8 @@ show_on_map = (tag) ->
 		props = []
 		if location.mayor?
 			props.push '<p>Mayor: ' + location.mayor + '</p>'
+		if location.note?
+			props.push '<p style="font-style:italic">' + location.note + '</p>'
 
 		infowin = new google.maps.InfoWindow
 			content: '<div id="content">
