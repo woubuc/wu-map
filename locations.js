@@ -112,7 +112,7 @@ locations = [
     name: 'Castleton',
     tag: 'castleton',
     owner: 'Rikkko',
-    x: 1217,
-    y: 1011
+    x: 1220,
+    y: 1006
   }
 ];
