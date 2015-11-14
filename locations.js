@@ -16,7 +16,7 @@ locations = [
     mayor: 'Jaede',
     type: 'solo',
     x: 1115,
-    y: 775
+    y: 770
   }, {
     name: 'Port Hope',
     tag: 'port-hope',
@@ -48,7 +48,7 @@ locations = [
     name: 'Demacia',
     tag: 'demecia',
     x: 828,
-    y: 1662
+    y: 1664
   }, {
     name: 'Cedar Grove',
     tag: 'cedar-grove',
@@ -63,12 +63,12 @@ locations = [
     y: 1200,
     features: ['recruiting']
   }, {
-    name: 'The Druidic Conclave',
-    tag: 'the-druidic-conclave',
+    name: 'The Oakshire Grove',
+    tag: 'oakshire-grove',
     type: 'solo',
     mayor: 'DruidNature',
-    x: 631,
-    y: 2108,
+    x: 1872,
+    y: 3712,
     features: ['recruiting']
   }, {
     name: 'Symphonies End',
@@ -111,8 +111,62 @@ locations = [
   }, {
     name: 'Castleton',
     tag: 'castleton',
-    owner: 'Rikkko',
+    mayor: 'Rikkko',
     x: 1220,
     y: 1006
+  }, {
+    name: 'Izmir',
+    tag: 'izmir',
+    type: 'small',
+    mayor: 'jackoritos',
+    x: 526,
+    y: 1378,
+    features: ['harbour', 'recruiting']
+  }, {
+    name: 'Phules Paradise',
+    tag: 'phules-paradise',
+    type: 'solo',
+    mayor: 'Andistyr',
+    x: 1448,
+    y: 350,
+    features: ['resources']
+  }, {
+    name: 'Hokrasut',
+    tag: 'hokrasut',
+    type: 'small',
+    mayor: 'Zardoka',
+    x: 3155,
+    y: 3533,
+    features: ['harbour', 'resources']
+  }, {
+    name: 'Lake View',
+    tag: 'lake-view',
+    type: 'solo',
+    mayor: 'Lisa',
+    x: 3177,
+    y: 1872,
+    features: ['harbour', 'resources']
+  }, {
+    name: 'Lake Side',
+    tag: 'lake-side',
+    type: 'solo',
+    mayor: 'Damine',
+    x: 868,
+    y: 772,
+    features: ['harbour']
+  }, {
+    name: 'New Town Docks',
+    tag: 'new-town-docks',
+    mayor: 'Engineer',
+    x: 940,
+    y: 838
+  }, {
+    name: 'Dunkelwald',
+    tag: 'dunkelwald',
+    type: 'small',
+    mayor: 'Biervampyr',
+    x: 2976,
+    y: 480,
+    features: ['recruiting']
   }
 ];

@@ -11,6 +11,7 @@ location_tags = {};
 projection = {
   size: 4096,
   mid: 2048,
+  coord_multiplier: 2,
   max_lat: 90,
   max_long: 180,
   fromLatLngToPoint: function(latLng) {
@@ -70,21 +71,33 @@ projection = {
       }
     })();
     return new google.maps.LatLng(lat, long);
+  },
+  toCoords: function(point) {
+    return {
+      x: point.x * 2,
+      y: point.y * 2
+    };
+  },
+  fromCoords: function(point) {
+    return {
+      x: point.x / 2,
+      y: point.y / 2
+    };
   }
 };
 
 init = function() {
-  var Sklotopolis, coordsDiv, i, j, k, len;
+  var Sklotopolis, Tiled, coordsDiv, i, j, k, len;
   map = new google.maps.Map(document.getElementById('map'), {
     center: {
-      lat: -50.1416015625,
-      lng: -113.203125
+      lat: -70.037841796875,
+      lng: -146.6015625
     },
-    zoom: 0,
-    zoomControl: false,
+    zoom: 1,
+    zoomControl: true,
     streetViewControl: false,
     mapTypeControlOptions: {
-      mapTypeIds: ['sklotopolis']
+      mapTypeIds: ['sklotopolis', 'tiled']
     }
   });
   Sklotopolis = new google.maps.ImageMapType({
@@ -94,17 +107,18 @@ init = function() {
       }
     },
     tileSize: new google.maps.Size(4096, 4096),
-    maxZoom: 0,
-    minZoom: 0,
-    name: 'Sklotopolis'
+    maxZoom: 1,
+    minZoom: 1,
+    name: 'Official map dump'
   });
   Sklotopolis.projection = projection;
+  map.mapTypes.set('sklotopolis', Sklotopolis);
   coordsDiv = document.getElementById('coords');
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(coordsDiv);
   map.addListener('mousemove', function(e) {
     var coords;
-    coords = projection.fromLatLngToPoint(e.latLng);
-    return document.getElementById('coordsc').textContent = 'X' + coords.x + ', Y' + coords.y;
+    coords = projection.toCoords(projection.fromLatLngToPoint(e.latLng));
+    return document.getElementById('coordsc').textContent = 'X' + Math.floor(coords.x) + ', Y' + Math.floor(coords.y);
   });
   map.addListener('click', function(e) {
     var coords;
@@ -119,25 +133,54 @@ init = function() {
       infowin.close();
       infowin = '';
     }
-    coords = projection.fromLatLngToPoint(e.latLng);
+    coords = projection.toCoords(projection.fromLatLngToPoint(e.latLng));
     infowin = new google.maps.InfoWindow({
-      content: 'X' + coords.x + ', Y' + coords.y,
+      content: 'X' + Math.floor(coords.x) + ', Y' + Math.floor(coords.y),
       position: e.latLng
     });
     infowin.open(map);
     return infowin.open(map);
   });
-  map.mapTypes.set('sklotopolis', Sklotopolis);
-  map.setMapTypeId('sklotopolis');
+  Tiled = new google.maps.ImageMapType({
+    getTileUrl: function(coord, zoom) {
+      zoom = (function() {
+        switch (zoom) {
+          case 0:
+            return 2048;
+          case 1:
+            return 4096;
+          case 2:
+            return 8192;
+        }
+      })();
+      return 'http://188.226.191.32:8000/' + zoom + '_t_' + coord.x + '_' + coord.y + '.png';
+    },
+    tileSize: new google.maps.Size(512, 512),
+    maxZoom: 2,
+    minZoom: 0,
+    name: 'Tiled map (updates approx. hourly)'
+  });
+  Tiled.projection = projection;
+  map.mapTypes.set('tiled', Tiled);
+  map.setMapTypeId('tiled');
   locations.sort(function(a, b) {
+    var a_name, b_name;
+    a_name = a.name.toLowerCase();
+    b_name = b.name.toLowerCase();
+    if (a_name.substr(0, 3) === 'the') {
+      a_name = a_name.substr(4);
+    }
+    if (b_name.substr(0, 3) === 'the') {
+      b_name = b_name.substr(4);
+    }
     switch (false) {
       case !(a.top && !b.top):
         return -1;
       case !(b.top && !a.top):
         return 1;
-      case !(a.name < b.name):
+      case !(a_name < b_name):
         return -1;
-      case !(a.name > b.name):
+      case !(a_name > b_name):
         return 1;
       default:
         return 0;
@@ -156,10 +199,10 @@ init = function() {
 show_on_map = function(tag) {
   var latLng, location;
   location = locations[location_tags[tag]];
-  latLng = projection.fromPointToLatLng({
+  latLng = projection.fromPointToLatLng(projection.fromCoords({
     x: location.x,
     y: location.y
-  });
+  }));
   if (marker !== '') {
     marker.setMap(null);
     marker = '';
