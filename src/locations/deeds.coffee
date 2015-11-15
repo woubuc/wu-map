@@ -1,4 +1,4 @@
-locations = [
+deeds = [
 	name: 'New Town'
 	tag: 'new-town'
 	top: true
@@ -6,7 +6,7 @@ locations = [
 	type: 'large'
 	x: 907
 	y: 760
-	features: ['spawn', 'trader', 'market', 'harbour', 'resources', 'recruiting']
+	features: ['trader', 'market', 'harbour', 'resources', 'recruiting']
 ,
 	name: 'Little Patch of Heaven'
 	tag: 'little-patch-of-heaven'
@@ -210,8 +210,8 @@ locations = [
 	tag: 'oak-shores'
 	type: 'small'
 	mayor: 'Macros'
-	x: 1357
-	y: 923
+	x: 1070
+	y: 1164
 ,
 	name: 'ZxSuperGeniusxZ\'s Deed'
 	tag: 'zxSuperGeniusxzs-deed'
@@ -234,4 +234,11 @@ locations = [
 	mayor: 'Zentil'
 	x: 935
 	y: 1280
+# ,
+# 	name: 'Silver Lake'
+# 	tag: 'silver-lake'
+# 	type: 'solo'
+# 	mayor: 'Alayena'
+# 	x: 2970
+# 	y: 1150
 ]

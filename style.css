@@ -8,7 +8,8 @@
 
 html, body, #map {
   height: 100%;
-  font-family: arial, sans-serif; }
+  font-family: arial, sans-serif;
+  overflow-x: hidden; }
 
 #map {
   position: absolute;
@@ -100,17 +101,46 @@ html, body, #map {
   right: 10px;
   z-index: 12;
   display: block;
-  height: 30px;
-  line-height: 30px;
+  height: 28px;
+  line-height: 28px;
   border-radius: 3px;
-  font-size: 13px;
-  padding: 0 8px;
+  padding: 0 12px;
   background: #2196F3;
   color: white;
   font-size: 14px;
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
+  width: 150px;
+  text-align: center; }
   #addbtn:hover {
     background: #64B5F6; }
+
+#addmenu {
+  position: absolute;
+  top: 50px;
+  right: -150px;
+  z-index: 12;
+  width: 150px;
+  text-align: center;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
+  padding: 2px 0;
+  -webkit-transition: all 80ms ease-in-out;
+  -moz-transition: all 80ms ease-in-out;
+  -ms-transition: all 80ms ease-in-out;
+  -o-transition: all 80ms ease-in-out;
+  transition: all 80ms ease-in-out; }
+  #addmenu.open {
+    right: 10px; }
+  #addmenu a {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    color: #333;
+    font-weight: bold;
+    font-size: 13px; }
+    #addmenu a:hover {
+      color: #2196F3; }
 
 #addform {
   position: absolute;

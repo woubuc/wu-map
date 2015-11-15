@@ -5,11 +5,12 @@ html
 
 		link(rel='stylesheet' href='style.css')
 		script(src='http://cdnjs.cloudflare.com/ajax/libs/transparency/0.11.0/transparency.min.js')
+		script(src='http://cdnjs.cloudflare.com/ajax/libs/Cookies.js/1.2.1/cookies.min.js')
 
 	body
 		#infobar
 			#searchbox
-				input#search(type='text' placeholder='Find location' onkeyup='update_locations()')
+				input#search(type='text' placeholder='Find location' onkeyup='update_deeds()')
 
 			#locations
 				.location
@@ -19,13 +20,19 @@ html
 
 		#map
 		#coords
-			span#coordsc X0, Y0
+			span#coordsc Mouse cursor at X0, Y0
 
-		a#addbtn(href='#' onclick='show_add_form()') Add your deed
+		a#addbtn(href='#' onclick='show_add_menu()') Add location
+		#addmenu
+			a(href='#' onclick='show_add_form(\'deed\')') Deed
+			a(href='#' onclick='show_add_form(\'tower\')') Guard tower
+			a(href='#' onclick='show_add_form(\'resource\')') Resource
+			a(href='#' onclick='show_add_form(\'mine\')') Public mine
 
-		#addform(onclick='this.style.display=\'none\'')
+		#addform(onclick='hide_add_form()')
 			iframe(src='about:blank')
 
-		script(src='locations.js')
+		script(src='locations/deeds.js')
+		script(src='locations/guard_towers.js')
 		script(src='map.js')
 		script(src='https://maps.googleapis.com/maps/api/js?signed_in=false&callback=init' async defer)
