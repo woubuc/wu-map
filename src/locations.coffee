@@ -6,7 +6,7 @@ locations = [
 	type: 'large'
 	x: 907
 	y: 760
-	features: ['trader', 'market', 'harbour', 'resources', 'recruiting']
+	features: ['spawn', 'trader', 'market', 'harbour', 'resources', 'recruiting']
 ,
 	name: 'Little Patch of Heaven'
 	tag: 'little-patch-of-heaven'
@@ -22,8 +22,11 @@ locations = [
 ,
 	name: 'Alexondrea'
 	tag: 'alexondrea'
-	x: 1072
-	y: 787
+	type: 'large'
+	mayor: 'Traveler'
+	x: 1076
+	y: 786
+	features: ['resources', 'recruiting']
 ,
 	name: 'Longview'
 	tag: 'longview'
@@ -105,7 +108,6 @@ locations = [
 	mayor: 'Death'
 	x: 1059
 	y: 704
-	note: 'This is where the farting happens'
 ,
 	name: 'Castleton'
 	tag: 'castleton'
@@ -172,4 +174,64 @@ locations = [
 	mayor: 'Capi'
 	x: 345
 	y: 310
+,
+	name: 'Coastal Watch'
+	tag: 'coastal-watch'
+	type: 'solo'
+	mayor: 'Exor'
+	x: 414
+	y: 430
+,
+	name: 'Fonswood'
+	tag: 'fonswood'
+	type: 'small'
+	mayor: 'Tunk'
+	x: 862
+	y: 801
+	features: ['recruiting']
+,
+	name: 'Dragon\'s Breath Castle'
+	tag: 'dragons-breath-castle'
+	type: 'solo'
+	mayor: 'Devily'
+	x: 3226
+	y: 3260
+	features: ['harbour']
+,
+	name: 'The Odd Place'
+	tag: 'odd-place'
+	type: 'solo'
+	mayor: 'Kanashio'
+	x: 2620
+	y: 345
+	features: ['resources', 'recruiting']
+,
+	name: 'Oak Shores'
+	tag: 'oak-shores'
+	type: 'small'
+	mayor: 'Macros'
+	x: 1357
+	y: 923
+,
+	name: 'ZxSuperGeniusxZ\'s Deed'
+	tag: 'zxSuperGeniusxzs-deed'
+	type: 'solo'
+	mayor: 'ZxSuperGeniusxZ'
+	x: 1060
+	y: 892
+	features: ['market', 'harbour']
+,
+	name: 'Maniac Mansion'
+	tag: 'maniac-mansion'
+	type: 'small'
+	mayor: 'Quixa'
+	x: 922
+	y: 660
+,
+	name: 'Rock Face'
+	tag: 'rock-face'
+	type: 'solo'
+	mayor: 'Zentil'
+	x: 935
+	y: 1280
 ]
