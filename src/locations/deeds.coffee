@@ -17,6 +17,8 @@ deeds = [
 ,
 	name: 'Port Hope'
 	tag: 'port-hope'
+	type: 'solo'
+	mayor: 'Squint'
 	x: 807
 	y: 706
 ,
@@ -204,7 +206,7 @@ deeds = [
 	mayor: 'Kanashio'
 	x: 2620
 	y: 345
-	features: ['resources', 'recruiting']
+	features: ['recruiting']
 ,
 	name: 'Oak Shores'
 	tag: 'oak-shores'
@@ -234,11 +236,60 @@ deeds = [
 	mayor: 'Zentil'
 	x: 935
 	y: 1280
-# ,
-# 	name: 'Silver Lake'
-# 	tag: 'silver-lake'
-# 	type: 'solo'
-# 	mayor: 'Alayena'
-# 	x: 2970
-# 	y: 1150
+,
+	name: 'Silver Lake'
+	tag: 'silver-lake'
+	type: 'solo'
+	mayor: 'Alayena'
+	x: 1548
+	y: 2972
+,
+	name: 'Mikes Point'
+	tag: 'mikes-point'
+	type: 'solo'
+	mayor: 'Mike'
+	x: 3602
+	y: 786
+,
+	name: 'Midway Landing'
+	tag: 'midway-landing'
+	type: 'small'
+	mayor: 'Linx'
+	x: 662
+	y: 2170
+,
+	name: 'Gades'
+	tag: 'gades'
+	type: 'solo'
+	mayor: 'Encode'
+	x: 1128
+	y: 1112
+,
+	name: 'Quip\'s Demise'
+	tag: 'quips-demise'
+	mayor: 'Quip'
+	x: 1100
+	y: 374
+,
+	name: 'Angus'
+	tag: 'angus'
+	mayor: 'Grangus'
+	type: 'small'
+	x: 3260
+	y: 1404
+,
+	name: 'Bear Mountain'
+	tag: 'bear-mountain'
+	mayor: 'Inara'
+	type: 'solo'
+	x: 1312
+	y: 1154
+	features: ['recruiting']
+,
+	name: 'Lunaman\'s Shack'
+	tag: 'lunamans-shack'
+	mayor: 'Lunaman'
+	type: 'solo'
+	x: 875
+	y: 2636
 ]

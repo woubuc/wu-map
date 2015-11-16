@@ -6,7 +6,7 @@ deed_tags = {}
 projection = 
 	size: 4096
 	mid: 2048
-	coord_multiplier: 2
+	coord_multiplier: 4
 	max_lat: 90
 	max_long: 180
 	fromLatLngToPoint: (latLng) ->
@@ -34,20 +34,20 @@ projection =
 			else 0
 		new google.maps.LatLng lat, long
 	toCoords: (point) ->
-		x: point.x * 2
-		y: point.y * 2
+		x: point.x * projection.coord_multiplier
+		y: point.y * projection.coord_multiplier
 	fromCoords: (point) ->
-		x: point.x / 2
-		y: point.y / 2
+		x: point.x / projection.coord_multiplier
+		y: point.y / projection.coord_multiplier
 
 init = ->
 
 	# Create map object
 	map = new google.maps.Map document.getElementById('map'),
 		center:
-			lat: -70.037841796875
-			lng: -146.6015625
-		zoom: 1
+			lat: -80.035400390625
+			lng: -163.30078125
+		zoom: 2
 		zoomControl: true
 		streetViewControl: false
 		mapTypeControlOptions:
@@ -85,14 +85,15 @@ init = ->
 	Tiled = new google.maps.ImageMapType
 		getTileUrl: (coord, zoom) ->
 			zoom = switch zoom
-				when 0 then 2048
-				when 1 then 4096
-				when 2 then 8192
+				when 0 then 1024
+				when 1 then 2048
+				when 2 then 4096
+				when 3 then 8192
 			return 'http://188.226.191.32:8000/' + zoom + '_t_' + coord.x + '_' + coord.y + '.png'
 		tileSize: new google.maps.Size(512, 512)
-		maxZoom: 2
+		maxZoom: 3
 		minZoom: 0
-		name: 'Tiled map (updates approx. hourly)'
+		name: 'Tiled map (updates approx. every 4 hrs)'
 	Tiled.projection = projection
 	map.mapTypes.set 'tiled', Tiled
 	map.setMapTypeId 'tiled'
@@ -110,31 +111,67 @@ init = ->
 			when a_name > b_name then 1
 			else 0
 
-	# Build tag index for lookup
+	# Deeds
 	for i, j in deeds
+		# Build tag index for lookup
 		deed_tags[i.tag] = j
 
-		img =
-			url: 'images/deed_' + (if i.top then 'unique' else i.type or 'solo') + '.png',
-			size: new google.maps.Size(32, 37)
-			origin: new google.maps.Point(0, 0)
-			anchor: new google.maps.Point(16, 37)
+		# Create marker
 		i.marker = new google.maps.Marker
 			position: projection.fromPointToLatLng(projection.fromCoords(x: i.x, y: i.y))
 			map: map
-			icon: img
+			icon:
+				url: 'images/deed_' + (if i.top then 'unique' else i.type or 'solo') + '.png'
+				size: new google.maps.Size(32, 37)
+				origin: new google.maps.Point(0, 0)
+				anchor: new google.maps.Point(16, 37)
 
 		i.marker.addListener 'click', show_deed_info.bind(null, i.tag)
 
 		if window.location.hash.substr(1) is i.tag
 			show_deed_on_map i.tag
 
-	# Show / hide markers
-	map.addListener 'zoom_changed', update_markers
+
+	# Guard towers
+	for i in guard_towers
+		i.marker = new google.maps.Marker
+			position: projection.fromPointToLatLng(projection.fromCoords(x: i.x, y: i.y))
+			map: map
+			icon:
+				url: 'images/guard_tower.png'
+				size: new google.maps.Size(32, 37)
+				origin: new google.maps.Point(0, 0)
+				anchor: new google.maps.Point(16, 37)
+
+		i.marker.addListener 'click', show_coords_info.bind(null, x: i.x, y: i.y)
+
+
+	# Resources
+	for i in resources
+		i.marker = new google.maps.Marker
+			position: projection.fromPointToLatLng(projection.fromCoords(x: i.x, y: i.y))
+			map: map
+			icon:
+				url: if i.type is 'mine' then 'images/mine.png' else 'images/resource.png'
+				size: new google.maps.Size(32, 37)
+				origin: new google.maps.Point(0, 0)
+				anchor: new google.maps.Point(16, 37)
+
+		i.marker.addListener 'click', show_coords_info.bind(null, x: i.x, y: i.y)
+
 
 	hash = window.location.hash.substr(1)
-	if hash.indexOf(',') isnt -1
+	if hash.indexOf(',') isnt -1 # Old URLs
 		hash = hash.split(',')
+		if hash.length is 2
+			coords =
+				x: parseInt(hash[0])
+				y: parseInt(hash[1])
+			map.panTo projection.fromPointToLatLng(projection.fromCoords(coords))
+			show_coords_info coords
+
+	else if hash.indexOf('_') isnt -1 # New URLs
+		hash = hash.split('_')
 		if hash.length is 2
 			coords =
 				x: parseInt(hash[0])
@@ -144,17 +181,13 @@ init = ->
 
 	do update_deeds
 
+	map.addListener 'zoom_changed', close_infowin
 
 
-update_markers = ->
-	zoom = map.getZoom()
-	switch
-		when zoom is 0
-			# Hide deed markers except for NT
-			(i.marker.setMap(null) if not i.top) for i in deeds
-
-		else
-			i.marker.setMap(map) for i in deeds
+close_infowin = ->
+	if infowin isnt ''
+		do infowin.close
+		infowin = ''
 
 
 # Deed functions
@@ -167,6 +200,10 @@ show_deed_on_map = (tag) ->
 
 show_deed_info = (tag) ->
 	deed = deeds[deed_tags[tag]]
+
+	if console?
+		latLng = projection.fromPointToLatLng(projection.fromCoords(x: deed.x, y: deed.y))
+		console.log 'Lat: ' + latLng.lat() + ', Long: ' + latLng.lng()
 
 	if infowin isnt ''
 		do infowin.close
@@ -209,6 +246,10 @@ show_deed_info = (tag) ->
 	if deed.note?
 		props.push '<p style="font-style:italic">' + deed.note + '</p>'
 
+
+	nearby = find_nearby_locations(x: deed.x, y: deed.y)
+	props.push nearby if nearby
+
 	infowin = new google.maps.InfoWindow
 		content: '<div id="content">
 			<h2>' + deed.name + '</h2>
@@ -241,29 +282,131 @@ show_coords_info = (coords) ->
 		do infowin.close
 		infowin = ''
 
+	coords.x = Math.floor(coords.x)
+	coords.y = Math.floor(coords.y)
+
+	props = []
+	found = no
+	coords_marker = ''
+	
+	for i in guard_towers
+		if i.x is coords.x and i.y is coords.y
+			found = yes
+			coords_marker = i.marker
+			props.push '<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (if i.creator? then ', built by ' + i.creator else '') + '</p>'
+
+	if not found
+		for i in resources
+			if i.x is coords.x and i.y is coords.y
+				found = yes
+				coords_marker = i.marker
+				if i.type is 'mine'
+					props.push '<p>There is a <strong style="font-weight:500">mine</strong> here</p>'
+					html = '<p>It contains '
+					if not i.ores?
+						html += 'no'
+					else
+						for o, n in i.ores
+							html += switch n
+								when 0 then ''
+								when i.ores.length - 1 then ' and '
+								else ', '
+							html += o
+						html += (if i.ores.length is 1 then ' vein' else ' veins') + '</p>'
+
+					if i.features?
+						html += '<p>It is equipped with '
+						for o, n in i.features
+							html += switch n
+								when 0 then ''
+								when i.features.length - 1 then ' and '
+								else ', '
+							html += 'a ' + o
+						html += '</p>'
+					props.push html
+				else
+					props.push '<p>There is a <strong style="font-weight:500">' + i.size + ' ' + i.type + ' deposit</strong> here</p>'
+
+	props.push '<p>There seems to be nothing special here</p>' if not found
+
+	nearby = find_nearby_locations(coords)
+	props.push nearby if nearby
+
 	infowin = new google.maps.InfoWindow
 		content: '<div id="content">
-			<h3>X' + Math.floor(coords.x) + ', Y' + Math.floor(coords.y) + '</h3>
+			<h3>X' + coords.x + ', Y' + coords.y + '</h3>
 			<div id="bodyContent">
-				<p>There seems to be nothing special here</p>
-				<p style="padding-top:10px"><a href="#' + Math.floor(coords.x) + ',' + Math.floor(coords.y) + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_coords(\'' + Math.floor(coords.x) + '\', \'' + Math.floor(coords.y) + '\', this)">Share these coordinates</a></p>
+				' + props.join('') + '
+				<p style="padding-top:10px"><a href="#' + coords.x + '_' + coords.y + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_coords(\'' + coords.x + '\', \'' + coords.y + '\', this)">Share these coordinates</a></p>
 			</div>
 		</div>'
 		position: projection.fromPointToLatLng(projection.fromCoords(coords))
-	infowin.open map
-	infowin.open map
 
-	window.location.hash = coords.x + ',' + coords.y
+	if coords_marker isnt ''
+		infowin.open map, coords_marker
+		infowin.open map, coords_marker
+	else
+		infowin.open map
+		infowin.open map
+
+	window.location.hash = coords.x + '_' + coords.y
 
 	return false
 
 share_coords = (x, y, el) ->
 	el.style.backgroundColor = 'white'
 	el.style.padding = 0
-	el.innerHTML = '<input type="text" value="http://woubuc.github.io/wu-map/#' + x + ',' + y + '" style="width:255px;padding:2px;border-radius:3px;border:1px solid #dedede;font-size:12px" onclick="this.select()" />'
+	el.innerHTML = '<input type="text" value="http://woubuc.github.io/wu-map/#' + x + '_' + y + '" style="width:255px;padding:2px;border-radius:3px;border:1px solid #dedede;font-size:12px" onclick="this.select()" />'
 	el.childNodes[0].select()
 	return false
 
+show_coords_on_map = (x, y) ->
+	map.panTo projection.fromPointToLatLng(projection.fromCoords(x: x, y: y))
+	show_coords_info(x: x, y: y)
+	return false
+
+
+find_nearby_locations = (coords) ->
+
+	check = (x, y) ->
+		for i in deeds
+			if i.x is x and i.y is y
+				return '<p style="margin-bottom:2px;color:#666"> The settlement of <a style="color:#2196F3" href="#' + i.tag + '" onclick="show_deed_on_map(\'' + i.tag + '\')">' + i.name + '</a> is nearby</p>'
+		for i in guard_towers
+			if i.x is x and i.y is y
+				return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">guard tower</a> nearby</p>'
+		for i in resources
+			if i.x is x and i.y is y
+				if i.type is 'mine'
+					return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">mine</a> nearby</p>'
+				else
+					return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.size + ' ' + i.type + ' deposit</a> nearby'
+
+		return false
+
+	nearby = []
+
+	max_dist = 60
+	for dist in [1..max_dist]
+		for x in [-dist..dist - 1]
+			y = -dist
+			found = check coords.x + x, coords.y + y
+			nearby.push found if found
+		for x in [-dist + 1..dist]
+			y = dist
+			found = check coords.x + x, coords.y + y
+			nearby.push found if found
+		for y in [-dist..dist - 1]
+			x = dist
+			found = check coords.x + x, coords.y + y
+			nearby.push found if found
+		for y in [-dist + 1..dist]
+			x = -dist
+			found = check coords.x + x, coords.y + y
+			nearby.push found if found
+
+	return false if nearby.length is 0
+	return '<br>' + nearby.join('')
 
 # Add menu
 show_add_menu = ->
@@ -305,3 +448,20 @@ update_deeds = ->
 			view:
 				href: -> '#' + @tag
 				onclick: -> 'show_deed_on_map(\'' + @tag + '\')'
+
+
+
+toggle_filter = (el) ->
+	if el.className is 'option on'
+		el.className = 'option off'
+		do close_infowin
+		switch el.id
+			when 'filter_deeds' then (i.marker.setMap(null) unless i.top) for i in deeds
+			when 'filter_towers' then i.marker.setMap(null) for i in guard_towers
+			when 'filter_resources' then i.marker.setMap(null) for i in resources
+	else
+		el.className = 'option on'
+		switch el.id
+			when 'filter_deeds' then (i.marker.setMap(map) unless i.top) for i in deeds
+			when 'filter_towers' then i.marker.setMap(map) for i in guard_towers
+			when 'filter_resources' then i.marker.setMap(map) for i in resources

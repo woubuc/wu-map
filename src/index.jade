@@ -32,7 +32,16 @@ html
 		#addform(onclick='hide_add_form()')
 			iframe(src='about:blank')
 
+		#filterbox
+			.option.on#filter_deeds(onclick='toggle_filter(this)') Deeds
+				span
+			.option.on#filter_towers(onclick='toggle_filter(this)') Towers
+				span
+			.option.on#filter_resources(onclick='toggle_filter(this)') Resources
+				span
+
 		script(src='locations/deeds.js')
 		script(src='locations/guard_towers.js')
+		script(src='locations/resources.js')
 		script(src='map.js')
 		script(src='https://maps.googleapis.com/maps/api/js?signed_in=false&callback=init' async defer)

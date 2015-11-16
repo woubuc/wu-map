@@ -16,7 +16,7 @@ html, body, #map
 	top: 0
 	right: 0
 	bottom: 0
-	left: 250px
+	left: 300px
 	width: calc(100% - 250px)
 	z-index: 0
 
@@ -42,7 +42,7 @@ html, body, #map
 	top: 0
 	left: 0
 	bottom: 0
-	width: 250px
+	width: 300px
 	height: 100%
 	box-shadow: 1px 0px 4px black
 	z-index: 10
@@ -180,3 +180,67 @@ html, body, #map
 		margin-top: 25px
 		box-shadow: 0 0 15px rgba(0, 0, 0, 0.5)
 		border-radius: 5px
+
+
+#filterbox
+	position: absolute
+	bottom: 0
+	left: 300px
+	background: white
+	width: 140px
+	border-radius: 0 3px 0 0
+	z-index: 9
+	padding-top: 3px
+
+	@media all and (min-width: 1200px)
+		left: 350px
+
+	.option
+		display: block
+		height: 42px
+		line-height: 42px
+		color: #333
+		font-weight: bold
+		font-size: 13px
+		padding: 0 10px 0 14px
+		cursor: pointer
+		background-position: 5px 3px
+		background-repeat: no-repeat
+		-webkit-touch-callout: none
+		-webkit-user-select: none
+		-khtml-user-select: none
+		-moz-user-select: none
+		-ms-user-select: none
+		user-select: none
+
+		&:hover
+			color: #2196F3
+
+
+		span
+			display: block
+			float: left
+			height: 16px
+			margin-top: 12px
+			width: 16px
+			border: 2px solid #ccc
+			border-radius: 8px
+			margin-right: 10px
+			-webkit-transition: all 100ms ease-in-out
+			-moz-transition: all 100ms ease-in-out
+			-ms-transition: all 100ms ease-in-out
+			-o-transition: all 100ms ease-in-out
+			transition: all 100ms ease-in-out
+
+			&::after
+				display: block
+				content: ' '
+				width: 4px
+				height: 4px
+				border-radius: 2px
+				margin: 4px
+				background: white
+
+		&.on span
+			border-color: #67C547
+			background-color: #67C547
