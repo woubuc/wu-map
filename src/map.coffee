@@ -60,8 +60,8 @@ init = ->
 			if coord.x is 0 and coord.y is 0
 				return 'http://5.45.109.131/unlimited/mapdump.png'
 		tileSize: new google.maps.Size(4096, 4096)
-		maxZoom: 1
-		minZoom: 1
+		maxZoom: 2
+		minZoom: 2
 		name: 'Official map dump' 
 	Sklotopolis.projection = projection
 	map.mapTypes.set 'sklotopolis', Sklotopolis

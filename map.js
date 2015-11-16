@@ -108,8 +108,8 @@ init = function() {
       }
     },
     tileSize: new google.maps.Size(4096, 4096),
-    maxZoom: 1,
-    minZoom: 1,
+    maxZoom: 2,
+    minZoom: 2,
     name: 'Official map dump'
   });
   Sklotopolis.projection = projection;
