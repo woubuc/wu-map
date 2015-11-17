@@ -4,10 +4,9 @@ deeds = [
   {
     name: 'New Town',
     tag: 'new-town',
-    top: true,
     mayor: 'Dominikk',
     type: 'large',
-    x: 907,
+    x: 906,
     y: 760,
     features: ['trader', 'market', 'harbour', 'resources', 'recruiting']
   }, {
