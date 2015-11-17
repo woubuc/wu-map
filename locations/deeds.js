@@ -102,8 +102,8 @@ deeds = [
     tag: 'highwater',
     type: 'small',
     mayor: 'Kezei',
-    x: 2650,
-    y: 3495,
+    x: 2641,
+    y: 3500,
     features: ['harbour', 'resources', 'recruiting']
   }, {
     name: 'Deathlands',
