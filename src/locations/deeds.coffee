@@ -203,7 +203,7 @@ deeds = [
 	tag: 'odd-place'
 	type: 'solo'
 	mayor: 'Kanashio'
-	x: 2620
+	x: 2615
 	y: 345
 	features: ['recruiting']
 ,
@@ -291,4 +291,65 @@ deeds = [
 	type: 'solo'
 	x: 875
 	y: 2636
+,
+	name: 'Bay-town'
+	tag: 'bay-town'
+	mayor: 'Hampe'
+	type: 'solo'
+	x: 1196
+	y: 925
+,
+	name: 'Astur'
+	tag: 'astur'
+	mayor: 'Charlypodo'
+	type: 'solo'
+	x: 1088
+	y: 1120
+	features: ['harbour']
+,
+	name: 'Riverside'
+	tag: 'riverside'
+	mayor: 'Sklo'
+	type: 'large'
+	x: 2923
+	y: 3303
+	features: ['harbour']
+,
+	name: 'Noskull\'s Harbour Grounds'
+	tag: 'noskulls-harbour-grounds'
+	mayor: 'Noskull'
+	type: 'solo'
+	x: 622
+	y: 792
+	features: ['harbour']
+,
+	name: 'Griffin\'s Nest Harbour'
+	tag: 'griffins-nest-harbour'
+	mayor: 'Phoenix'
+	type: 'small'
+	x: 3228
+	y: 2798
+	features: ['harbour', 'recruiting']
+,
+	name: 'Reagville'
+	tag: 'reagville'
+	mayor: 'Reagor'
+	type: 'solo'
+	x: 484
+	y: 541
+,
+	name: 'Santuary'
+	tag: 'santuary'
+	mayor: 'Toriad'
+	type: 'solo'
+	x: 2689
+	y: 2974
+,
+	name: 'Ashenfort'
+	tag: 'ashenfort'
+	mayor: 'Meado'
+	type: 'solo'
+	x: 1072
+	y: 1820
+	features: ['recruiting']
 ]

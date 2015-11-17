@@ -48,5 +48,56 @@ guard_towers = [
   }, {
     x: 960,
     y: 790
+  }, {
+    x: 1540,
+    y: 340,
+    creator: 'zigackly'
+  }, {
+    x: 1059,
+    y: 685,
+    creator: 'Death'
+  }, {
+    x: 3228,
+    y: 2791,
+    creator: 'Nova'
+  }, {
+    x: 539,
+    y: 1384,
+    creator: 'jackoritos'
+  }, {
+    x: 1130,
+    y: 1110,
+    creator: 'Encode'
+  }, {
+    x: 1580,
+    y: 1004,
+    creator: 'Dallanar'
+  }, {
+    x: 493,
+    y: 534,
+    creator: 'Reagor'
+  }, {
+    x: 2660,
+    y: 3427,
+    creator: 'Kezei'
+  }, {
+    x: 2959,
+    y: 533,
+    creator: 'Biervampyr'
+  }, {
+    x: 2919,
+    y: 531,
+    creator: 'Biervampyr'
+  }, {
+    x: 2863,
+    y: 535,
+    creator: 'Biervampyr'
+  }, {
+    x: 2966,
+    y: 478,
+    creator: 'Biervampyr'
+  }, {
+    x: 1121,
+    y: 779
   }
 ];
