@@ -50,8 +50,7 @@ init = ->
 		zoom: 2
 		zoomControl: true
 		streetViewControl: false
-		mapTypeControlOptions:
-			mapTypeIds: ['sklotopolis', 'tiled']
+		mapTypeControl: false
 
 	# Image map type
 	# Single image, using mapdump as source
@@ -68,7 +67,7 @@ init = ->
 
 	# Show coordinates
 	coordsDiv = document.getElementById('coords')
-	map.controls[google.maps.ControlPosition.TOP_CENTER].push coordsDiv
+	map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push coordsDiv
 	map.addListener 'mousemove', (e) ->
 		coords = projection.toCoords projection.fromLatLngToPoint(e.latLng)
 		document.getElementById('coordsc').textContent = 'Mouse cursor at X' + Math.floor(coords.x) + ', Y' + Math.floor(coords.y)
@@ -89,8 +88,9 @@ init = ->
 				when 1 then 2048
 				when 2 then 4096
 				when 3 then 8192
-			return 'http://188.226.191.32:8000/' + zoom + '_t_' + coord.x + '_' + coord.y + '.png'
-		tileSize: new google.maps.Size(512, 512)
+				when 4 then 16384
+			return 'http://188.226.191.32:8000/tile_' + zoom + '_' + coord.x + '_' + coord.y + '.png'
+		tileSize: new google.maps.Size(256, 256)
 		maxZoom: 3
 		minZoom: 0
 		name: 'Tiled map (updates approx. every 4 hrs)'
@@ -121,7 +121,7 @@ init = ->
 			position: projection.fromPointToLatLng(projection.fromCoords(x: i.x, y: i.y))
 			map: map
 			icon:
-				url: 'images/deed_' + (if i.top then 'unique' else i.type or 'solo') + '.png'
+				url: 'images/deed_' + (i.type or 'solo') + '.png'
 				size: new google.maps.Size(32, 37)
 				origin: new google.maps.Point(0, 0)
 				anchor: new google.maps.Point(16, 37)
@@ -159,6 +159,19 @@ init = ->
 
 		i.marker.addListener 'click', show_coords_info.bind(null, x: i.x, y: i.y)
 
+	# Points of interest
+	for i in poi
+		i.marker = new google.maps.Marker
+			position: projection.fromPointToLatLng(projection.fromCoords(x: i.x, y: i.y))
+			map: map
+			icon:
+				url: 'images/poi.png'
+				size: new google.maps.Size(32, 37)
+				origin: new google.maps.Point(0, 0)
+				anchor: new google.maps.Point(16, 37)
+
+		i.marker.addListener 'click', show_coords_info.bind(null, x: i.x, y: i.y)
+
 
 	hash = window.location.hash.substr(1)
 	if hash.indexOf(',') isnt -1 # Old URLs
@@ -178,8 +191,6 @@ init = ->
 				y: parseInt(hash[1])
 			map.panTo projection.fromPointToLatLng(projection.fromCoords(coords))
 			show_coords_info coords
-
-	do update_deeds
 
 	map.addListener 'zoom_changed', close_infowin
 
@@ -255,7 +266,7 @@ show_deed_info = (tag) ->
 			<h2>' + deed.name + '</h2>
 			<div id="bodyContent">
 				' + props.join('') + '
-				<p style="padding-top:10px"><a href="#' + deed.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_deed(\'' + deed.tag + '\', this)">Share this deed</a></p>
+				<p style="padding-top:10px"><a href="#' + deed.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_deed(\'' + deed.tag + '\', this)">Share this location</a></p>
 			</div>
 		</div>'
 	infowin.open map, deed.marker
@@ -285,15 +296,28 @@ show_coords_info = (coords) ->
 	coords.x = Math.floor(coords.x)
 	coords.y = Math.floor(coords.y)
 
+	title = 'X' + coords.x + ', Y' + coords.y
+
 	props = []
 	found = no
 	coords_marker = ''
-	
-	for i in guard_towers
+
+	for i in poi
 		if i.x is coords.x and i.y is coords.y
+			console.log 'found'
 			found = yes
 			coords_marker = i.marker
-			props.push '<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (if i.creator? then ', built by ' + i.creator else '') + '</p>'
+			title = i.name
+			props.push '<p>Coordinates: X' + i.x + ', Y' + i.y + '</p>'
+			if i.description?
+				props.push '<p style="margin:10px 0;max-width:400px;padding:8px;background:#eee;font-style:italic">' + i.description + '</p>'
+
+	if not found
+		for i in guard_towers
+			if i.x is coords.x and i.y is coords.y
+				found = yes
+				coords_marker = i.marker
+				props.push '<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (if i.creator? then ', built by ' + i.creator else '') + '</p>'
 
 	if not found
 		for i in resources
@@ -327,6 +351,7 @@ show_coords_info = (coords) ->
 				else
 					props.push '<p>There is a <strong style="font-weight:500">' + i.size + ' ' + i.type + ' deposit</strong> here</p>'
 
+
 	props.push '<p>There seems to be nothing special here</p>' if not found
 
 	nearby = find_nearby_locations(coords)
@@ -334,10 +359,10 @@ show_coords_info = (coords) ->
 
 	infowin = new google.maps.InfoWindow
 		content: '<div id="content">
-			<h3>X' + coords.x + ', Y' + coords.y + '</h3>
+			<h3>' + title + '</h3>
 			<div id="bodyContent">
 				' + props.join('') + '
-				<p style="padding-top:10px"><a href="#' + coords.x + '_' + coords.y + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_coords(\'' + coords.x + '\', \'' + coords.y + '\', this)">Share these coordinates</a></p>
+				<p style="padding-top:10px"><a href="#' + coords.x + '_' + coords.y + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_coords(\'' + coords.x + '\', \'' + coords.y + '\', this)">Share this location</a></p>
 			</div>
 		</div>'
 		position: projection.fromPointToLatLng(projection.fromCoords(coords))
@@ -371,16 +396,19 @@ find_nearby_locations = (coords) ->
 	check = (x, y) ->
 		for i in deeds
 			if i.x is x and i.y is y
-				return '<p style="margin-bottom:2px;color:#666"> The settlement of <a style="color:#2196F3" href="#' + i.tag + '" onclick="show_deed_on_map(\'' + i.tag + '\')">' + i.name + '</a> is nearby</p>'
+				return '<p style="margin-bottom:2px;color:#777;font-size:12px;"> The settlement of <a style="color:#2196F3" href="#' + i.tag + '" onclick="show_deed_on_map(\'' + i.tag + '\')">' + i.name + '</a> is nearby</p>'
 		for i in guard_towers
 			if i.x is x and i.y is y
-				return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">guard tower</a> nearby</p>'
+				return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">guard tower</a> nearby</p>'
 		for i in resources
 			if i.x is x and i.y is y
 				if i.type is 'mine'
-					return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">mine</a> nearby</p>'
+					return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">mine</a> nearby</p>'
 				else
-					return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.size + ' ' + i.type + ' deposit</a> nearby'
+					return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.size + ' ' + i.type + ' deposit</a> nearby'
+		for i in poi
+			if i.x is x and i.y is y
+				return '<p style="margin-bottom:2px;color:#777;font-size:12px;"><a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.name + '</a> is nearby</p>'
 
 		return false
 
@@ -431,38 +459,137 @@ hide_add_form = ->
 	document.getElementById('addform').style.display = 'none'
 	document.getElementById('addform').childNodes[0].src = 'about:blank'
 
-update_deeds = ->
-	filter = document.getElementById('search').value
-	if filter is ''
-		Transparency.render document.getElementById('locations'), deeds,
-			view:
-				href: -> '#' + @tag
-				onclick: -> 'show_deed_on_map(\'' + @tag + '\')'
-	else
-		toShow = []
-		filter = filter.toLowerCase()
+hide_search = ->
+	setTimeout ->
+		document.getElementById('searchbox').className = ''
+	, 200
+
+search = ->
+	searchtext = document.getElementById('search').value.toLowerCase()
+
+	results = []
+
+	if searchtext isnt ''
 		for i in deeds
-			if i.name.toLowerCase().indexOf(filter) isnt -1
-				toShow.push i
+			if i.name.toLowerCase().indexOf(searchtext) isnt -1
+				results.push i
+			else if i.mayor?
+				if i.mayor.toLowerCase().indexOf(searchtext) isnt -1
+					results.push i
 
-		Transparency.render document.getElementById('locations'), toShow,
-			view:
-				href: -> '#' + @tag
-				onclick: -> 'show_deed_on_map(\'' + @tag + '\')'
+		results.push
+			tag: ''
+			add_deed: yes
+			name: 'Can\'t find your deed?'
 
+	Transparency.render document.getElementById('searchresults'), results,
+		location:
+			class: -> 'location deed_' + @type
+			href: -> '#' + @tag
+			onclick: -> if @add_deed then 'show_add_form(\'deed\')' else 'show_deed_on_map(\'' + @tag + '\')'
+		name: html: ->
+			i = @name.toLowerCase().indexOf(searchtext)
+			if i is -1
+				return @name
+			else
+				return @name.slice(0, i) + '<strong>' + @name.slice(i, i + searchtext.length) + '</strong>' + @name.slice(i + searchtext.length)
+		mayor: html: ->
+			return '' if @add_deed
+			return 'No mayor on record' if not @mayor?
+			i = @mayor.toLowerCase().indexOf(searchtext)
+			console.log @mayor + ': ' + i + ', ' + searchtext.length
+			if i is -1
+				return @mayor
+			else
+				return @mayor.slice(0, i) + '<strong>' + @mayor.slice(i, i + searchtext.length) + '</strong>' + @mayor.slice(i + searchtext.length)
 
-
-toggle_filter = (el) ->
-	if el.className is 'option on'
-		el.className = 'option off'
-		do close_infowin
-		switch el.id
-			when 'filter_deeds' then (i.marker.setMap(null) unless i.top) for i in deeds
-			when 'filter_towers' then i.marker.setMap(null) for i in guard_towers
-			when 'filter_resources' then i.marker.setMap(null) for i in resources
+	if results.length > 0
+		document.getElementById('searchbox').className = 'open'
 	else
-		el.className = 'option on'
-		switch el.id
-			when 'filter_deeds' then (i.marker.setMap(map) unless i.top) for i in deeds
-			when 'filter_towers' then i.marker.setMap(map) for i in guard_towers
-			when 'filter_resources' then i.marker.setMap(map) for i in resources
+		document.getElementById('searchbox').className = ''
+
+
+# Marker filters
+filter =
+	deeds: on
+	deeds_solo: on
+	deeds_small: on
+	deeds_large: on
+	guard_towers: on
+	resources: on
+	poi: on
+
+toggle_markers = (which) ->
+	# Set filter
+	if filter[which]?
+		filter[which] = not filter[which]
+		update_markers which
+
+# Toggle marker filters
+update_markers = (which) ->
+	# Close tooltip (in case we hide a marker with an open tooltip)
+	do close_infowin
+
+	# Update the markers
+	switch which
+		when 'deeds'
+			for i in deeds
+				switch i.type
+					when 'large'
+						i.marker.setMap(if filter.deeds and filter.deeds_large then map else null)
+					when 'small'
+						i.marker.setMap(if filter.deeds and filter.deeds_small then map else null)
+					else
+						i.marker.setMap(if filter.deeds and filter.deeds_solo then map else null)
+
+		when 'deeds_solo'
+			for i in deeds
+				if i.type is 'solo' or not i.type?
+					i.marker.setMap(if filter.deeds and filter.deeds_solo then map else null)
+		when 'deeds_small'
+			for i in deeds
+				if i.type is 'small'
+					i.marker.setMap(if filter.deeds and filter.deeds_small then map else null)
+		when 'deeds_large'
+			for i in deeds
+				if i.type is 'large'
+					i.marker.setMap(if filter.deeds and filter.deeds_large then map else null)
+
+		when 'guard_towers'
+			for i in guard_towers
+					i.marker.setMap(if filter.guard_towers then map else null)
+		when 'resources'
+			for i in resources
+				i.marker.setMap(if filter.resources then map else null)
+		when 'poi'
+			for i in poi
+				i.marker.setMap(if filter.poi then map else null)
+
+	# Update toggle switches
+	for i, j of filter
+		document.getElementById('marker_' + i).className = if j then 'selected' else ''
+
+	return false
+
+# Change map type and update options in sidebar
+change_map = (type) ->
+	switch type
+		when 'mapdump'
+			map.setMapTypeId('mapdump')
+			document.getElementById('maptype_tiled').className = ''
+			document.getElementById('maptype_mapdump').className = 'selected'
+		when 'tiled'
+			map.setMapTypeId('tiled')
+			document.getElementById('maptype_tiled').className = 'selected'
+			document.getElementById('maptype_mapdump').className = ''
+
+	return false
+
+
+# Find distance between two coordinates
+distance = (coord_a, coord_b) ->
+  x = coord_b.x - coord_a.x
+  x = x * x
+  y = coord_b.y - coord_a.y
+  y = y * y
+  return Math.sqrt(x + y)

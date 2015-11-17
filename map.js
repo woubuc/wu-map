@@ -1,4 +1,4 @@
-var close_infowin, deed_tags, find_nearby_locations, hide_add_form, infowin, init, map, marker, projection, share_coords, share_deed, show_add_form, show_add_menu, show_coords_info, show_coords_on_map, show_deed_info, show_deed_on_map, toggle_filter, update_deeds,
+var change_map, close_infowin, deed_tags, distance, filter, find_nearby_locations, hide_add_form, hide_search, infowin, init, map, marker, projection, search, share_coords, share_deed, show_add_form, show_add_menu, show_coords_info, show_coords_on_map, show_deed_info, show_deed_on_map, toggle_markers, update_markers,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 map = '';
@@ -88,7 +88,7 @@ projection = {
 };
 
 init = function() {
-  var Sklotopolis, Tiled, coords, coordsDiv, hash, i, j, k, len, len1, len2, m, p;
+  var Sklotopolis, Tiled, coords, coordsDiv, hash, i, j, k, len, len1, len2, len3, m, p, q;
   map = new google.maps.Map(document.getElementById('map'), {
     center: {
       lat: -80.035400390625,
@@ -97,9 +97,7 @@ init = function() {
     zoom: 2,
     zoomControl: true,
     streetViewControl: false,
-    mapTypeControlOptions: {
-      mapTypeIds: ['sklotopolis', 'tiled']
-    }
+    mapTypeControl: false
   });
   Sklotopolis = new google.maps.ImageMapType({
     getTileUrl: function(coord, zoom) {
@@ -115,7 +113,7 @@ init = function() {
   Sklotopolis.projection = projection;
   map.mapTypes.set('sklotopolis', Sklotopolis);
   coordsDiv = document.getElementById('coords');
-  map.controls[google.maps.ControlPosition.TOP_CENTER].push(coordsDiv);
+  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(coordsDiv);
   map.addListener('mousemove', function(e) {
     var coords;
     coords = projection.toCoords(projection.fromLatLngToPoint(e.latLng));
@@ -139,11 +137,13 @@ init = function() {
             return 4096;
           case 3:
             return 8192;
+          case 4:
+            return 16384;
         }
       })();
-      return 'http://188.226.191.32:8000/' + zoom + '_t_' + coord.x + '_' + coord.y + '.png';
+      return 'http://188.226.191.32:8000/tile_' + zoom + '_' + coord.x + '_' + coord.y + '.png';
     },
-    tileSize: new google.maps.Size(512, 512),
+    tileSize: new google.maps.Size(256, 256),
     maxZoom: 3,
     minZoom: 0,
     name: 'Tiled map (updates approx. every 4 hrs)'
@@ -184,7 +184,7 @@ init = function() {
       })),
       map: map,
       icon: {
-        url: 'images/deed_' + (i.top ? 'unique' : i.type || 'solo') + '.png',
+        url: 'images/deed_' + (i.type || 'solo') + '.png',
         size: new google.maps.Size(32, 37),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(16, 37)
@@ -235,6 +235,26 @@ init = function() {
       y: i.y
     }));
   }
+  for (q = 0, len3 = poi.length; q < len3; q++) {
+    i = poi[q];
+    i.marker = new google.maps.Marker({
+      position: projection.fromPointToLatLng(projection.fromCoords({
+        x: i.x,
+        y: i.y
+      })),
+      map: map,
+      icon: {
+        url: 'images/poi.png',
+        size: new google.maps.Size(32, 37),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(16, 37)
+      }
+    });
+    i.marker.addListener('click', show_coords_info.bind(null, {
+      x: i.x,
+      y: i.y
+    }));
+  }
   hash = window.location.hash.substr(1);
   if (hash.indexOf(',') !== -1) {
     hash = hash.split(',');
@@ -257,7 +277,6 @@ init = function() {
       show_coords_info(coords);
     }
   }
-  update_deeds();
   return map.addListener('zoom_changed', close_infowin);
 };
 
@@ -345,7 +364,7 @@ show_deed_info = function(tag) {
     props.push(nearby);
   }
   infowin = new google.maps.InfoWindow({
-    content: '<div id="content"> <h2>' + deed.name + '</h2> <div id="bodyContent">' + props.join('') + '<p style="padding-top:10px"><a href="#' + deed.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_deed(\'' + deed.tag + '\', this)">Share this deed</a></p> </div> </div>'
+    content: '<div id="content"> <h2>' + deed.name + '</h2> <div id="bodyContent">' + props.join('') + '<p style="padding-top:10px"><a href="#' + deed.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_deed(\'' + deed.tag + '\', this)">Share this location</a></p> </div> </div>'
   });
   infowin.open(map, deed.marker);
   infowin.open(map, deed.marker);
@@ -362,7 +381,7 @@ share_deed = function(tag, el) {
 };
 
 show_coords_info = function(coords) {
-  var coords_marker, found, html, i, k, len, len1, len2, len3, m, n, nearby, o, p, props, q, ref, ref1;
+  var coords_marker, found, html, i, k, len, len1, len2, len3, len4, m, n, nearby, o, p, props, q, r, ref, ref1, title;
   if (marker !== '') {
     marker.setMap(null);
     marker = '';
@@ -373,20 +392,36 @@ show_coords_info = function(coords) {
   }
   coords.x = Math.floor(coords.x);
   coords.y = Math.floor(coords.y);
+  title = 'X' + coords.x + ', Y' + coords.y;
   props = [];
   found = false;
   coords_marker = '';
-  for (k = 0, len = guard_towers.length; k < len; k++) {
-    i = guard_towers[k];
+  for (k = 0, len = poi.length; k < len; k++) {
+    i = poi[k];
     if (i.x === coords.x && i.y === coords.y) {
+      console.log('found');
       found = true;
       coords_marker = i.marker;
-      props.push('<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (i.creator != null ? ', built by ' + i.creator : '') + '</p>');
+      title = i.name;
+      props.push('<p>Coordinates: X' + i.x + ', Y' + i.y + '</p>');
+      if (i.description != null) {
+        props.push('<p style="margin:10px 0;max-width:400px;padding:8px;background:#eee;font-style:italic">' + i.description + '</p>');
+      }
     }
   }
   if (!found) {
-    for (m = 0, len1 = resources.length; m < len1; m++) {
-      i = resources[m];
+    for (m = 0, len1 = guard_towers.length; m < len1; m++) {
+      i = guard_towers[m];
+      if (i.x === coords.x && i.y === coords.y) {
+        found = true;
+        coords_marker = i.marker;
+        props.push('<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (i.creator != null ? ', built by ' + i.creator : '') + '</p>');
+      }
+    }
+  }
+  if (!found) {
+    for (p = 0, len2 = resources.length; p < len2; p++) {
+      i = resources[p];
       if (i.x === coords.x && i.y === coords.y) {
         found = true;
         coords_marker = i.marker;
@@ -397,7 +432,7 @@ show_coords_info = function(coords) {
             html += 'no';
           } else {
             ref = i.ores;
-            for (n = p = 0, len2 = ref.length; p < len2; n = ++p) {
+            for (n = q = 0, len3 = ref.length; q < len3; n = ++q) {
               o = ref[n];
               html += (function() {
                 switch (n) {
@@ -416,7 +451,7 @@ show_coords_info = function(coords) {
           if (i.features != null) {
             html += '<p>It is equipped with ';
             ref1 = i.features;
-            for (n = q = 0, len3 = ref1.length; q < len3; n = ++q) {
+            for (n = r = 0, len4 = ref1.length; r < len4; n = ++r) {
               o = ref1[n];
               html += (function() {
                 switch (n) {
@@ -447,7 +482,7 @@ show_coords_info = function(coords) {
     props.push(nearby);
   }
   infowin = new google.maps.InfoWindow({
-    content: '<div id="content"> <h3>X' + coords.x + ', Y' + coords.y + '</h3> <div id="bodyContent">' + props.join('') + '<p style="padding-top:10px"><a href="#' + coords.x + '_' + coords.y + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_coords(\'' + coords.x + '\', \'' + coords.y + '\', this)">Share these coordinates</a></p> </div> </div>',
+    content: '<div id="content"> <h3>' + title + '</h3> <div id="bodyContent">' + props.join('') + '<p style="padding-top:10px"><a href="#' + coords.x + '_' + coords.y + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_coords(\'' + coords.x + '\', \'' + coords.y + '\', this)">Share this location</a></p> </div> </div>',
     position: projection.fromPointToLatLng(projection.fromCoords(coords))
   });
   if (coords_marker !== '') {
@@ -484,27 +519,33 @@ show_coords_on_map = function(x, y) {
 find_nearby_locations = function(coords) {
   var check, dist, found, k, m, max_dist, nearby, p, q, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, x, y;
   check = function(x, y) {
-    var i, k, len, len1, len2, m, p;
+    var i, k, len, len1, len2, len3, m, p, q;
     for (k = 0, len = deeds.length; k < len; k++) {
       i = deeds[k];
       if (i.x === x && i.y === y) {
-        return '<p style="margin-bottom:2px;color:#666"> The settlement of <a style="color:#2196F3" href="#' + i.tag + '" onclick="show_deed_on_map(\'' + i.tag + '\')">' + i.name + '</a> is nearby</p>';
+        return '<p style="margin-bottom:2px;color:#777;font-size:12px;"> The settlement of <a style="color:#2196F3" href="#' + i.tag + '" onclick="show_deed_on_map(\'' + i.tag + '\')">' + i.name + '</a> is nearby</p>';
       }
     }
     for (m = 0, len1 = guard_towers.length; m < len1; m++) {
       i = guard_towers[m];
       if (i.x === x && i.y === y) {
-        return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">guard tower</a> nearby</p>';
+        return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">guard tower</a> nearby</p>';
       }
     }
     for (p = 0, len2 = resources.length; p < len2; p++) {
       i = resources[p];
       if (i.x === x && i.y === y) {
         if (i.type === 'mine') {
-          return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">mine</a> nearby</p>';
+          return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">mine</a> nearby</p>';
         } else {
-          return '<p style="margin-bottom:2px;color:#666">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.size + ' ' + i.type + ' deposit</a> nearby';
+          return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.size + ' ' + i.type + ' deposit</a> nearby';
         }
+      }
+    }
+    for (q = 0, len3 = poi.length; q < len3; q++) {
+      i = poi[q];
+      if (i.x === x && i.y === y) {
+        return '<p style="margin-bottom:2px;color:#777;font-size:12px;"><a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.name + '</a> is nearby</p>';
       }
     }
     return false;
@@ -583,98 +624,189 @@ hide_add_form = function() {
   return document.getElementById('addform').childNodes[0].src = 'about:blank';
 };
 
-update_deeds = function() {
-  var filter, i, k, len, toShow;
-  filter = document.getElementById('search').value;
-  if (filter === '') {
-    return Transparency.render(document.getElementById('locations'), deeds, {
-      view: {
-        href: function() {
-          return '#' + this.tag;
-        },
-        onclick: function() {
-          return 'show_deed_on_map(\'' + this.tag + '\')';
-        }
-      }
-    });
-  } else {
-    toShow = [];
-    filter = filter.toLowerCase();
+hide_search = function() {
+  return setTimeout(function() {
+    return document.getElementById('searchbox').className = '';
+  }, 200);
+};
+
+search = function() {
+  var i, k, len, results, searchtext;
+  searchtext = document.getElementById('search').value.toLowerCase();
+  results = [];
+  if (searchtext !== '') {
     for (k = 0, len = deeds.length; k < len; k++) {
       i = deeds[k];
-      if (i.name.toLowerCase().indexOf(filter) !== -1) {
-        toShow.push(i);
+      if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
+        results.push(i);
+      } else if (i.mayor != null) {
+        if (i.mayor.toLowerCase().indexOf(searchtext) !== -1) {
+          results.push(i);
+        }
       }
     }
-    return Transparency.render(document.getElementById('locations'), toShow, {
-      view: {
-        href: function() {
-          return '#' + this.tag;
-        },
-        onclick: function() {
+    results.push({
+      tag: '',
+      add_deed: true,
+      name: 'Can\'t find your deed?'
+    });
+  }
+  Transparency.render(document.getElementById('searchresults'), results, {
+    location: {
+      "class": function() {
+        return 'location deed_' + this.type;
+      },
+      href: function() {
+        return '#' + this.tag;
+      },
+      onclick: function() {
+        if (this.add_deed) {
+          return 'show_add_form(\'deed\')';
+        } else {
           return 'show_deed_on_map(\'' + this.tag + '\')';
         }
       }
-    });
+    },
+    name: {
+      html: function() {
+        i = this.name.toLowerCase().indexOf(searchtext);
+        if (i === -1) {
+          return this.name;
+        } else {
+          return this.name.slice(0, i) + '<strong>' + this.name.slice(i, i + searchtext.length) + '</strong>' + this.name.slice(i + searchtext.length);
+        }
+      }
+    },
+    mayor: {
+      html: function() {
+        if (this.add_deed) {
+          return '';
+        }
+        if (this.mayor == null) {
+          return 'No mayor on record';
+        }
+        i = this.mayor.toLowerCase().indexOf(searchtext);
+        console.log(this.mayor + ': ' + i + ', ' + searchtext.length);
+        if (i === -1) {
+          return this.mayor;
+        } else {
+          return this.mayor.slice(0, i) + '<strong>' + this.mayor.slice(i, i + searchtext.length) + '</strong>' + this.mayor.slice(i + searchtext.length);
+        }
+      }
+    }
+  });
+  if (results.length > 0) {
+    return document.getElementById('searchbox').className = 'open';
+  } else {
+    return document.getElementById('searchbox').className = '';
   }
 };
 
-toggle_filter = function(el) {
-  var i, k, len, len1, len2, len3, len4, len5, m, p, q, r, results, results1, results2, results3, results4, results5, s;
-  if (el.className === 'option on') {
-    el.className = 'option off';
-    close_infowin();
-    switch (el.id) {
-      case 'filter_deeds':
-        results = [];
-        for (k = 0, len = deeds.length; k < len; k++) {
-          i = deeds[k];
-          results.push(!i.top ? i.marker.setMap(null) : void 0);
-        }
-        return results;
-        break;
-      case 'filter_towers':
-        results1 = [];
-        for (m = 0, len1 = guard_towers.length; m < len1; m++) {
-          i = guard_towers[m];
-          results1.push(i.marker.setMap(null));
-        }
-        return results1;
-        break;
-      case 'filter_resources':
-        results2 = [];
-        for (p = 0, len2 = resources.length; p < len2; p++) {
-          i = resources[p];
-          results2.push(i.marker.setMap(null));
-        }
-        return results2;
-    }
-  } else {
-    el.className = 'option on';
-    switch (el.id) {
-      case 'filter_deeds':
-        results3 = [];
-        for (q = 0, len3 = deeds.length; q < len3; q++) {
-          i = deeds[q];
-          results3.push(!i.top ? i.marker.setMap(map) : void 0);
-        }
-        return results3;
-        break;
-      case 'filter_towers':
-        results4 = [];
-        for (r = 0, len4 = guard_towers.length; r < len4; r++) {
-          i = guard_towers[r];
-          results4.push(i.marker.setMap(map));
-        }
-        return results4;
-        break;
-      case 'filter_resources':
-        results5 = [];
-        for (s = 0, len5 = resources.length; s < len5; s++) {
-          i = resources[s];
-          results5.push(i.marker.setMap(map));
-        }
-        return results5;
-    }
+filter = {
+  deeds: true,
+  deeds_solo: true,
+  deeds_small: true,
+  deeds_large: true,
+  guard_towers: true,
+  resources: true,
+  poi: true
+};
+
+toggle_markers = function(which) {
+  if (filter[which] != null) {
+    filter[which] = !filter[which];
+    return update_markers(which);
   }
+};
+
+update_markers = function(which) {
+  var i, j, k, len, len1, len2, len3, len4, len5, len6, m, p, q, r, s, t;
+  close_infowin();
+  switch (which) {
+    case 'deeds':
+      for (k = 0, len = deeds.length; k < len; k++) {
+        i = deeds[k];
+        switch (i.type) {
+          case 'large':
+            i.marker.setMap(filter.deeds && filter.deeds_large ? map : null);
+            break;
+          case 'small':
+            i.marker.setMap(filter.deeds && filter.deeds_small ? map : null);
+            break;
+          default:
+            i.marker.setMap(filter.deeds && filter.deeds_solo ? map : null);
+        }
+      }
+      break;
+    case 'deeds_solo':
+      for (m = 0, len1 = deeds.length; m < len1; m++) {
+        i = deeds[m];
+        if (i.type === 'solo' || (i.type == null)) {
+          i.marker.setMap(filter.deeds && filter.deeds_solo ? map : null);
+        }
+      }
+      break;
+    case 'deeds_small':
+      for (p = 0, len2 = deeds.length; p < len2; p++) {
+        i = deeds[p];
+        if (i.type === 'small') {
+          i.marker.setMap(filter.deeds && filter.deeds_small ? map : null);
+        }
+      }
+      break;
+    case 'deeds_large':
+      for (q = 0, len3 = deeds.length; q < len3; q++) {
+        i = deeds[q];
+        if (i.type === 'large') {
+          i.marker.setMap(filter.deeds && filter.deeds_large ? map : null);
+        }
+      }
+      break;
+    case 'guard_towers':
+      for (r = 0, len4 = guard_towers.length; r < len4; r++) {
+        i = guard_towers[r];
+        i.marker.setMap(filter.guard_towers ? map : null);
+      }
+      break;
+    case 'resources':
+      for (s = 0, len5 = resources.length; s < len5; s++) {
+        i = resources[s];
+        i.marker.setMap(filter.resources ? map : null);
+      }
+      break;
+    case 'poi':
+      for (t = 0, len6 = poi.length; t < len6; t++) {
+        i = poi[t];
+        i.marker.setMap(filter.poi ? map : null);
+      }
+  }
+  for (i in filter) {
+    j = filter[i];
+    document.getElementById('marker_' + i).className = j ? 'selected' : '';
+  }
+  return false;
+};
+
+change_map = function(type) {
+  switch (type) {
+    case 'mapdump':
+      map.setMapTypeId('mapdump');
+      document.getElementById('maptype_tiled').className = '';
+      document.getElementById('maptype_mapdump').className = 'selected';
+      break;
+    case 'tiled':
+      map.setMapTypeId('tiled');
+      document.getElementById('maptype_tiled').className = 'selected';
+      document.getElementById('maptype_mapdump').className = '';
+  }
+  return false;
+};
+
+distance = function(coord_a, coord_b) {
+  var x, y;
+  x = coord_b.x - coord_a.x;
+  x = x * x;
+  y = coord_b.y - coord_a.y;
+  y = y * y;
+  return Math.sqrt(x + y);
 };

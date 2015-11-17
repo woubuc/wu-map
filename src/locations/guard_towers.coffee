@@ -43,7 +43,7 @@ guard_towers = [
 	y: 1818
 	creator: 'Meado'
 ,
-	x: 960
+	x: 961
 	y: 790
 ,
 	x: 1540
@@ -96,4 +96,12 @@ guard_towers = [
 ,
 	x: 1121
 	y: 779
+,
+	x: 891
+	y: 2642
+	creator: 'Lunaman'
+,
+	x: 3177
+	y: 1838
+	creator: 'Damine'
 ]

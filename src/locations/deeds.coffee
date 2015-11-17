@@ -352,4 +352,11 @@ deeds = [
 	x: 1072
 	y: 1820
 	features: ['recruiting']
+,
+	name: 'Valhalla'
+	tag: 'valhalla'
+	mayor: 'Thor'
+	type: 'solo'
+	x: 711
+	y: 762
 ]

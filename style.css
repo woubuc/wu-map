@@ -8,7 +8,7 @@
 
 html, body, #map {
   height: 100%;
-  font-family: arial, sans-serif;
+  font-family: "Roboto", arial, sans-serif;
   overflow-x: hidden; }
 
 #map {
@@ -16,13 +16,104 @@ html, body, #map {
   top: 0;
   right: 0;
   bottom: 0;
-  left: 300px;
-  width: calc(100% - 250px);
+  left: 0px;
+  width: 100%;
   z-index: 0; }
-  @media all and (min-width: 1200px) {
-    #map {
-      width: calc(100% - 350px);
-      left: 350px; } }
+
+#sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 0px;
+  overflow-y: auto;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; }
+  #sidebar h2 {
+    margin-top: 25px;
+    margin-bottom: 5px;
+    padding: 0 20px;
+    color: #444;
+    font-size: 14px;
+    font-weight: 500; }
+  #sidebar a {
+    display: block;
+    padding: 10px 20px;
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    color: #444;
+    -webkit-transition: all 50ms ease-in-out;
+    -moz-transition: all 50ms ease-in-out;
+    -ms-transition: all 50ms ease-in-out;
+    -o-transition: all 50ms ease-in-out;
+    transition: all 50ms ease-in-out;
+    font-size: 14px;
+    font-weight: 400; }
+    #sidebar a.small {
+      padding: 8px 20px; }
+    #sidebar a small {
+      display: block;
+      color: #888;
+      font-size: 12px; }
+    #sidebar a span {
+      display: block;
+      float: left;
+      width: 16px;
+      height: 16px;
+      margin: 1px 8px 1px 2px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+      background: white;
+      -webkit-transition: all 80ms ease-in-out;
+      -moz-transition: all 80ms ease-in-out;
+      -ms-transition: all 80ms ease-in-out;
+      -o-transition: all 80ms ease-in-out;
+      transition: all 80ms ease-in-out; }
+      #sidebar a span::after {
+        display: block;
+        content: ' ';
+        width: 4px;
+        height: 4px;
+        border-radius: 2px;
+        margin: 4px;
+        background: white; }
+    #sidebar a:hover {
+      color: #2196F3; }
+      #sidebar a:hover span {
+        border-color: #2196F3; }
+    #sidebar a.selected span {
+      border-color: #2196F3;
+      background: #2196F3; }
+  #sidebar .div {
+    margin-top: 20px;
+    border-top: 1px solid #ddd; }
+  #sidebar .sub {
+    margin-left: 20px;
+    margin-bottom: 10px; }
+    #sidebar .sub a {
+      padding: 5px 20px;
+      color: #888;
+      font-size: 13px; }
+      #sidebar .sub a:hover {
+        color: #2196F3; }
+      #sidebar .sub a span {
+        width: 12px;
+        height: 12px;
+        border-radius: 6px; }
+        #sidebar .sub a span::after {
+          display: none; }
+  #sidebar p.disclaimer {
+    padding: 15px;
+    color: #888;
+    font-size: 10px; }
+    #sidebar p.disclaimer a {
+      display: inline;
+      padding: 0;
+      color: #2196F3;
+      font-size: 10px; }
+      #sidebar p.disclaimer a:hover {
+        text-decoration: underline; }
 
 #coords {
   width: 100px;
@@ -31,118 +122,90 @@ html, body, #map {
   #coords span {
     display: inline-block;
     padding: 5px 10px;
+    color: #444;
     background: white;
-    box-shadow: 0px 1px 4px black;
-    border-radius: 0 0 2px 2px; }
+    border-radius: 3px 3px 0 0;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; }
 
-#infobar {
+#searchbox {
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 300px;
-  height: 100%;
-  box-shadow: 1px 0px 4px black;
-  z-index: 10;
-  background: #eee; }
-  @media all and (min-width: 1200px) {
-    #infobar {
-      width: 350px; } }
-  #infobar #searchbox {
-    padding: 20px 20px 10px 20px; }
-    #infobar #searchbox input {
-      font-family: arial, sans-serif;
-      box-sizing: border-box;
-      display: block;
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #cecece;
-      border-radius: 3px; }
-  #infobar #locations {
-    padding: 0 10px;
-    max-height: 85%;
-    max-height: calc(100% - 68px);
-    border-top: 1px solid #dedede;
-    padding-top: 10px;
-    overflow: auto; }
-    #infobar #locations .location {
-      display: block;
-      padding: 15px;
-      height: 50px;
-      background: white;
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
-      border-radius: 3px;
-      color: #222;
-      margin-bottom: 10px; }
-      #infobar #locations .location .name {
-        float: left;
-        height: 20px;
-        line-height: 20px;
-        font-size: 14px; }
-      #infobar #locations .location a {
-        display: block;
-        float: right;
-        height: 30px;
-        line-height: 30px;
-        margin: -5px;
-        border-radius: 3px;
-        font-size: 13px;
-        padding: 0 8px;
-        background: #2196F3;
-        color: white;
-        font-size: 14px;
-        box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2); }
-        #infobar #locations .location a:hover {
-          background: #64B5F6; }
-
-#addbtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  left: 15px;
+  width: 320px;
   z-index: 12;
-  display: block;
-  height: 28px;
-  line-height: 28px;
+  height: 46px;
+  max-height: 400px;
+  overflow: hidden;
   border-radius: 3px;
-  padding: 0 12px;
-  background: #2196F3;
-  color: white;
-  font-size: 14px;
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
-  width: 150px;
-  text-align: center; }
-  #addbtn:hover {
-    background: #64B5F6; }
-
-#addmenu {
-  position: absolute;
-  top: 50px;
-  right: -150px;
-  z-index: 12;
-  width: 150px;
-  text-align: center;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
-  padding: 2px 0;
-  -webkit-transition: all 80ms ease-in-out;
-  -moz-transition: all 80ms ease-in-out;
-  -ms-transition: all 80ms ease-in-out;
-  -o-transition: all 80ms ease-in-out;
-  transition: all 80ms ease-in-out; }
-  #addmenu.open {
-    right: 10px; }
-  #addmenu a {
+  box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; }
+  #searchbox input {
+    font-family: "Roboto", arial, sans-serif;
+    box-sizing: border-box;
     display: block;
-    height: 30px;
-    line-height: 30px;
-    color: #333;
-    font-weight: bold;
-    font-size: 13px; }
-    #addmenu a:hover {
-      color: #2196F3; }
+    width: 320px;
+    height: 46px;
+    line-height: 46px;
+    padding: 0 15px;
+    border-radius: 3px; }
+  #searchbox.open {
+    height: auto; }
+    #searchbox.open input {
+      border-radius: 3px 3px 0 0; }
+  #searchbox #searchresults {
+    width: 320px;
+    background: white;
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 3px 3px; }
+    #searchbox #searchresults a.location {
+      display: block;
+      height: 50px;
+      padding-left: 50px;
+      background-position: 12px 8px;
+      background-repeat: no-repeat;
+      color: #444;
+      font-size: 14px; }
+      #searchbox #searchresults a.location.mine {
+        background-image: url("images/mine_icon.png"); }
+      #searchbox #searchresults a.location.resource {
+        background-image: url("images/resource_icon.png"); }
+      #searchbox #searchresults a.location.deed_large {
+        background-image: url("images/deed_large_icon.png"); }
+      #searchbox #searchresults a.location.deed_small {
+        background-image: url("images/deed_small_icon.png"); }
+      #searchbox #searchresults a.location.deed_solo {
+        background-image: url("images/deed_solo_icon.png"); }
+      #searchbox #searchresults a.location.ruins {
+        background-image: url("images/ruins_icon.png"); }
+      #searchbox #searchresults a.location span {
+        display: block;
+        height: 50px;
+        padding-top: 10px;
+        padding-left: 4px;
+        border-bottom: 1px solid #ddd; }
+        #searchbox #searchresults a.location span em {
+          display: block;
+          font-style: normal; }
+          #searchbox #searchresults a.location span em.mayor {
+            color: #888;
+            font-size: 11px; }
+      #searchbox #searchresults a.location.last span {
+        border: none;
+        border-radius: 0 0 3px 3px; }
+      #searchbox #searchresults a.location:hover {
+        background-color: #f7f7f7; }
+
+body.sidebar #sidebar {
+  width: 300px; }
+
+body.sidebar #searchbox {
+  left: 315px; }
+
+body.sidebar #map {
+  left: 300px;
+  width: calc(100% - 300px); }
 
 #addform {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -151,9 +214,8 @@ html, body, #map {
   width: 100%;
   height: 100%;
   z-index: 15;
-  display: none;
-  background: white;
-  background: rgba(255, 255, 255, 0.4); }
+  background: black;
+  background: rgba(0, 0, 0, 0.4); }
   #addform iframe {
     display: block;
     width: 100%;
@@ -162,62 +224,5 @@ html, body, #map {
     height: calc(100% - 50px);
     margin: auto;
     margin-top: 25px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    border-radius: 5px; }
-
-#filterbox {
-  position: absolute;
-  bottom: 0;
-  left: 300px;
-  background: white;
-  width: 140px;
-  border-radius: 0 3px 0 0;
-  z-index: 9;
-  padding-top: 3px; }
-  @media all and (min-width: 1200px) {
-    #filterbox {
-      left: 350px; } }
-  #filterbox .option {
-    display: block;
-    height: 42px;
-    line-height: 42px;
-    color: #333;
-    font-weight: bold;
-    font-size: 13px;
-    padding: 0 10px 0 14px;
-    cursor: pointer;
-    background-position: 5px 3px;
-    background-repeat: no-repeat;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-    #filterbox .option:hover {
-      color: #2196F3; }
-    #filterbox .option span {
-      display: block;
-      float: left;
-      height: 16px;
-      margin-top: 12px;
-      width: 16px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      margin-right: 10px;
-      -webkit-transition: all 100ms ease-in-out;
-      -moz-transition: all 100ms ease-in-out;
-      -ms-transition: all 100ms ease-in-out;
-      -o-transition: all 100ms ease-in-out;
-      transition: all 100ms ease-in-out; }
-      #filterbox .option span::after {
-        display: block;
-        content: ' ';
-        width: 4px;
-        height: 4px;
-        border-radius: 2px;
-        margin: 4px;
-        background: white; }
-    #filterbox .option.on span {
-      border-color: #67C547;
-      background-color: #67C547; }
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; }

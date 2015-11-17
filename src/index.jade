@@ -3,46 +3,73 @@ html
 	head
 		title Sklotopolis Map
 
+		link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700')
 		link(rel='stylesheet' href='style.css')
 		script(src='http://cdnjs.cloudflare.com/ajax/libs/transparency/0.11.0/transparency.min.js')
 		script(src='http://cdnjs.cloudflare.com/ajax/libs/Cookies.js/1.2.1/cookies.min.js')
 
-	body
-		#infobar
-			#searchbox
-				input#search(type='text' placeholder='Find location' onkeyup='update_deeds()')
-
-			#locations
-				.location
-					.name New Town
-					a.view(href='#' onclick='show_on_map(907, 760)') View
-
-
+	body.sidebar
+		include ./gtm.html
+		
 		#map
 		#coords
 			span#coordsc Mouse cursor at X0, Y0
 
-		a#addbtn(href='#' onclick='show_add_menu()') Add location
-		#addmenu
-			a(href='#' onclick='show_add_form(\'deed\')') Deed
-			a(href='#' onclick='show_add_form(\'tower\')') Guard tower
-			a(href='#' onclick='show_add_form(\'resource\')') Resource
-			a(href='#' onclick='show_add_form(\'mine\')') Public mine
-			a(href='#' onclick='show_add_form(\'poi\')') Point of interest
+		#sidebar
+			h2 Map type
+			a#maptype_tiled.selected(href='#' onclick='change_map(\'tiled\')') #[span] Tiled map
+				small Updates approx. every 4 hours
+			a#maptype_mapdump(href='#' onclick='change_map(\'mapdump\')') #[span] Official mapdump
+				small May need a while to load completely
+
+			.div
+
+			h2 Markers
+
+			a#marker_deeds.selected(href='#' onclick='toggle_markers(\'deeds\')') #[span] Deeds
+			.sub
+				a#marker_deeds_solo.selected(href='#' onclick='toggle_markers(\'deeds_solo\')') #[span] Solo players
+				a#marker_deeds_small.selected(href='#' onclick='toggle_markers(\'deeds_small\')') #[span] Small settlements
+				a#marker_deeds_large.selected(href='#' onclick='toggle_markers(\'deeds_large\')') #[span] Large settlements
+			a#marker_guard_towers.selected(href='#' onclick='toggle_markers(\'guard_towers\')') #[span] Guard towers
+			a#marker_resources.selected(href='#' onclick='toggle_markers(\'resources\')') #[span] Resources
+			a#marker_poi.selected(href='#' onclick='toggle_markers(\'poi\')') #[span] Points of interest
+
+			.div
+
+			h2 Submit new locations
+			a.small(href='#' onclick='show_add_form(\'deed\')') Deed
+			a.small(href='#' onclick='show_add_form(\'tower\')') Guard tower
+			a.small(href='#' onclick='show_add_form(\'resource\')') Resource
+			a.small(href='#' onclick='show_add_form(\'mine\')') Public mine
+			a.small(href='#' onclick='show_add_form(\'poi\')') Point of interest
+
+			.div
+
+			h2 Links
+			a.small(href='http://sklotopolis.freeforums.net/thread/39/map' target='_bank') Forum discussion
+			a.small(href='http://sklotopolis.tk' target='_blank') Sklotopolis website
+
+			.div
+
+			p.disclaimer This interactive map is community-made. It is not associated with the Sklotopolis server or Wurm Unlimited. #[br] #[a(href='https://github.com/woubuc' target='_blank') Programmed by woubuc] - #[a(href='https://github.com/woubuc/wu-map/issues' target='_blank') Problems?]
+
+		#searchbox
+			input#search(type='text' placeholder='Search Sklotopolis map' onkeyup='search()' onfocus='search()' onblur='hide_search()' autocomplete='off')
+
+			#searchresults
+				a.location(href='#' onclick='')
+					span
+						em.name
+						em.mayor
+			
 
 		#addform(onclick='hide_add_form()')
 			iframe(src='about:blank')
 
-		#filterbox
-			.option.on#filter_deeds(onclick='toggle_filter(this)') Deeds
-				span
-			.option.on#filter_towers(onclick='toggle_filter(this)') Towers
-				span
-			.option.on#filter_resources(onclick='toggle_filter(this)') Resources
-				span
-
 		script(src='locations/deeds.js')
 		script(src='locations/guard_towers.js')
 		script(src='locations/resources.js')
+		script(src='locations/poi.js')
 		script(src='map.js')
 		script(src='https://maps.googleapis.com/maps/api/js?signed_in=false&callback=init' async defer)
