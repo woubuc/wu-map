@@ -222,6 +222,10 @@ html, body, #map
 
 			&.mine
 				background-image: url('images/mine_icon.png')
+			&.poi
+				background-image: url('images/poi_icon.png')
+			&.guard_tower
+				background-image: url('images/guard_tower_icon.png')
 			&.resource
 				background-image: url('images/resource_icon.png')
 			&.deed_large
@@ -232,6 +236,8 @@ html, body, #map
 				background-image: url('images/deed_solo_icon.png')
 			&.ruins
 				background-image: url('images/ruins_icon.png')
+			&.coords
+				background-image: url('images/location_icon.png')
 
 			span
 				display: block
@@ -249,6 +255,10 @@ html, body, #map
 					&.mayor
 						color: $c_text_light
 						font-size: 11px
+
+			&.single span
+				padding-top: 0
+				line-height: 50px
 
 			&.last span
 				border: none

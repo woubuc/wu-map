@@ -470,12 +470,51 @@ search = ->
 	results = []
 
 	if searchtext isnt ''
+
+		# Coordinates
+		if searchtext.indexOf(',') isnt -1
+			coords = searchtext.split(',')
+			if not isNaN(coords[0]) and not isNaN(coords[1])
+				if coords[0] > 0 and coords[1] > 0
+					results.push
+						name: coords[0] + ', ' + coords[1]
+						sub: 'Go to coordinates'
+						tag: coords[0] + '_' + coords[1]
+						class: 'coords'
+						onclick: 'show_coords_on_map(' + Math.round(coords[0]) + ',' + Math.round(coords[1]) + ')'
+
+		# POI
+		for i in poi
+			if i.name.toLowerCase().indexOf(searchtext) isnt -1
+				results.push
+					name: i.name
+					x: i.x
+					y: i.y
+					class: 'poi'
+					tag: i.x + '_' + i.y
+					onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+
+		# Deeds
 		for i in deeds
 			if i.name.toLowerCase().indexOf(searchtext) isnt -1
 				results.push i
 			else if i.mayor?
 				if i.mayor.toLowerCase().indexOf(searchtext) isnt -1
 					results.push i
+
+		for i in guard_towers
+			continue if not i.creator?
+			if i.creator.toLowerCase().indexOf(searchtext) isnt -1
+				c = i.creator.toLowerCase().indexOf(searchtext)
+				results.push
+					name: 'Guard tower at ' + i.x + ', ' + i.y
+					sub: 'Built by ' + i.creator.slice(0, c) + '<strong>' + i.creator.slice(c, c + searchtext.length) + '</strong>' + i.creator.slice(c + searchtext.length)
+					tag: i.x + '_' + i.y
+					class: 'guard_tower'
+					onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+
+		if results.length > 5
+			results = results.slice 0, 5
 
 		results.push
 			tag: ''
@@ -484,24 +523,34 @@ search = ->
 
 	Transparency.render document.getElementById('searchresults'), results,
 		location:
-			class: -> 'location deed_' + @type
+			class: -> 'location' + switch
+				when @type then ' deed_' + @type
+				when @add_deed then ' single'
+				when @class then ' ' + @class
+				else ''
 			href: -> '#' + @tag
-			onclick: -> if @add_deed then 'show_add_form(\'deed\')' else 'show_deed_on_map(\'' + @tag + '\')'
+			onclick: -> switch
+				when @add_deed then 'show_add_form(\'deed\')'
+				when @onclick then @onclick
+				else 'show_deed_on_map(\'' + @tag + '\')'
 		name: html: ->
 			i = @name.toLowerCase().indexOf(searchtext)
 			if i is -1
 				return @name
 			else
 				return @name.slice(0, i) + '<strong>' + @name.slice(i, i + searchtext.length) + '</strong>' + @name.slice(i + searchtext.length)
-		mayor: html: ->
-			return '' if @add_deed
-			return 'No mayor on record' if not @mayor?
-			i = @mayor.toLowerCase().indexOf(searchtext)
-			console.log @mayor + ': ' + i + ', ' + searchtext.length
-			if i is -1
-				return @mayor
+		mayor: html: -> switch
+			when @add_deed then ''
+			when @sub then @sub
+			when @class is 'poi' then @x + ', ' + @y
+			when not @mayor? then 'No mayor on record'
 			else
-				return @mayor.slice(0, i) + '<strong>' + @mayor.slice(i, i + searchtext.length) + '</strong>' + @mayor.slice(i + searchtext.length)
+				i = @mayor.toLowerCase().indexOf(searchtext)
+				console.log @mayor + ': ' + i + ', ' + searchtext.length
+				if i is -1
+					return @mayor
+				else
+					return @mayor.slice(0, i) + '<strong>' + @mayor.slice(i, i + searchtext.length) + '</strong>' + @mayor.slice(i + searchtext.length)
 
 	if results.length > 0
 		document.getElementById('searchbox').className = 'open'

@@ -33,6 +33,8 @@ deeds = [
 	tag: 'longview'
 	x: 556
 	y: 1318
+	mayor: 'Borgal'
+	type: 'solo'
 ,
 	name: 'Tholen Farmstead'
 	tag: 'tholen-farmstead'
@@ -53,6 +55,7 @@ deeds = [
 ,
 	name: 'Cedar Grove'
 	tag: 'cedar-grove'
+	mayor: 'Dallanar'
 	x: 1586
 	y: 1027
 ,
@@ -359,4 +362,33 @@ deeds = [
 	type: 'solo'
 	x: 711
 	y: 762
+,
+	name: 'Zhentil keep'
+	tag: 'zhentil-keep'
+	mayor: 'validate'
+	type: 'solo'
+	x: 2839
+	y: 508
+,
+	name: 'The Pitstop'
+	tag: 'pitstop'
+	mayor: 'Azalia'
+	type: 'solo'
+	x: 1398
+	y: 885
+,
+	name: 'Cedarview'
+	tag: 'cedarview'
+	mayor: 'Squint'
+	type: 'solo'
+	x: 2077
+	y: 1063
+	features: ['recruiting']
+,
+	name: 'Bg Town'
+	tag: 'bg-town'
+	mayor: 'Gugibg'
+	type: 'solo'
+	x: 1206
+	y: 1070
 ]

@@ -54,6 +54,16 @@ resources = [
 	y: 371
 	size: 'small'
 ,
+	type: 'tar'
+	x: 611
+	y: 2851
+	size: 'small'
+,
+	type: 'clay'
+	x: 805
+	y: 2417
+	size: 'medium'
+,
 	type: 'mine'
 	x: 966
 	y: 793

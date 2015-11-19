@@ -107,5 +107,29 @@ guard_towers = [
     x: 3177,
     y: 1838,
     creator: 'Damine'
+  }, {
+    x: 1040,
+    y: 830,
+    creator: 'Melketh'
+  }, {
+    x: 562,
+    y: 1326,
+    creator: 'Borgal'
+  }, {
+    x: 922,
+    y: 646,
+    creator: 'Quixa & Tootie'
+  }, {
+    x: 992,
+    y: 729,
+    creator: 'Traveler'
+  }, {
+    x: 1580,
+    y: 963,
+    creator: 'Dallanar'
+  }, {
+    x: 1551,
+    y: 917,
+    creator: 'Dallanar'
   }
 ];

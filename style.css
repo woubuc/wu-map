@@ -166,6 +166,10 @@ html, body, #map {
       font-size: 14px; }
       #searchbox #searchresults a.location.mine {
         background-image: url("images/mine_icon.png"); }
+      #searchbox #searchresults a.location.poi {
+        background-image: url("images/poi_icon.png"); }
+      #searchbox #searchresults a.location.guard_tower {
+        background-image: url("images/guard_tower_icon.png"); }
       #searchbox #searchresults a.location.resource {
         background-image: url("images/resource_icon.png"); }
       #searchbox #searchresults a.location.deed_large {
@@ -176,6 +180,8 @@ html, body, #map {
         background-image: url("images/deed_solo_icon.png"); }
       #searchbox #searchresults a.location.ruins {
         background-image: url("images/ruins_icon.png"); }
+      #searchbox #searchresults a.location.coords {
+        background-image: url("images/location_icon.png"); }
       #searchbox #searchresults a.location span {
         display: block;
         height: 50px;
@@ -188,6 +194,9 @@ html, body, #map {
           #searchbox #searchresults a.location span em.mayor {
             color: #888;
             font-size: 11px; }
+      #searchbox #searchresults a.location.single span {
+        padding-top: 0;
+        line-height: 50px; }
       #searchbox #searchresults a.location.last span {
         border: none;
         border-radius: 0 0 3px 3px; }

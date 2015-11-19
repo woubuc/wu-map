@@ -631,12 +631,39 @@ hide_search = function() {
 };
 
 search = function() {
-  var i, k, len, results, searchtext;
+  var c, coords, i, k, len, len1, len2, m, p, results, searchtext;
   searchtext = document.getElementById('search').value.toLowerCase();
   results = [];
   if (searchtext !== '') {
-    for (k = 0, len = deeds.length; k < len; k++) {
-      i = deeds[k];
+    if (searchtext.indexOf(',') !== -1) {
+      coords = searchtext.split(',');
+      if (!isNaN(coords[0]) && !isNaN(coords[1])) {
+        if (coords[0] > 0 && coords[1] > 0) {
+          results.push({
+            name: coords[0] + ', ' + coords[1],
+            sub: 'Go to coordinates',
+            tag: coords[0] + '_' + coords[1],
+            "class": 'coords',
+            onclick: 'show_coords_on_map(' + Math.round(coords[0]) + ',' + Math.round(coords[1]) + ')'
+          });
+        }
+      }
+    }
+    for (k = 0, len = poi.length; k < len; k++) {
+      i = poi[k];
+      if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
+        results.push({
+          name: i.name,
+          x: i.x,
+          y: i.y,
+          "class": 'poi',
+          tag: i.x + '_' + i.y,
+          onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+        });
+      }
+    }
+    for (m = 0, len1 = deeds.length; m < len1; m++) {
+      i = deeds[m];
       if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
         results.push(i);
       } else if (i.mayor != null) {
@@ -644,6 +671,25 @@ search = function() {
           results.push(i);
         }
       }
+    }
+    for (p = 0, len2 = guard_towers.length; p < len2; p++) {
+      i = guard_towers[p];
+      if (i.creator == null) {
+        continue;
+      }
+      if (i.creator.toLowerCase().indexOf(searchtext) !== -1) {
+        c = i.creator.toLowerCase().indexOf(searchtext);
+        results.push({
+          name: 'Guard tower at ' + i.x + ', ' + i.y,
+          sub: 'Built by ' + i.creator.slice(0, c) + '<strong>' + i.creator.slice(c, c + searchtext.length) + '</strong>' + i.creator.slice(c + searchtext.length),
+          tag: i.x + '_' + i.y,
+          "class": 'guard_tower',
+          onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+        });
+      }
+    }
+    if (results.length > 5) {
+      results = results.slice(0, 5);
     }
     results.push({
       tag: '',
@@ -654,16 +700,30 @@ search = function() {
   Transparency.render(document.getElementById('searchresults'), results, {
     location: {
       "class": function() {
-        return 'location deed_' + this.type;
+        return 'location' + (function() {
+          switch (false) {
+            case !this.type:
+              return ' deed_' + this.type;
+            case !this.add_deed:
+              return ' single';
+            case !this["class"]:
+              return ' ' + this["class"];
+            default:
+              return '';
+          }
+        }).call(this);
       },
       href: function() {
         return '#' + this.tag;
       },
       onclick: function() {
-        if (this.add_deed) {
-          return 'show_add_form(\'deed\')';
-        } else {
-          return 'show_deed_on_map(\'' + this.tag + '\')';
+        switch (false) {
+          case !this.add_deed:
+            return 'show_add_form(\'deed\')';
+          case !this.onclick:
+            return this.onclick;
+          default:
+            return 'show_deed_on_map(\'' + this.tag + '\')';
         }
       }
     },
@@ -679,18 +739,23 @@ search = function() {
     },
     mayor: {
       html: function() {
-        if (this.add_deed) {
-          return '';
-        }
-        if (this.mayor == null) {
-          return 'No mayor on record';
-        }
-        i = this.mayor.toLowerCase().indexOf(searchtext);
-        console.log(this.mayor + ': ' + i + ', ' + searchtext.length);
-        if (i === -1) {
-          return this.mayor;
-        } else {
-          return this.mayor.slice(0, i) + '<strong>' + this.mayor.slice(i, i + searchtext.length) + '</strong>' + this.mayor.slice(i + searchtext.length);
+        switch (false) {
+          case !this.add_deed:
+            return '';
+          case !this.sub:
+            return this.sub;
+          case this["class"] !== 'poi':
+            return this.x + ', ' + this.y;
+          case !(this.mayor == null):
+            return 'No mayor on record';
+          default:
+            i = this.mayor.toLowerCase().indexOf(searchtext);
+            console.log(this.mayor + ': ' + i + ', ' + searchtext.length);
+            if (i === -1) {
+              return this.mayor;
+            } else {
+              return this.mayor.slice(0, i) + '<strong>' + this.mayor.slice(i, i + searchtext.length) + '</strong>' + this.mayor.slice(i + searchtext.length);
+            }
         }
       }
     }
