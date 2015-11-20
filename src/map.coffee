@@ -246,6 +246,9 @@ show_deed_info = (tag) ->
 		if 'harbour' in deed.features
 			html += '<img src="images/feature_harbour.png" title="Harbour area on deed" /> '
 
+		if 'mailbox' in deed.features
+			html += '<img src="images/feature_mailbox.png" title="Mailbox on deed" /> '
+
 		html += '</p>'
 		props.push html
 

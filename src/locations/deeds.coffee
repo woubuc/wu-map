@@ -45,13 +45,9 @@ deeds = [
 ,
 	name: 'Zigsburg'
 	tag: 'zigsburg'
+	mayor: 'Zigackly'
 	x: 1550
 	y: 336
-,
-	name: 'Demacia'
-	tag: 'demecia'
-	x: 828
-	y: 1664
 ,
 	name: 'Cedar Grove'
 	tag: 'cedar-grove'
@@ -244,7 +240,7 @@ deeds = [
 	type: 'solo'
 	mayor: 'Alayena'
 	x: 1548
-	y: 2972
+	y: 2974
 ,
 	name: 'Mikes Point'
 	tag: 'mikes-point'
@@ -266,6 +262,7 @@ deeds = [
 	mayor: 'Encode'
 	x: 1128
 	y: 1112
+	features: ['harbour', 'mailbox']
 ,
 	name: 'Quip\'s Demise'
 	tag: 'quips-demise'
@@ -391,4 +388,40 @@ deeds = [
 	type: 'solo'
 	x: 1206
 	y: 1070
+,
+	name: 'Fallmead'
+	tag: 'fallmead'
+	x: 2933
+	y: 390
+	mayor: 'Yesirn'
+	type: 'small'
+,
+	name: 'Productivity'
+	tag: 'productivity'
+	x: 846
+	y: 642
+	mayor: 'Gatwick'
+	type: 'solo'
+,
+	name: 'Lonelywood'
+	tag: 'lonelywood'
+	mayor: 'Leiph'
+	type: 'solo'
+	x: 2260
+	y: 815
+	features: ['recruiting']
+,
+	name: 'Grendellvar'
+	tag: 'grendellvar'
+	x: 1770
+	y: 2031
+	mayor: 'Manbear'
+	type: 'solo'
+,
+	name: 'Regional Customs'
+	tag: 'regional-customs'
+	x: 970
+	y: 734
+	mayor: 'Arion'
+	type: 'small'
 ]

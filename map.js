@@ -346,6 +346,9 @@ show_deed_info = function(tag) {
     if (indexOf.call(deed.features, 'harbour') >= 0) {
       html += '<img src="images/feature_harbour.png" title="Harbour area on deed" /> ';
     }
+    if (indexOf.call(deed.features, 'mailbox') >= 0) {
+      html += '<img src="images/feature_mailbox.png" title="Mailbox on deed" /> ';
+    }
     html += '</p>';
     props.push(html);
   }
