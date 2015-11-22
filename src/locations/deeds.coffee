@@ -63,13 +63,12 @@ deeds = [
 	y: 1200
 	features: ['recruiting']
 ,
-	name: 'The Oakshire Grove'
-	tag: 'oakshire-grove'
+	name: 'Awarthriel\'s Grove'
+	tag: 'awarthriels-grove'
 	type: 'solo'
 	mayor: 'DruidNature'
-	x: 1872
-	y: 3712
-	features: ['recruiting']
+	x: 2458
+	y: 3322
 ,
 	name: 'Symphonies End'
 	tag: 'symphonies-end'
@@ -214,7 +213,7 @@ deeds = [
 	y: 1164
 ,
 	name: 'ZxSuperGeniusxZ\'s Deed'
-	tag: 'zxSuperGeniusxzs-deed'
+	tag: 'zxsupergeniusxzs-deed'
 	type: 'solo'
 	mayor: 'ZxSuperGeniusxZ'
 	x: 1060
@@ -413,8 +412,8 @@ deeds = [
 ,
 	name: 'Grendellvar'
 	tag: 'grendellvar'
-	x: 1770
-	y: 2031
+	x: 1764
+	y: 2025
 	mayor: 'Manbear'
 	type: 'solo'
 ,
@@ -424,4 +423,27 @@ deeds = [
 	y: 734
 	mayor: 'Arion'
 	type: 'small'
+,
+	name: 'Birchpine Town'
+	mayor: 'Legionary'
+	tag: 'birchpine-town'
+	x: 1230
+	y: 772
+	type: 'solo'
+	features: ['recruiting']
+,
+	name: 'Arn\'s place'
+	tag: 'arns-place'
+	mayor: 'ArnDeGot'
+	type: 'solo'
+	x: 790
+	y: 1365
+,
+	name: 'Seaside Settlement'
+	tag: 'seaside-settlement'
+	mayor: 'Atrias'
+	x: 617
+	y: 944
+	features: ['recruiting']
+	type: 'solo'
 ]

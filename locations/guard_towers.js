@@ -135,5 +135,13 @@ guard_towers = [
     x: 1539,
     y: 2973,
     creator: 'Alayena'
+  }, {
+    x: 729,
+    y: 2325,
+    creator: 'Chris'
+  }, {
+    x: 1439,
+    y: 580,
+    creator: 'Andistyr'
   }
 ];
