@@ -243,6 +243,9 @@ show_deed_info = (tag) ->
 		if 'trader' in deed.features
 			html += '<img src="images/feature_trader.png" title="Trader on deed" /> '
 
+		if 'merchant' in deed.features
+			html += '<img src="images/feature_merchant.png" title="Personal Merchant on deed" /> '
+
 		if 'harbour' in deed.features
 			html += '<img src="images/feature_harbour.png" title="Harbour area on deed" /> '
 

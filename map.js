@@ -343,6 +343,9 @@ show_deed_info = function(tag) {
     if (indexOf.call(deed.features, 'trader') >= 0) {
       html += '<img src="images/feature_trader.png" title="Trader on deed" /> ';
     }
+    if (indexOf.call(deed.features, 'merchant') >= 0) {
+      html += '<img src="images/feature_merchant.png" title="Personal Merchant on deed" /> ';
+    }
     if (indexOf.call(deed.features, 'harbour') >= 0) {
       html += '<img src="images/feature_harbour.png" title="Harbour area on deed" /> ';
     }

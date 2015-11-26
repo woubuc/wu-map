@@ -17,32 +17,32 @@ html
 
 		#sidebar
 			h2 Map type
-			a#maptype_tiled.selected(href='#' onclick='change_map(\'tiled\')') #[span] Tiled map
+			a#maptype_tiled.selected(href='#' onclick='change_map(\'tiled\'); return false') #[span] Tiled map
 				small Updates approx. every 4 hours
-			a#maptype_mapdump(href='#' onclick='change_map(\'mapdump\')') #[span] Official mapdump
+			a#maptype_mapdump(href='#' onclick='change_map(\'mapdump\'); return false') #[span] Official mapdump
 				small May need a while to load completely
 
 			.div
 
 			h2 Markers
 
-			a#marker_deeds.selected(href='#' onclick='toggle_markers(\'deeds\')') #[span] Deeds
+			a#marker_deeds.selected(href='#' onclick='toggle_markers(\'deeds\'); return false') #[span] Deeds
 			.sub
-				a#marker_deeds_solo.selected(href='#' onclick='toggle_markers(\'deeds_solo\')') #[span] Solo players
-				a#marker_deeds_small.selected(href='#' onclick='toggle_markers(\'deeds_small\')') #[span] Small settlements
-				a#marker_deeds_large.selected(href='#' onclick='toggle_markers(\'deeds_large\')') #[span] Large settlements
-			a#marker_guard_towers.selected(href='#' onclick='toggle_markers(\'guard_towers\')') #[span] Guard towers
-			a#marker_resources.selected(href='#' onclick='toggle_markers(\'resources\')') #[span] Resources
-			a#marker_poi.selected(href='#' onclick='toggle_markers(\'poi\')') #[span] Points of interest
+				a#marker_deeds_solo.selected(href='#' onclick='toggle_markers(\'deeds_solo\'); return false') #[span] Solo players
+				a#marker_deeds_small.selected(href='#' onclick='toggle_markers(\'deeds_small\'); return false') #[span] Small settlements
+				a#marker_deeds_large.selected(href='#' onclick='toggle_markers(\'deeds_large\'); return false') #[span] Large settlements
+			a#marker_guard_towers.selected(href='#' onclick='toggle_markers(\'guard_towers\'); return false') #[span] Guard towers
+			a#marker_resources.selected(href='#' onclick='toggle_markers(\'resources\'); return false') #[span] Resources
+			a#marker_poi.selected(href='#' onclick='toggle_markers(\'poi\'); return false') #[span] Points of interest
 
 			.div
 
 			h2 Submit new locations
-			a.small(href='#' onclick='show_add_form(\'deed\')') Deed
-			a.small(href='#' onclick='show_add_form(\'tower\')') Guard tower
-			a.small(href='#' onclick='show_add_form(\'resource\')') Resource
-			a.small(href='#' onclick='show_add_form(\'mine\')') Public mine
-			a.small(href='#' onclick='show_add_form(\'poi\')') Point of interest
+			a.small(href='#' onclick='show_add_form(\'deed\'); return false') Deed
+			a.small(href='#' onclick='show_add_form(\'tower\'); return false') Guard tower
+			a.small(href='#' onclick='show_add_form(\'resource\'); return false') Resource
+			a.small(href='#' onclick='show_add_form(\'mine\'); return false') Public mine
+			a.small(href='#' onclick='show_add_form(\'poi\'); return false') Point of interest
 
 			.div
 

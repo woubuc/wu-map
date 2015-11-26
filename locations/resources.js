@@ -20,7 +20,7 @@ resources = [
     type: 'clay',
     x: 2853,
     y: 490,
-    size: 'medium-sized'
+    size: 'medium'
   }, {
     type: 'clay',
     x: 1456,
@@ -30,7 +30,7 @@ resources = [
     type: 'clay',
     x: 918,
     y: 810,
-    size: 'medium-sized'
+    size: 'medium'
   }, {
     type: 'tar',
     x: 824,
@@ -66,6 +66,36 @@ resources = [
     x: 805,
     y: 2417,
     size: 'medium'
+  }, {
+    type: 'tar',
+    size: 'small',
+    x: 888,
+    y: 1516
+  }, {
+    type: 'clay',
+    size: 'large',
+    x: 894,
+    y: 1240
+  }, {
+    type: 'tar',
+    x: 1219,
+    y: 953,
+    size: 'medium'
+  }, {
+    type: 'tar',
+    x: 590,
+    y: 1716,
+    size: 'small'
+  }, {
+    type: 'sand',
+    x: 975,
+    y: 1255,
+    size: 'small'
+  }, {
+    type: 'peat',
+    x: 443,
+    y: 1438,
+    size: 'large'
   }, {
     type: 'mine',
     x: 966,

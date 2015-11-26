@@ -140,4 +140,20 @@ guard_towers = [
 	x: 1439
 	y: 580
 	creator: 'Andistyr'
+,
+	x: 3133
+	y: 3431
+	creator: 'Zardoka'
+,
+	x: 781
+	y: 1362
+	creator: 'ArnDeGot'
+,
+	x: 343
+	y: 310
+	creator: 'Capi'
+,
+	x: 2923
+	y: 410
+	creator: 'Yesirn'
 ]

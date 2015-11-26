@@ -8,7 +8,7 @@ deeds = [
     type: 'large',
     x: 906,
     y: 760,
-    features: ['trader', 'market', 'harbour', 'resources', 'recruiting']
+    features: ['trader', 'merchant', 'market', 'harbour', 'resources', 'recruiting']
   }, {
     name: 'Little Patch of Heaven',
     tag: 'little-patch-of-heaven',
@@ -79,7 +79,7 @@ deeds = [
     mayor: 'Melketh',
     x: 1046,
     y: 790,
-    features: ['recruiting']
+    features: ['recruiting', 'mailbox']
   }, {
     name: 'Chris\' Home',
     tag: 'chris-home',
@@ -174,8 +174,9 @@ deeds = [
     name: 'Castle Glittertown',
     tag: 'castle-glittertown',
     mayor: 'Capi',
-    x: 345,
-    y: 310
+    x: 348,
+    y: 312,
+    type: 'small'
   }, {
     name: 'Coastal Watch',
     tag: 'coastal-watch',
@@ -221,7 +222,7 @@ deeds = [
     mayor: 'ZxSuperGeniusxZ',
     x: 1060,
     y: 892,
-    features: ['market', 'harbour']
+    features: ['market', 'harbour', 'merchant']
   }, {
     name: 'Maniac Mansion',
     tag: 'maniac-mansion',
@@ -282,7 +283,7 @@ deeds = [
     name: 'Bear Mountain',
     tag: 'bear-mountain',
     mayor: 'Inara',
-    type: 'solo',
+    type: 'small',
     x: 1312,
     y: 1154,
     features: ['recruiting']
@@ -449,5 +450,56 @@ deeds = [
     y: 944,
     features: ['recruiting'],
     type: 'solo'
+  }, {
+    name: 'Liberty',
+    tag: 'liberty',
+    x: 540,
+    y: 767,
+    mayor: 'Metrix',
+    type: 'small',
+    features: ['recruiting']
+  }, {
+    name: 'The Water Tribe',
+    tag: 'water-tribe',
+    x: 662,
+    y: 774,
+    mayor: 'Apex',
+    type: 'solo',
+    features: ['recruiting']
+  }, {
+    name: 'Unknown Xenon Sector',
+    tag: 'unknown-xenon-sector',
+    x: 3061,
+    y: 1447,
+    mayor: 'Xenon',
+    type: 'solo'
+  }, {
+    name: 'Seaview Manor',
+    tag: 'seaview-manor',
+    x: 829,
+    y: 1671,
+    mayor: 'Bennetto',
+    type: 'solo'
+  }, {
+    name: 'Grand Lake',
+    tag: 'grand-lake',
+    x: 770,
+    y: 730,
+    mayor: 'Tipsy',
+    type: 'solo',
+    features: ['harbour']
+  }, {
+    name: 'Birchton',
+    tag: 'birchton',
+    mayor: 'Plasson',
+    type: 'solo',
+    x: 3754,
+    y: 2612
+  }, {
+    name: 'Alexondrea Port',
+    x: 1105,
+    y: 871,
+    mayor: 'Traveler',
+    features: ['merchant', 'market', 'harbour']
   }
 ];
