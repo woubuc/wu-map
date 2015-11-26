@@ -45,6 +45,6 @@ To view the map itself, you have to serve the files from a webserver. You can us
 
 The location files are in `src/locations`. They are written in Coffeescript, but if you're not familiar with the syntax you can look at the other locations. It should be pretty straightforward. If you make a mistake, Gulp will tell you and the Coffeescript will not be compiled.
 
-_Note: when encountering a Coffeescript error, the compile task may stop watching the files. You have to kill the process with <kbd>ctrl + C</kbd> and then run `gulp` again._
+_Note: when encountering a Coffeescript error, the compile task may stop watching the files. You have to kill the process with <kbd>ctrl</kbc> + <kbc>C</kbd> and then run `gulp` again._
 
 Once you're done editing and the edits have been compiled, you can push it back to your repository and then submit a pull request to have the new locations added to the map.
