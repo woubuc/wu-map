@@ -497,6 +497,7 @@ deeds = [
     y: 2612
   }, {
     name: 'Alexondrea Port',
+    tag: 'alexondrea-port',
     x: 1105,
     y: 871,
     mayor: 'Traveler',
