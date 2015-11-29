@@ -1,4 +1,4 @@
-var change_map, close_infowin, deed_tags, distance, filter, find_nearby_locations, hide_add_form, hide_search, infowin, init, map, marker, projection, search, share_coords, share_deed, show_add_form, show_add_menu, show_coords_info, show_coords_on_map, show_deed_info, show_deed_on_map, toggle_markers, update_markers,
+var change_map, close_infowin, deed_tags, distance, filter, find_nearby_locations, hide_add_form, hide_search, infowin, init, map, marker, projection, search, share_coords, share_deed, show_add_form, show_add_menu, show_coords_info, show_coords_on_map, show_deed_info, show_deed_on_map, toggle_markers, toggle_sidebar, update_markers,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 map = '';
@@ -277,7 +277,10 @@ init = function() {
       show_coords_info(coords);
     }
   }
-  return map.addListener('zoom_changed', close_infowin);
+  map.addListener('zoom_changed', close_infowin);
+  if (window.innerWidth > 1024) {
+    return toggle_sidebar();
+  }
 };
 
 close_infowin = function() {
@@ -285,6 +288,17 @@ close_infowin = function() {
     infowin.close();
     return infowin = '';
   }
+};
+
+toggle_sidebar = function() {
+  if (document.body.className === '') {
+    document.body.className = 'sidebar';
+  } else {
+    document.body.className = '';
+  }
+  return setTimeout(function() {
+    return google.maps.event.trigger(map, 'resize');
+  }, 100);
 };
 
 show_deed_on_map = function(tag) {
@@ -402,80 +416,84 @@ show_coords_info = function(coords) {
   props = [];
   found = false;
   coords_marker = '';
-  for (k = 0, len = poi.length; k < len; k++) {
-    i = poi[k];
-    if (i.x === coords.x && i.y === coords.y) {
-      console.log('found');
-      found = true;
-      coords_marker = i.marker;
-      title = i.name;
-      props.push('<p>Coordinates: X' + i.x + ', Y' + i.y + '</p>');
-      if (i.description != null) {
-        props.push('<p style="margin:10px 0;max-width:400px;padding:8px;background:#eee;font-style:italic">' + i.description + '</p>');
-      }
-    }
-  }
-  if (!found) {
-    for (m = 0, len1 = guard_towers.length; m < len1; m++) {
-      i = guard_towers[m];
+  if (coords.x === 2625 && coords.y === 1748) {
+    props.push('<p><img src="images/not_the_coords.png" style="margin-top:10px" /></p>');
+    found = true;
+  } else {
+    for (k = 0, len = poi.length; k < len; k++) {
+      i = poi[k];
       if (i.x === coords.x && i.y === coords.y) {
         found = true;
         coords_marker = i.marker;
-        props.push('<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (i.creator != null ? ', built by ' + i.creator : '') + '</p>');
+        title = i.name;
+        props.push('<p>Coordinates: X' + i.x + ', Y' + i.y + '</p>');
+        if (i.description != null) {
+          props.push('<p style="margin:10px 0;max-width:400px;padding:8px;background:#eee;font-style:italic">' + i.description + '</p>');
+        }
       }
     }
-  }
-  if (!found) {
-    for (p = 0, len2 = resources.length; p < len2; p++) {
-      i = resources[p];
-      if (i.x === coords.x && i.y === coords.y) {
-        found = true;
-        coords_marker = i.marker;
-        if (i.type === 'mine') {
-          props.push('<p>There is a <strong style="font-weight:500">mine</strong> here</p>');
-          html = '<p>It contains ';
-          if (i.ores == null) {
-            html += 'no';
+    if (!found) {
+      for (m = 0, len1 = guard_towers.length; m < len1; m++) {
+        i = guard_towers[m];
+        if (i.x === coords.x && i.y === coords.y) {
+          found = true;
+          coords_marker = i.marker;
+          props.push('<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (i.creator != null ? ', built by ' + i.creator : '') + '</p>');
+        }
+      }
+    }
+    if (!found) {
+      for (p = 0, len2 = resources.length; p < len2; p++) {
+        i = resources[p];
+        if (i.x === coords.x && i.y === coords.y) {
+          found = true;
+          coords_marker = i.marker;
+          if (i.type === 'mine') {
+            props.push('<p>There is a <strong style="font-weight:500">mine</strong> here</p>');
+            html = '<p>It contains ';
+            if (i.ores == null) {
+              html += 'no';
+            } else {
+              ref = i.ores;
+              for (n = q = 0, len3 = ref.length; q < len3; n = ++q) {
+                o = ref[n];
+                html += (function() {
+                  switch (n) {
+                    case 0:
+                      return '';
+                    case i.ores.length - 1:
+                      return ' and ';
+                    default:
+                      return ', ';
+                  }
+                })();
+                html += o;
+              }
+              html += (i.ores.length === 1 ? ' vein' : ' veins') + '</p>';
+            }
+            if (i.features != null) {
+              html += '<p>It is equipped with ';
+              ref1 = i.features;
+              for (n = r = 0, len4 = ref1.length; r < len4; n = ++r) {
+                o = ref1[n];
+                html += (function() {
+                  switch (n) {
+                    case 0:
+                      return '';
+                    case i.features.length - 1:
+                      return ' and ';
+                    default:
+                      return ', ';
+                  }
+                })();
+                html += 'a ' + o;
+              }
+              html += '</p>';
+            }
+            props.push(html);
           } else {
-            ref = i.ores;
-            for (n = q = 0, len3 = ref.length; q < len3; n = ++q) {
-              o = ref[n];
-              html += (function() {
-                switch (n) {
-                  case 0:
-                    return '';
-                  case i.ores.length - 1:
-                    return ' and ';
-                  default:
-                    return ', ';
-                }
-              })();
-              html += o;
-            }
-            html += (i.ores.length === 1 ? ' vein' : ' veins') + '</p>';
+            props.push('<p>There is a <strong style="font-weight:500">' + i.size + ' ' + i.type + ' deposit</strong> here</p>');
           }
-          if (i.features != null) {
-            html += '<p>It is equipped with ';
-            ref1 = i.features;
-            for (n = r = 0, len4 = ref1.length; r < len4; n = ++r) {
-              o = ref1[n];
-              html += (function() {
-                switch (n) {
-                  case 0:
-                    return '';
-                  case i.features.length - 1:
-                    return ' and ';
-                  default:
-                    return ', ';
-                }
-              })();
-              html += 'a ' + o;
-            }
-            html += '</p>';
-          }
-          props.push(html);
-        } else {
-          props.push('<p>There is a <strong style="font-weight:500">' + i.size + ' ' + i.type + ' deposit</strong> here</p>');
         }
       }
     }
@@ -637,16 +655,20 @@ hide_search = function() {
 };
 
 search = function() {
-  var c, coords, i, k, len, len1, len2, m, p, results, searchtext;
+  var c, coords, i, k, len, len1, len2, len3, m, max_length, p, q, results, searchtext, val;
   searchtext = document.getElementById('search').value.toLowerCase();
   results = [];
   if (searchtext !== '') {
     if (searchtext.indexOf(',') !== -1) {
       coords = searchtext.split(',');
+      for (i = k = 0, len = coords.length; k < len; i = ++k) {
+        val = coords[i];
+        coords[i] = val.replace(/([XxYy]|\s)/g, '');
+      }
       if (!isNaN(coords[0]) && !isNaN(coords[1])) {
         if (coords[0] > 0 && coords[1] > 0) {
           results.push({
-            name: coords[0] + ', ' + coords[1],
+            name: 'X' + coords[0] + ', Y' + coords[1],
             sub: 'Go to coordinates',
             tag: coords[0] + '_' + coords[1],
             "class": 'coords',
@@ -655,8 +677,8 @@ search = function() {
         }
       }
     }
-    for (k = 0, len = poi.length; k < len; k++) {
-      i = poi[k];
+    for (m = 0, len1 = poi.length; m < len1; m++) {
+      i = poi[m];
       if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
         results.push({
           name: i.name,
@@ -668,8 +690,8 @@ search = function() {
         });
       }
     }
-    for (m = 0, len1 = deeds.length; m < len1; m++) {
-      i = deeds[m];
+    for (p = 0, len2 = deeds.length; p < len2; p++) {
+      i = deeds[p];
       if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
         results.push(i);
       } else if (i.mayor != null) {
@@ -678,8 +700,8 @@ search = function() {
         }
       }
     }
-    for (p = 0, len2 = guard_towers.length; p < len2; p++) {
-      i = guard_towers[p];
+    for (q = 0, len3 = guard_towers.length; q < len3; q++) {
+      i = guard_towers[q];
       if (i.creator == null) {
         continue;
       }
@@ -694,8 +716,9 @@ search = function() {
         });
       }
     }
-    if (results.length > 5) {
-      results = results.slice(0, 5);
+    max_length = window.innerHeight < 380 ? 4 : 5;
+    if (results.length > max_length) {
+      results = results.slice(0, max_length);
     }
     results.push({
       tag: '',
@@ -756,7 +779,6 @@ search = function() {
             return 'No mayor on record';
           default:
             i = this.mayor.toLowerCase().indexOf(searchtext);
-            console.log(this.mayor + ': ' + i + ', ' + searchtext.length);
             if (i === -1) {
               return this.mayor;
             } else {

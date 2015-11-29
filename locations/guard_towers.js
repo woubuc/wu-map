@@ -159,5 +159,37 @@ guard_towers = [
     x: 2923,
     y: 410,
     creator: 'Yesirn'
+  }, {
+    x: 3035,
+    y: 1786,
+    creator: 'Katitude'
+  }, {
+    x: 3755,
+    y: 2618,
+    creator: 'Plasson'
+  }, {
+    x: 1176,
+    y: 1142,
+    creator: 'Encode'
+  }, {
+    x: 862,
+    y: 645,
+    creator: 'Gatwick'
+  }, {
+    x: 1062,
+    y: 341,
+    creator: 'Aklai'
+  }, {
+    x: 942,
+    y: 2586,
+    creator: 'Lunaman'
+  }, {
+    x: 1328,
+    y: 592,
+    creator: 'Andistyr'
+  }, {
+    x: 2602,
+    y: 3426,
+    creator: 'Kezei'
   }
 ];

@@ -502,5 +502,55 @@ deeds = [
     y: 871,
     mayor: 'Traveler',
     features: ['merchant', 'market', 'harbour']
+  }, {
+    name: 'Silversky',
+    tag: 'silversky',
+    x: 3045,
+    y: 1782,
+    mayor: 'Katitude',
+    type: 'solo'
+  }, {
+    name: 'Kentosani',
+    tag: 'kentosani',
+    x: 440,
+    y: 3080,
+    mayor: 'Liam',
+    type: 'solo'
+  }, {
+    name: 'Forest Silence',
+    tag: 'forest-silence',
+    x: 1629,
+    y: 1110,
+    mayor: 'Guffil',
+    type: 'solo'
+  }, {
+    name: 'Blackmere Basin',
+    tag: 'blackmere-basin',
+    x: 796,
+    y: 1581,
+    owner: 'Ratzo & Yelruh',
+    type: 'small'
+  }, {
+    name: 'Homewood',
+    tag: 'homewood',
+    x: 525,
+    y: 633,
+    mayor: 'Cadeef',
+    type: 'solo'
+  }, {
+    name: 'Dwemeria',
+    tag: 'dwemeria',
+    x: 916,
+    y: 2522,
+    mayor: 'DwemerManiac',
+    type: 'small',
+    features: ['harbour', 'recruiting']
+  }, {
+    name: 'Zephyr',
+    tag: 'zephyr',
+    x: 2719,
+    y: 3674,
+    mayor: 'Reese',
+    type: 'solo'
   }
 ];

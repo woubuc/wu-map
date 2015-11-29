@@ -39,7 +39,27 @@ html, body, #map
 	left: 0px
 	width: 100%
 	z-index: 0
+	+transition
 
+
+a#sidebartoggle
+	display: block
+	position: absolute
+	top: 15px
+	left: 0
+	+transition
+
+	width: 46px
+	height: 46px
+	line-height: 46px
+
+	border-radius: 0 $radius $radius 0
+	background: white
+	color: black
+	+shadow
+
+	text-align: center
+	font-size: 26px
 
 #sidebar
 	position: absolute
@@ -50,6 +70,7 @@ html, body, #map
 	height: 100%
 	width: 0px
 	overflow-y: auto
+	+transition
 
 	background: white
 	+shadow
@@ -176,7 +197,7 @@ html, body, #map
 #searchbox
 	position: absolute
 	top: 15px
-	left: 15px
+	left: 60px
 	width: 320px
 	z-index: 12
 	height: 46px
@@ -184,6 +205,10 @@ html, body, #map
 	overflow: hidden
 	border-radius: $radius
 	+shadow
+	+transition
+
+	@media all and (max-width: 399px)
+		width: 245px
 
 	input
 		font-family: $fonts
@@ -269,15 +294,32 @@ html, body, #map
 
 body
 	&.sidebar
+
+		a#sidebartoggle
+			left: 300px
+
+			@media all and (max-width: 399px)
+				left: 260px
+
 		#sidebar
 			width: 300px
 
+			@media all and (max-width: 399px)
+				width: 260px
+
 		#searchbox
-			left: 315px
+			left: 360px
+
+			@media all and (max-width: 699px)
+				display: none
 
 		#map
 			left: 300px
 			width: calc(100% - 300px)
+
+			@media all and (max-width: 399px)
+				left: 260px
+				width: calc(100% - 260px)
 
 #addform
 	display: none

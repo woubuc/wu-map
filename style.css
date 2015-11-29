@@ -18,7 +18,32 @@ html, body, #map {
   bottom: 0;
   left: 0px;
   width: 100%;
-  z-index: 0; }
+  z-index: 0;
+  -webkit-transition: all 80ms ease-in-out;
+  -moz-transition: all 80ms ease-in-out;
+  -ms-transition: all 80ms ease-in-out;
+  -o-transition: all 80ms ease-in-out;
+  transition: all 80ms ease-in-out; }
+
+a#sidebartoggle {
+  display: block;
+  position: absolute;
+  top: 15px;
+  left: 0;
+  -webkit-transition: all 80ms ease-in-out;
+  -moz-transition: all 80ms ease-in-out;
+  -ms-transition: all 80ms ease-in-out;
+  -o-transition: all 80ms ease-in-out;
+  transition: all 80ms ease-in-out;
+  width: 46px;
+  height: 46px;
+  line-height: 46px;
+  border-radius: 0 3px 3px 0;
+  background: white;
+  color: black;
+  box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+  text-align: center;
+  font-size: 26px; }
 
 #sidebar {
   position: absolute;
@@ -28,6 +53,11 @@ html, body, #map {
   height: 100%;
   width: 0px;
   overflow-y: auto;
+  -webkit-transition: all 80ms ease-in-out;
+  -moz-transition: all 80ms ease-in-out;
+  -ms-transition: all 80ms ease-in-out;
+  -o-transition: all 80ms ease-in-out;
+  transition: all 80ms ease-in-out;
   background: white;
   box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; }
   #sidebar h2 {
@@ -130,14 +160,22 @@ html, body, #map {
 #searchbox {
   position: absolute;
   top: 15px;
-  left: 15px;
+  left: 60px;
   width: 320px;
   z-index: 12;
   height: 46px;
   max-height: 400px;
   overflow: hidden;
   border-radius: 3px;
-  box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; }
+  box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+  -webkit-transition: all 80ms ease-in-out;
+  -moz-transition: all 80ms ease-in-out;
+  -ms-transition: all 80ms ease-in-out;
+  -o-transition: all 80ms ease-in-out;
+  transition: all 80ms ease-in-out; }
+  @media all and (max-width: 399px) {
+    #searchbox {
+      width: 245px; } }
   #searchbox input {
     font-family: "Roboto", arial, sans-serif;
     box-sizing: border-box;
@@ -203,15 +241,31 @@ html, body, #map {
       #searchbox #searchresults a.location:hover {
         background-color: #f7f7f7; }
 
+body.sidebar a#sidebartoggle {
+  left: 300px; }
+  @media all and (max-width: 399px) {
+    body.sidebar a#sidebartoggle {
+      left: 260px; } }
+
 body.sidebar #sidebar {
   width: 300px; }
+  @media all and (max-width: 399px) {
+    body.sidebar #sidebar {
+      width: 260px; } }
 
 body.sidebar #searchbox {
-  left: 315px; }
+  left: 360px; }
+  @media all and (max-width: 699px) {
+    body.sidebar #searchbox {
+      display: none; } }
 
 body.sidebar #map {
   left: 300px;
   width: calc(100% - 300px); }
+  @media all and (max-width: 399px) {
+    body.sidebar #map {
+      left: 260px;
+      width: calc(100% - 260px); } }
 
 #addform {
   display: none;

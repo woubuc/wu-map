@@ -194,12 +194,25 @@ init = ->
 
 	map.addListener 'zoom_changed', close_infowin
 
+	if window.innerWidth > 1024
+		toggle_sidebar()
+
 
 close_infowin = ->
 	if infowin isnt ''
 		do infowin.close
 		infowin = ''
 
+
+toggle_sidebar = ->
+	if document.body.className is ''
+		document.body.className = 'sidebar'
+	else
+		document.body.className = ''
+
+	setTimeout ->
+		google.maps.event.trigger map, 'resize'
+	, 100
 
 # Deed functions
 show_deed_on_map = (tag) ->
@@ -308,54 +321,58 @@ show_coords_info = (coords) ->
 	found = no
 	coords_marker = ''
 
-	for i in poi
-		if i.x is coords.x and i.y is coords.y
-			console.log 'found'
-			found = yes
-			coords_marker = i.marker
-			title = i.name
-			props.push '<p>Coordinates: X' + i.x + ', Y' + i.y + '</p>'
-			if i.description?
-				props.push '<p style="margin:10px 0;max-width:400px;padding:8px;background:#eee;font-style:italic">' + i.description + '</p>'
+	if coords.x is 2625 and coords.y is 1748
+		props.push '<p><img src="images/not_the_coords.png" style="margin-top:10px" /></p>'
+		found = yes
 
-	if not found
-		for i in guard_towers
+	else
+		for i in poi
 			if i.x is coords.x and i.y is coords.y
 				found = yes
 				coords_marker = i.marker
-				props.push '<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (if i.creator? then ', built by ' + i.creator else '') + '</p>'
+				title = i.name
+				props.push '<p>Coordinates: X' + i.x + ', Y' + i.y + '</p>'
+				if i.description?
+					props.push '<p style="margin:10px 0;max-width:400px;padding:8px;background:#eee;font-style:italic">' + i.description + '</p>'
 
-	if not found
-		for i in resources
-			if i.x is coords.x and i.y is coords.y
-				found = yes
-				coords_marker = i.marker
-				if i.type is 'mine'
-					props.push '<p>There is a <strong style="font-weight:500">mine</strong> here</p>'
-					html = '<p>It contains '
-					if not i.ores?
-						html += 'no'
+		if not found
+			for i in guard_towers
+				if i.x is coords.x and i.y is coords.y
+					found = yes
+					coords_marker = i.marker
+					props.push '<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (if i.creator? then ', built by ' + i.creator else '') + '</p>'
+
+		if not found
+			for i in resources
+				if i.x is coords.x and i.y is coords.y
+					found = yes
+					coords_marker = i.marker
+					if i.type is 'mine'
+						props.push '<p>There is a <strong style="font-weight:500">mine</strong> here</p>'
+						html = '<p>It contains '
+						if not i.ores?
+							html += 'no'
+						else
+							for o, n in i.ores
+								html += switch n
+									when 0 then ''
+									when i.ores.length - 1 then ' and '
+									else ', '
+								html += o
+							html += (if i.ores.length is 1 then ' vein' else ' veins') + '</p>'
+
+						if i.features?
+							html += '<p>It is equipped with '
+							for o, n in i.features
+								html += switch n
+									when 0 then ''
+									when i.features.length - 1 then ' and '
+									else ', '
+								html += 'a ' + o
+							html += '</p>'
+						props.push html
 					else
-						for o, n in i.ores
-							html += switch n
-								when 0 then ''
-								when i.ores.length - 1 then ' and '
-								else ', '
-							html += o
-						html += (if i.ores.length is 1 then ' vein' else ' veins') + '</p>'
-
-					if i.features?
-						html += '<p>It is equipped with '
-						for o, n in i.features
-							html += switch n
-								when 0 then ''
-								when i.features.length - 1 then ' and '
-								else ', '
-							html += 'a ' + o
-						html += '</p>'
-					props.push html
-				else
-					props.push '<p>There is a <strong style="font-weight:500">' + i.size + ' ' + i.type + ' deposit</strong> here</p>'
+						props.push '<p>There is a <strong style="font-weight:500">' + i.size + ' ' + i.type + ' deposit</strong> here</p>'
 
 
 	props.push '<p>There seems to be nothing special here</p>' if not found
@@ -480,10 +497,11 @@ search = ->
 		# Coordinates
 		if searchtext.indexOf(',') isnt -1
 			coords = searchtext.split(',')
+			coords[i] = val.replace(/([XxYy]|\s)/g, '') for val, i in coords # Remove 'X', 'Y' and spaces
 			if not isNaN(coords[0]) and not isNaN(coords[1])
 				if coords[0] > 0 and coords[1] > 0
 					results.push
-						name: coords[0] + ', ' + coords[1]
+						name: 'X' + coords[0] + ', Y' + coords[1]
 						sub: 'Go to coordinates'
 						tag: coords[0] + '_' + coords[1]
 						class: 'coords'
@@ -519,8 +537,9 @@ search = ->
 					class: 'guard_tower'
 					onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
 
-		if results.length > 5
-			results = results.slice 0, 5
+		max_length = if window.innerHeight < 380 then 4 else 5
+		if results.length > max_length
+			results = results.slice 0, max_length
 
 		results.push
 			tag: ''
@@ -552,7 +571,6 @@ search = ->
 			when not @mayor? then 'No mayor on record'
 			else
 				i = @mayor.toLowerCase().indexOf(searchtext)
-				console.log @mayor + ': ' + i + ', ' + searchtext.length
 				if i is -1
 					return @mayor
 				else

@@ -2,20 +2,23 @@ doctype html
 html
 	head
 		title Sklotopolis Map
+		meta(name='viewport' content='width=device-width, initial-scale=1')
 
 		link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700')
 		link(rel='stylesheet' href='style.css')
 		script(src='http://cdnjs.cloudflare.com/ajax/libs/transparency/0.11.0/transparency.min.js')
 		script(src='http://cdnjs.cloudflare.com/ajax/libs/Cookies.js/1.2.1/cookies.min.js')
 
-	body.sidebar
+	body
 		include ./gtm.html
 		
 		#map
 		#coords
 			span#coordsc Mouse cursor at X0, Y0
 
+		a#sidebartoggle(href='#' onclick='toggle_sidebar(); return false') &#x2261;
 		#sidebar
+
 			h2 Markers
 
 			a#marker_deeds.selected(href='#' onclick='toggle_markers(\'deeds\'); return false') #[span] Deeds

@@ -15,4 +15,8 @@ poi = [
 	name: 'Colossus of Engineer'
 	x: 896
 	y: 839
+,
+	name: 'Path of Love Tile'
+	x: 3133
+	y: 3543
 ]
