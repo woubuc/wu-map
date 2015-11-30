@@ -191,5 +191,21 @@ guard_towers = [
     x: 2602,
     y: 3426,
     creator: 'Kezei'
+  }, {
+    x: 1141,
+    y: 365,
+    creator: 'Akali'
+  }, {
+    x: 3649,
+    y: 2607,
+    creator: 'Plasson'
+  }, {
+    x: 1173,
+    y: 892,
+    creator: 'Jaede'
+  }, {
+    x: 912,
+    y: 2510,
+    creator: 'DwemerManiac'
   }
 ];

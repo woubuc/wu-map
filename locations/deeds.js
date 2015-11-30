@@ -552,5 +552,13 @@ deeds = [
     y: 3674,
     mayor: 'Reese',
     type: 'solo'
+  }, {
+    name: 'Dragon\'s Lair',
+    tag: 'dragons-lair',
+    x: 2088,
+    y: 3134,
+    mayor: 'IQtheDragon',
+    type: 'small',
+    features: ['recruiting']
   }
 ];

@@ -549,4 +549,35 @@ deeds = [
 	y: 3674
 	mayor: 'Reese'
 	type: 'solo'
+,
+	name: 'Dragon\'s Lair'
+	tag: 'dragons-lair'
+	x: 2088
+	y: 3134
+	mayor: 'IQtheDragon'
+	type: 'small'
+	features: ['recruiting']
+# ,
+# 	name: 'East Side Trading Post'
+# 	tag: 'east-side-trading-post'
+# 	x: 2326
+# 	y: 1350
+# 	mayor: 'Stonecutter'
+# 	type: 'small'
+# ,
+# 	name: 'Rick\'s Abode'
+# 	tag: 'ricks-abode'
+# 	x: 455
+# 	y: 475
+# 	mayor: 'Rickles'
+# 	features: ['trader']
+# 	type: 'solo'
+# ,
+# 	name: 'Dragon\'s Pool'
+# 	tag: 'dragons-pool'
+# 	x: 2092
+# 	y: 3302
+# 	mayor: 'Dragoniq'
+# 	type: 'small'
+# 	features: ['recruiting']
 ]

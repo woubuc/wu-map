@@ -19,4 +19,14 @@ poi = [
 	name: 'Path of Love Tile'
 	x: 3133
 	y: 3543
+,
+	name: 'Colossus of Magranon'
+	x: 1005
+	y: 777
+	description: 'The first player-built Colossus, constructed by Miskleur'
+,
+	name: 'Colossus of Fo'
+	x: 1122
+	y: 1118
+	description: 'Constructed by Encode'
 ]
