@@ -164,7 +164,6 @@ a#sidebartoggle {
   width: 320px;
   z-index: 12;
   height: 46px;
-  max-height: 400px;
   overflow: hidden;
   border-radius: 3px;
   box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
@@ -206,6 +205,12 @@ a#sidebartoggle {
         background-image: url("images/mine_icon.png"); }
       #searchbox #searchresults a.location.poi {
         background-image: url("images/poi_icon.png"); }
+      #searchbox #searchresults a.location.poi_statue {
+        background-image: url("images/poi_statue_icon.png"); }
+      #searchbox #searchresults a.location.poi_bridge {
+        background-image: url("images/poi_bridge_icon.png"); }
+      #searchbox #searchresults a.location.poi_fountain {
+        background-image: url("images/poi_fountain_icon.png"); }
       #searchbox #searchresults a.location.guard_tower {
         background-image: url("images/guard_tower_icon.png"); }
       #searchbox #searchresults a.location.resource {

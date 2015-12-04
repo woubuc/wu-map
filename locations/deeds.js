@@ -560,5 +560,127 @@ deeds = [
     mayor: 'IQtheDragon',
     type: 'small',
     features: ['recruiting']
+  }, {
+    name: 'Rise Of The Pink Ponys',
+    tag: 'rise-of-the-pink-ponys',
+    x: 721,
+    y: 1047,
+    mayor: 'Yogibearjew',
+    type: 'small'
+  }, {
+    name: 'Compton Beachamp',
+    tag: 'compton-beachamp',
+    x: 1061,
+    y: 348,
+    mayor: 'Akali',
+    type: 'small'
+  }, {
+    name: 'Essential Bay',
+    tag: 'essential-bay',
+    x: 607,
+    y: 2001,
+    mayor: 'Essense',
+    type: 'small'
+  }, {
+    name: 'Safe Haven',
+    tag: 'safe-haven',
+    x: 1104,
+    y: 834,
+    mayor: 'PrincessZena',
+    features: ['recruiting'],
+    type: 'solo'
+  }, {
+    name: 'Dark Leaf',
+    tag: 'dark-leaf',
+    x: 1152,
+    y: 784,
+    mayor: 'Kinnarts',
+    type: 'solo'
+  }, {
+    name: 'Machinatrium',
+    tag: 'machinatrium',
+    x: 3180,
+    y: 392,
+    mayor: 'DeuxExMachina',
+    type: 'solo'
+  }, {
+    name: 'Dragon\'s Pool',
+    tag: 'dragons-pool',
+    x: 2088,
+    y: 3294,
+    mayor: 'Dragoniq',
+    type: 'small'
+  }, {
+    name: 'Sylvan',
+    tag: 'sylvan',
+    x: 988,
+    y: 825,
+    mayor: 'Ziemo',
+    type: 'solo'
+  }, {
+    name: 'Bloodbath and Beyond',
+    tag: 'bloodbath-and-beyond',
+    x: 1934,
+    y: 1304,
+    mayor: 'Kadore',
+    type: 'solo'
+  }, {
+    name: 'Loyal Ace',
+    tag: 'loyal-ace',
+    x: 1970,
+    y: 3356,
+    mayor: 'Yela',
+    type: 'small'
+  }, {
+    name: 'Azure',
+    tag: 'azure',
+    x: 1356,
+    y: 446,
+    mayor: 'Isdur',
+    type: 'solo'
+  }, {
+    name: 'Griffin Mountain',
+    tag: 'griffin-mountain',
+    x: 3095,
+    y: 2737,
+    mayor: 'Guffil',
+    type: 'solo'
+  }, {
+    name: 'Dlowville',
+    tag: 'dlowville',
+    x: 1023,
+    y: 1223,
+    mayor: 'Dlow',
+    type: 'solo'
+  }, {
+    name: 'Indalo Farm',
+    tag: 'indalo-farm',
+    x: 1175,
+    y: 873,
+    mayor: 'Indalo',
+    type: 'solo'
+  }, {
+    name: 'Florida',
+    tag: 'florida',
+    x: 850,
+    y: 292,
+    mayor: 'Tedrick',
+    features: ['harbour', 'recruiting'],
+    type: 'solo'
+  }, {
+    name: 'Barrowland',
+    tag: 'barrowland',
+    x: 2316,
+    y: 2998,
+    mayor: 'Kroaker',
+    type: 'solo'
+  }, {
+    name: 'Port North',
+    tag: 'port-north',
+    x: 2278,
+    y: 592,
+    mayor: 'Bluegreen',
+    features: ['harbour'],
+    type: 'small'
   }
 ];

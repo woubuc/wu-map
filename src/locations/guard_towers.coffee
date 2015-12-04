@@ -204,4 +204,71 @@ guard_towers = [
 	x: 912
 	y: 2510
 	creator: 'DwemerManiac'
+,
+	x: 3612
+	y: 810
+	creator: 'Mike'
+,
+	x: 3229
+	y: 2773
+	creator: 'Phoenix'
+,
+	x: 2604
+	y: 3370
+	creator: 'Kezei'
+,
+	x: 902
+	y: 2554
+	creator: 'DwemerManiac'
+,
+	x: 946
+	y: 1379
+	creator: 'Zentil'
+,
+	x: 757
+	y: 3718
+	creator: 'Oriss'
+,
+	x: 961
+	y: 2525
+	creator: 'Lunaman'
+,
+	x: 1280
+	y: 1031
+	creator: 'Hampe'
+,
+	x: 1229
+	y: 590
+	creator: 'Andistyr'
+,
+	x: 3547
+	y: 2607
+	creator: 'Plasson'
+,
+	x: 2810
+	y: 542
+	creator: 'Biervampyr'
+,
+	x: 2759
+	y: 541
+	creator: 'Biervampyr'
+,
+	x: 629
+	y: 794
+	creator: 'Noskull'
+,
+	x: 965
+	y: 2458
+	creator: 'Lunaman'
+,
+	x: 1170
+	y: 770
+,
+	x: 611
+	y: 2840
+	creator: 'DwemerManiac'
+,
+	x: 2275
+	y: 590
+	creator: 'Bluegreen'
 ]

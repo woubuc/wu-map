@@ -29,6 +29,7 @@ html
 			a#marker_guard_towers.selected(href='#' onclick='toggle_markers(\'guard_towers\'); return false') #[span] Guard towers
 			a#marker_resources.selected(href='#' onclick='toggle_markers(\'resources\'); return false') #[span] Resources
 			a#marker_poi.selected(href='#' onclick='toggle_markers(\'poi\'); return false') #[span] Points of interest
+			a#marker_trees(href='#' onclick='toggle_markers(\'trees\'); return false') #[span] Forests
 
 			.div
 
@@ -38,6 +39,7 @@ html
 			a.small(href='#' onclick='show_add_form(\'resource\'); return false') Resource
 			a.small(href='#' onclick='show_add_form(\'mine\'); return false') Public mine
 			a.small(href='#' onclick='show_add_form(\'poi\'); return false') Point of interest
+			a.small(href='#' onclick='show_add_form(\'trees\'); return false') Forest
 
 			.div
 
@@ -66,5 +68,6 @@ html
 		script(src='locations/guard_towers.js')
 		script(src='locations/resources.js')
 		script(src='locations/poi.js')
+		script(src='locations/trees.js')
 		script(src='map.js')
 		script(src='https://maps.googleapis.com/maps/api/js?signed_in=false&callback=init' async defer)

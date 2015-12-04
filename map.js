@@ -88,7 +88,7 @@ projection = {
 };
 
 init = function() {
-  var Sklotopolis, Tiled, coords, coordsDiv, hash, i, j, k, len, len1, len2, len3, m, p, q;
+  var Sklotopolis, Tiled, coords, coordsDiv, hash, i, j, k, len, len1, len2, len3, len4, m, p, q, r;
   map = new google.maps.Map(document.getElementById('map'), {
     center: {
       lat: -80.035400390625,
@@ -244,7 +244,27 @@ init = function() {
       })),
       map: map,
       icon: {
-        url: 'images/poi.png',
+        url: 'images/' + (i.type == null ? 'poi' : 'poi_' + i.type) + '.png',
+        size: new google.maps.Size(32, 37),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(16, 37)
+      }
+    });
+    i.marker.addListener('click', show_coords_info.bind(null, {
+      x: i.x,
+      y: i.y
+    }));
+  }
+  for (r = 0, len4 = trees.length; r < len4; r++) {
+    i = trees[r];
+    i.marker = new google.maps.Marker({
+      position: projection.fromPointToLatLng(projection.fromCoords({
+        x: i.x,
+        y: i.y
+      })),
+      map: null,
+      icon: {
+        url: 'images/tree.png',
         size: new google.maps.Size(32, 37),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(16, 37)
@@ -315,6 +335,14 @@ show_deed_on_map = function(tag) {
 show_deed_info = function(tag) {
   var deed, html, latLng, nearby, props;
   deed = deeds[deed_tags[tag]];
+  if (!filter.deeds) {
+    filter.deeds = true;
+    update_markers('deeds');
+  }
+  if (!filter['deeds_' + deed.type]) {
+    filter['deeds_' + deed.type] = true;
+    update_markers('deeds_' + deed.type);
+  }
   if (typeof console !== "undefined" && console !== null) {
     latLng = projection.fromPointToLatLng(projection.fromCoords({
       x: deed.x,
@@ -386,6 +414,7 @@ show_deed_info = function(tag) {
   infowin = new google.maps.InfoWindow({
     content: '<div id="content"> <h2>' + deed.name + '</h2> <div id="bodyContent">' + props.join('') + '<p style="padding-top:10px"><a href="#' + deed.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_deed(\'' + deed.tag + '\', this)">Share this location</a></p> </div> </div>'
   });
+  deed.marker.setMap(map);
   infowin.open(map, deed.marker);
   infowin.open(map, deed.marker);
   window.location.hash = deed.tag;
@@ -401,7 +430,7 @@ share_deed = function(tag, el) {
 };
 
 show_coords_info = function(coords) {
-  var coords_marker, found, html, i, k, len, len1, len2, len3, len4, m, n, nearby, o, p, props, q, r, ref, ref1, title;
+  var coords_marker, found, html, i, k, len, len1, len2, len3, len4, len5, m, n, nearby, o, p, props, q, r, ref, ref1, s, title;
   if (marker !== '') {
     marker.setMap(null);
     marker = '';
@@ -424,6 +453,10 @@ show_coords_info = function(coords) {
       i = poi[k];
       if (i.x === coords.x && i.y === coords.y) {
         found = true;
+        if (!filter.poi) {
+          filter.poi = true;
+          update_markers('poi');
+        }
         coords_marker = i.marker;
         title = i.name;
         props.push('<p>Coordinates: X' + i.x + ', Y' + i.y + '</p>');
@@ -437,6 +470,10 @@ show_coords_info = function(coords) {
         i = guard_towers[m];
         if (i.x === coords.x && i.y === coords.y) {
           found = true;
+          if (!filter.guard_towers) {
+            filter.guard_towers = true;
+            update_markers('guard_towers');
+          }
           coords_marker = i.marker;
           props.push('<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (i.creator != null ? ', built by ' + i.creator : '') + '</p>');
         }
@@ -447,6 +484,10 @@ show_coords_info = function(coords) {
         i = resources[p];
         if (i.x === coords.x && i.y === coords.y) {
           found = true;
+          if (!filter.resources) {
+            filter.resources = true;
+            update_markers('resources');
+          }
           coords_marker = i.marker;
           if (i.type === 'mine') {
             props.push('<p>There is a <strong style="font-weight:500">mine</strong> here</p>');
@@ -457,6 +498,16 @@ show_coords_info = function(coords) {
               ref = i.ores;
               for (n = q = 0, len3 = ref.length; q < len3; n = ++q) {
                 o = ref[n];
+                if (i.ores.length === 1) {
+                  html += (function() {
+                    switch (o) {
+                      case 'iron':
+                        return 'an ';
+                      default:
+                        return 'a ';
+                    }
+                  })();
+                }
                 html += (function() {
                   switch (n) {
                     case 0:
@@ -494,6 +545,16 @@ show_coords_info = function(coords) {
           } else {
             props.push('<p>There is a <strong style="font-weight:500">' + i.size + ' ' + i.type + ' deposit</strong> here</p>');
           }
+        }
+      }
+    }
+    if (!found) {
+      for (s = 0, len5 = trees.length; s < len5; s++) {
+        i = trees[s];
+        if (i.x === coords.x && i.y === coords.y) {
+          found = true;
+          coords_marker = i.marker;
+          props.push('<p>The forest in this area is mostly <strong style="font-weight:500">' + i.type + ' trees</strong>.</p>');
         }
       }
     }
@@ -543,7 +604,7 @@ show_coords_on_map = function(x, y) {
 find_nearby_locations = function(coords) {
   var check, dist, found, k, m, max_dist, nearby, p, q, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, x, y;
   check = function(x, y) {
-    var i, k, len, len1, len2, len3, m, p, q;
+    var i, k, len, len1, len2, len3, len4, m, p, q, r;
     for (k = 0, len = deeds.length; k < len; k++) {
       i = deeds[k];
       if (i.x === x && i.y === y) {
@@ -565,11 +626,26 @@ find_nearby_locations = function(coords) {
           return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.size + ' ' + i.type + ' deposit</a> nearby';
         }
       }
+      for (q = 0, len3 = poi.length; q < len3; q++) {
+        i = poi[q];
+        if (i.x === x && i.y === y) {
+          if (i.unique == null) {
+            i.unique = true;
+          }
+          if (i.unique) {
+            return '<p style="margin-bottom:2px;color:#777;font-size:12px;"><a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.name + '</a> is nearby</p>';
+          } else {
+            return '<p style="margin-bottom:2px;color:#777;font-size:12px;">A <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.name.toLowerCase() + '</a> is nearby</p>';
+          }
+        }
+      }
     }
-    for (q = 0, len3 = poi.length; q < len3; q++) {
-      i = poi[q];
-      if (i.x === x && i.y === y) {
-        return '<p style="margin-bottom:2px;color:#777;font-size:12px;"><a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.name + '</a> is nearby</p>';
+    if (filter.trees) {
+      for (r = 0, len4 = trees.length; r < len4; r++) {
+        i = trees[r];
+        if (i.x === x && i.y === y) {
+          return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There are a lot of <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.type + ' trees</a> in the area</p>';
+        }
       }
     }
     return false;
@@ -636,6 +712,8 @@ show_add_form = function(which) {
         return 'https://docs.google.com/forms/d/1NVS_LMy0aTv8OCRnEbhnrS06QRzd40ShioUGi7jo6DU/viewform?embedded=true&hl=en';
       case 'poi':
         return 'https://docs.google.com/forms/d/1vUyH4gGvPyy1GfMRcPZ3ynX7IRh083sIoLyHo8eaeyA/viewform?embedded=true&hl=en';
+      case 'trees':
+        return 'https://docs.google.com/forms/d/1J8xMFQQZEGQ_5b1bsCX1wltGLz5SoV-MQQKE0ui4DrQ/viewform?embedded=true&hl=en';
     }
   })();
   document.getElementById('addform').style.display = 'block';
@@ -684,7 +762,7 @@ search = function() {
           name: i.name,
           x: i.x,
           y: i.y,
-          "class": 'poi',
+          "class": i.type == null ? 'poi' : 'poi_' + i.type,
           tag: i.x + '_' + i.y,
           onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
         });
@@ -716,7 +794,20 @@ search = function() {
         });
       }
     }
-    max_length = window.innerHeight < 380 ? 4 : 5;
+    max_length = (function() {
+      switch (false) {
+        case !(window.innerHeight < 380):
+          return 4;
+        case !(window.innerHeight < 420):
+          return 5;
+        case !(window.innerHeight < 460):
+          return 6;
+        case !(window.innerHeight < 500):
+          return 7;
+        default:
+          return 8;
+      }
+    })();
     if (results.length > max_length) {
       results = results.slice(0, max_length);
     }
@@ -802,7 +893,8 @@ filter = {
   deeds_large: true,
   guard_towers: true,
   resources: true,
-  poi: true
+  poi: true,
+  trees: false
 };
 
 toggle_markers = function(which) {
@@ -813,7 +905,7 @@ toggle_markers = function(which) {
 };
 
 update_markers = function(which) {
-  var i, j, k, len, len1, len2, len3, len4, len5, len6, m, p, q, r, s, t;
+  var i, j, k, len, len1, len2, len3, len4, len5, len6, len7, m, p, q, r, s, t, u;
   close_infowin();
   switch (which) {
     case 'deeds':
@@ -871,6 +963,12 @@ update_markers = function(which) {
       for (t = 0, len6 = poi.length; t < len6; t++) {
         i = poi[t];
         i.marker.setMap(filter.poi ? map : null);
+      }
+      break;
+    case 'trees':
+      for (u = 0, len7 = trees.length; u < len7; u++) {
+        i = trees[u];
+        i.marker.setMap(filter.trees ? map : null);
       }
   }
   for (i in filter) {

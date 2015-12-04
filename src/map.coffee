@@ -165,7 +165,20 @@ init = ->
 			position: projection.fromPointToLatLng(projection.fromCoords(x: i.x, y: i.y))
 			map: map
 			icon:
-				url: 'images/poi.png'
+				url: 'images/' + (if not i.type? then 'poi' else 'poi_' + i.type) + '.png'
+				size: new google.maps.Size(32, 37)
+				origin: new google.maps.Point(0, 0)
+				anchor: new google.maps.Point(16, 37)
+
+		i.marker.addListener 'click', show_coords_info.bind(null, x: i.x, y: i.y)
+
+	# Forests
+	for i in trees
+		i.marker = new google.maps.Marker
+			position: projection.fromPointToLatLng(projection.fromCoords(x: i.x, y: i.y))
+			map: null
+			icon:
+				url: 'images/tree.png'
 				size: new google.maps.Size(32, 37)
 				origin: new google.maps.Point(0, 0)
 				anchor: new google.maps.Point(16, 37)
@@ -224,6 +237,14 @@ show_deed_on_map = (tag) ->
 
 show_deed_info = (tag) ->
 	deed = deeds[deed_tags[tag]]
+
+	if not filter.deeds
+		filter.deeds = on
+		update_markers 'deeds'
+
+	if not filter['deeds_' + deed.type]
+		filter['deeds_' + deed.type] = on
+		update_markers 'deeds_' + deed.type
 
 	if console?
 		latLng = projection.fromPointToLatLng(projection.fromCoords(x: deed.x, y: deed.y))
@@ -288,6 +309,7 @@ show_deed_info = (tag) ->
 				<p style="padding-top:10px"><a href="#' + deed.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_deed(\'' + deed.tag + '\', this)">Share this location</a></p>
 			</div>
 		</div>'
+	deed.marker.setMap map
 	infowin.open map, deed.marker
 	infowin.open map, deed.marker
 
@@ -329,6 +351,9 @@ show_coords_info = (coords) ->
 		for i in poi
 			if i.x is coords.x and i.y is coords.y
 				found = yes
+				if not filter.poi
+					filter.poi = on
+					update_markers 'poi'
 				coords_marker = i.marker
 				title = i.name
 				props.push '<p>Coordinates: X' + i.x + ', Y' + i.y + '</p>'
@@ -339,6 +364,9 @@ show_coords_info = (coords) ->
 			for i in guard_towers
 				if i.x is coords.x and i.y is coords.y
 					found = yes
+					if not filter.guard_towers
+						filter.guard_towers = on
+						update_markers 'guard_towers'
 					coords_marker = i.marker
 					props.push '<p>There is a <strong style="font-weight:500">guard tower</strong> here' + (if i.creator? then ', built by ' + i.creator else '') + '</p>'
 
@@ -346,6 +374,9 @@ show_coords_info = (coords) ->
 			for i in resources
 				if i.x is coords.x and i.y is coords.y
 					found = yes
+					if not filter.resources
+						filter.resources = on
+						update_markers 'resources'
 					coords_marker = i.marker
 					if i.type is 'mine'
 						props.push '<p>There is a <strong style="font-weight:500">mine</strong> here</p>'
@@ -354,6 +385,10 @@ show_coords_info = (coords) ->
 							html += 'no'
 						else
 							for o, n in i.ores
+								if i.ores.length is 1
+									html += switch o
+										when 'iron' then 'an '
+										else 'a '
 								html += switch n
 									when 0 then ''
 									when i.ores.length - 1 then ' and '
@@ -373,6 +408,13 @@ show_coords_info = (coords) ->
 						props.push html
 					else
 						props.push '<p>There is a <strong style="font-weight:500">' + i.size + ' ' + i.type + ' deposit</strong> here</p>'
+
+		if not found
+			for i in trees
+				if i.x is coords.x and i.y is coords.y
+					found = yes
+					coords_marker = i.marker
+					props.push '<p>The forest in this area is mostly <strong style="font-weight:500">' + i.type + ' trees</strong>.</p>'
 
 
 	props.push '<p>There seems to be nothing special here</p>' if not found
@@ -423,15 +465,26 @@ find_nearby_locations = (coords) ->
 		for i in guard_towers
 			if i.x is x and i.y is y
 				return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">guard tower</a> nearby</p>'
+
 		for i in resources
 			if i.x is x and i.y is y
 				if i.type is 'mine'
 					return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">mine</a> nearby</p>'
 				else
 					return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There is a <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.size + ' ' + i.type + ' deposit</a> nearby'
-		for i in poi
-			if i.x is x and i.y is y
-				return '<p style="margin-bottom:2px;color:#777;font-size:12px;"><a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.name + '</a> is nearby</p>'
+
+			for i in poi
+				if i.x is x and i.y is y
+					i.unique = yes if not i.unique?
+					if i.unique
+						return '<p style="margin-bottom:2px;color:#777;font-size:12px;"><a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.name + '</a> is nearby</p>'
+					else
+						return '<p style="margin-bottom:2px;color:#777;font-size:12px;">A <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.name.toLowerCase() + '</a> is nearby</p>'
+
+		if filter.trees
+			for i in trees
+				if i.x is x and i.y is y
+					return '<p style="margin-bottom:2px;color:#777;font-size:12px;">There are a lot of <a style="color:#2196F3" href="#' + i.x + '_' + i.y + '" onclick="show_coords_on_map(' + i.x + ',' + i.y + ')">' + i.type + ' trees</a> in the area</p>'
 
 		return false
 
@@ -474,6 +527,7 @@ show_add_form = (which) ->
 		when 'mine' then 'https://docs.google.com/forms/d/10tIQppH5tsWCvMBqsg22dGVS1ids36vcr3BlhnX6aI8/viewform?embedded=true&hl=en'
 		when 'resource' then 'https://docs.google.com/forms/d/1NVS_LMy0aTv8OCRnEbhnrS06QRzd40ShioUGi7jo6DU/viewform?embedded=true&hl=en'
 		when 'poi' then 'https://docs.google.com/forms/d/1vUyH4gGvPyy1GfMRcPZ3ynX7IRh083sIoLyHo8eaeyA/viewform?embedded=true&hl=en'
+		when 'trees' then 'https://docs.google.com/forms/d/1J8xMFQQZEGQ_5b1bsCX1wltGLz5SoV-MQQKE0ui4DrQ/viewform?embedded=true&hl=en'
 	document.getElementById('addform').style.display = 'block'
 	document.getElementById('addform').childNodes[0].src = url
 	document.getElementById('addmenu').className = ''
@@ -514,7 +568,7 @@ search = ->
 					name: i.name
 					x: i.x
 					y: i.y
-					class: 'poi'
+					class: if not i.type? then 'poi' else 'poi_' + i.type
 					tag: i.x + '_' + i.y
 					onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
 
@@ -537,7 +591,12 @@ search = ->
 					class: 'guard_tower'
 					onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
 
-		max_length = if window.innerHeight < 380 then 4 else 5
+		max_length = switch
+			when window.innerHeight < 380 then 4
+			when window.innerHeight < 420 then 5
+			when window.innerHeight < 460 then 6
+			when window.innerHeight < 500 then 7
+			else 8
 		if results.length > max_length
 			results = results.slice 0, max_length
 
@@ -591,6 +650,7 @@ filter =
 	guard_towers: on
 	resources: on
 	poi: on
+	trees: off
 
 toggle_markers = (which) ->
 	# Set filter
@@ -637,6 +697,9 @@ update_markers = (which) ->
 		when 'poi'
 			for i in poi
 				i.marker.setMap(if filter.poi then map else null)
+		when 'trees'
+			for i in trees
+				i.marker.setMap(if filter.trees then map else null)
 
 	# Update toggle switches
 	for i, j of filter
