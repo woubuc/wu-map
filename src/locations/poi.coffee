@@ -45,6 +45,16 @@ poi = [
 	y: 3515
 	unique: no
 ,
+	name: 'Path of Love Tile'
+	x: 831
+	y: 728
+	unique: no
+,
+	name: 'Path of Love Tile'
+	x: 2911
+	y: 466
+	unique: no
+,
 	name: 'Fountain'
 	x: 3548
 	y: 2604

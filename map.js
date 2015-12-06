@@ -391,6 +391,9 @@ show_deed_info = function(tag) {
     if (indexOf.call(deed.features, 'harbour') >= 0) {
       html += '<img src="images/feature_harbour.png" title="Harbour area on deed" /> ';
     }
+    if (indexOf.call(deed.features, 'inn') >= 0) {
+      html += '<img src="images/feature_inn.png" title="Inn on deed" /> ';
+    }
     if (indexOf.call(deed.features, 'mailbox') >= 0) {
       html += '<img src="images/feature_mailbox.png" title="Mailbox on deed" /> ';
     }
@@ -714,6 +717,8 @@ show_add_form = function(which) {
         return 'https://docs.google.com/forms/d/1vUyH4gGvPyy1GfMRcPZ3ynX7IRh083sIoLyHo8eaeyA/viewform?embedded=true&hl=en';
       case 'trees':
         return 'https://docs.google.com/forms/d/1J8xMFQQZEGQ_5b1bsCX1wltGLz5SoV-MQQKE0ui4DrQ/viewform?embedded=true&hl=en';
+      case 'report':
+        return 'https://docs.google.com/forms/d/1R3gbLKem9Hw4cM73pxdqT-LJRtZBxJr_TXTjNGYLcNE/viewform?embedded=true&hl=en';
     }
   })();
   document.getElementById('addform').style.display = 'block';

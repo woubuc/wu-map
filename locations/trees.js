@@ -17,5 +17,9 @@ trees = [
     type: 'pine',
     x: 1108,
     y: 721
+  }, {
+    type: 'pine',
+    x: 1164,
+    y: 829
   }
 ];

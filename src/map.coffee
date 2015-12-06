@@ -283,6 +283,9 @@ show_deed_info = (tag) ->
 		if 'harbour' in deed.features
 			html += '<img src="images/feature_harbour.png" title="Harbour area on deed" /> '
 
+		if 'inn' in deed.features
+			html += '<img src="images/feature_inn.png" title="Inn on deed" /> '
+
 		if 'mailbox' in deed.features
 			html += '<img src="images/feature_mailbox.png" title="Mailbox on deed" /> '
 
@@ -528,6 +531,7 @@ show_add_form = (which) ->
 		when 'resource' then 'https://docs.google.com/forms/d/1NVS_LMy0aTv8OCRnEbhnrS06QRzd40ShioUGi7jo6DU/viewform?embedded=true&hl=en'
 		when 'poi' then 'https://docs.google.com/forms/d/1vUyH4gGvPyy1GfMRcPZ3ynX7IRh083sIoLyHo8eaeyA/viewform?embedded=true&hl=en'
 		when 'trees' then 'https://docs.google.com/forms/d/1J8xMFQQZEGQ_5b1bsCX1wltGLz5SoV-MQQKE0ui4DrQ/viewform?embedded=true&hl=en'
+		when 'report' then 'https://docs.google.com/forms/d/1R3gbLKem9Hw4cM73pxdqT-LJRtZBxJr_TXTjNGYLcNE/viewform?embedded=true&hl=en'
 	document.getElementById('addform').style.display = 'block'
 	document.getElementById('addform').childNodes[0].src = url
 	document.getElementById('addmenu').className = ''

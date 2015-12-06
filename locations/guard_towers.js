@@ -274,5 +274,41 @@ guard_towers = [
     x: 2275,
     y: 590,
     creator: 'Bluegreen'
+  }, {
+    x: 1004,
+    y: 2517,
+    creator: 'Lordofrus'
+  }, {
+    x: 2602,
+    y: 3319,
+    creator: 'Kezei'
+  }, {
+    x: 3135,
+    y: 2746,
+    creator: 'Guffil'
+  }, {
+    x: 803,
+    y: 1306,
+    creator: 'Thalos'
+  }, {
+    x: 1189,
+    y: 399,
+    creator: 'Akali'
+  }, {
+    x: 1041,
+    y: 2514,
+    creator: 'Lordofrus'
+  }, {
+    x: 628,
+    y: 1318,
+    creator: 'Borgal'
+  }, {
+    x: 1228,
+    y: 871,
+    creator: 'Encode'
+  }, {
+    x: 3075,
+    y: 1455,
+    creator: 'Xenon'
   }
 ];

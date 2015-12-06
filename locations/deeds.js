@@ -682,5 +682,57 @@ deeds = [
     mayor: 'Bluegreen',
     features: ['harbour'],
     type: 'small'
+  }, {
+    name: 'Catnip Cove',
+    tag: 'catnip-cove',
+    x: 3508,
+    y: 1421,
+    mayor: 'Mizova',
+    type: 'solo'
+  }, {
+    name: 'Easthaven Trade Harbour',
+    tag: 'easthaven-trade-harbour',
+    x: 3540,
+    y: 3362,
+    mayor: 'Noskull',
+    features: ['market', 'harbour', 'inn'],
+    type: 'solo'
+  }, {
+    name: 'Magnolia Mines',
+    tag: 'magnolia-mines',
+    x: 808,
+    y: 3018,
+    mayor: 'Deltagirl',
+    type: 'solo'
+  }, {
+    name: 'A Small Settlement',
+    tag: 'small-settlement',
+    x: 478,
+    y: 2450,
+    mayor: 'Thorgar',
+    type: 'small'
+  }, {
+    name: 'Fo\'s Forest Trade Post',
+    tag: 'fos-forest-trade-post',
+    x: 1118,
+    y: 808,
+    mayor: 'StarCrocTheGreat',
+    features: ['trader', 'market', 'mailbox', 'recruiting'],
+    type: 'solo'
+  }, {
+    name: 'Poseidons Anchorage',
+    tag: 'poseidons-anchorage',
+    x: 1692,
+    y: 383,
+    mayor: 'Weatherwax',
+    features: ['harbour'],
+    type: 'solo'
+  }, {
+    name: 'Serpent Bay Port',
+    tag: 'serpent-bay-port',
+    x: 816,
+    y: 2684,
+    mayor: 'Freelance',
+    type: 'small'
   }
 ];

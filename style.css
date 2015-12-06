@@ -82,6 +82,10 @@ a#sidebartoggle {
     font-weight: 400; }
     #sidebar a.small {
       padding: 8px 20px; }
+    #sidebar a.report {
+      font-style: italic;
+      font-size: 12px;
+      padding: 2px 20px; }
     #sidebar a small {
       display: block;
       color: #888;
