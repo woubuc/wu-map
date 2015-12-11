@@ -348,7 +348,11 @@ vote_reminder_close = function() {
 update_stats = function(data, xhr) {
   var check, harvest;
   document.getElementById('serverinfo_status').className = data.online ? 'online' : 'offline';
-  document.getElementById('serverinfo_players').innerText = data.players;
+  if (document.getElementById('serverinfo_players').textContent != null) {
+    document.getElementById('serverinfo_players').textContent = data.players;
+  } else {
+    document.getElementById('serverinfo_players').innerText = data.players;
+  }
   document.getElementById('serverinfo').style.display = 'block';
   harvest = [];
   check = function(starfall, week, plant, type) {

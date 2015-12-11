@@ -246,8 +246,12 @@ vote_reminder_close = ->
 
 
 update_stats = (data, xhr) ->
+
 	document.getElementById('serverinfo_status').className = if data.online then 'online' else 'offline'
-	document.getElementById('serverinfo_players').innerText = data.players
+	if document.getElementById('serverinfo_players').textContent?
+		document.getElementById('serverinfo_players').textContent = data.players
+	else
+		document.getElementById('serverinfo_players').innerText = data.players
 	document.getElementById('serverinfo').style.display = 'block'
 
 	harvest = []
