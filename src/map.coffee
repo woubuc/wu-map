@@ -198,9 +198,10 @@ init = ->
 			show_coords_info coords
 			init_moved = yes
 	else if not init_moved
-		home_deed = Cookies.get('wu_map_home_deed')
+		home_deed = localStorage.getItem('wu_map_home_deed')
 		if home_deed?
-			show_deed_on_map(home_deed, no)
+			if home_deed isnt ''
+				show_deed_on_map(home_deed, no)
 
 	map.addListener 'zoom_changed', close_infowin
 
@@ -212,7 +213,7 @@ init = ->
 	statsRequest.then update_stats, (err, xhr) ->
 		console.log err if console?
 
-	last_reminder = Cookies.get('wu_map_vote_reminder')
+	last_reminder = localStorage.getItem('wu_map_vote_reminder')
 	if last_reminder?
 		d = new Date()
 		timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear()
@@ -222,10 +223,10 @@ init = ->
 		vote_reminder_open()
 
 
-	serverinfo_size = Cookies.get('wu_map_serverinfo_size')
+	serverinfo_size = localStorage.getItem('wu_map_serverinfo_size')
 	if serverinfo_size?
 		document.getElementById('serverinfo').className = serverinfo_size
-		Cookies.set('wu_map_serverinfo_size', serverinfo_size)
+		localStorage.setItem('wu_map_serverinfo_size', serverinfo_size)
 
 
 	setInterval ->
@@ -242,7 +243,7 @@ vote_reminder_close = ->
 	document.getElementById('vote_reminder').style.display = 'none'
 	d = new Date()
 	timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear()
-	Cookies.set('wu_map_vote_reminder', timestr)
+	localStorage.setItem('wu_map_vote_reminder', timestr)
 
 
 update_stats = (data, xhr) ->
@@ -302,15 +303,15 @@ toggle_serverinfo_size = ->
 	el = document.getElementById('serverinfo')
 	size = if el.className is '' then 'small' else ''
 	el.className = size
-	Cookies.set('wu_map_serverinfo_size', size)
+	localStorage.setItem('wu_map_serverinfo_size', size)
 
 # Home functions
 set_home = (tag, img) ->
-	Cookies.set('wu_map_home_deed', tag)
+	localStorage.setItem('wu_map_home_deed', tag)
 	show_deed_info(tag)
 
 clear_home = ->
-	Cookies.expire('wu_map_home_deed')
+	localStorage.setItem('wu_map_home_deed', '')
 
 
 # Deed functions
@@ -392,7 +393,7 @@ show_deed_info = (tag) ->
 
 	home_img = '<img id="home_deed" src="images/home_off.png" style="float:right;padding:0 0 5px 5px;cursor:pointer;" onmouseenter="this.src=\'images/home_hover.png\';" onmouseleave="this.src=\'images/home_off.png\';" onclick="set_home(\'' + deed.tag + '\', this)" title="Set as home" />'
 
-	if Cookies.get('wu_map_home_deed') is deed.tag
+	if localStorage.getItem('wu_map_home_deed') is deed.tag
 		home_img = '<img id="home_deed" src="images/home_on.png" style="float:right;padding:0 0 5px 5px;cursor:pointer;" onclick="clear_home(this)" title="Clear home location" />'
 
 	infowin = new google.maps.InfoWindow

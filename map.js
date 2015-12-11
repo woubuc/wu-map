@@ -290,9 +290,11 @@ init = function() {
       init_moved = true;
     }
   } else if (!init_moved) {
-    home_deed = Cookies.get('wu_map_home_deed');
+    home_deed = localStorage.getItem('wu_map_home_deed');
     if (home_deed != null) {
-      show_deed_on_map(home_deed, false);
+      if (home_deed !== '') {
+        show_deed_on_map(home_deed, false);
+      }
     }
   }
   map.addListener('zoom_changed', close_infowin);
@@ -306,7 +308,7 @@ init = function() {
       return console.log(err);
     }
   });
-  last_reminder = Cookies.get('wu_map_vote_reminder');
+  last_reminder = localStorage.getItem('wu_map_vote_reminder');
   if (last_reminder != null) {
     d = new Date();
     timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear();
@@ -316,10 +318,10 @@ init = function() {
   } else {
     vote_reminder_open();
   }
-  serverinfo_size = Cookies.get('wu_map_serverinfo_size');
+  serverinfo_size = localStorage.getItem('wu_map_serverinfo_size');
   if (serverinfo_size != null) {
     document.getElementById('serverinfo').className = serverinfo_size;
-    Cookies.set('wu_map_serverinfo_size', serverinfo_size);
+    localStorage.setItem('wu_map_serverinfo_size', serverinfo_size);
   }
   return setInterval(function() {
     if (typeof console !== "undefined" && console !== null) {
@@ -342,7 +344,7 @@ vote_reminder_close = function() {
   document.getElementById('vote_reminder').style.display = 'none';
   d = new Date();
   timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear();
-  return Cookies.set('wu_map_vote_reminder', timestr);
+  return localStorage.setItem('wu_map_vote_reminder', timestr);
 };
 
 update_stats = function(data, xhr) {
@@ -405,16 +407,16 @@ toggle_serverinfo_size = function() {
   el = document.getElementById('serverinfo');
   size = el.className === '' ? 'small' : '';
   el.className = size;
-  return Cookies.set('wu_map_serverinfo_size', size);
+  return localStorage.setItem('wu_map_serverinfo_size', size);
 };
 
 set_home = function(tag, img) {
-  Cookies.set('wu_map_home_deed', tag);
+  localStorage.setItem('wu_map_home_deed', tag);
   return show_deed_info(tag);
 };
 
 clear_home = function() {
-  return Cookies.expire('wu_map_home_deed');
+  return localStorage.setItem('wu_map_home_deed', '');
 };
 
 show_deed_on_map = function(tag, showInfo) {
@@ -516,7 +518,7 @@ show_deed_info = function(tag) {
     props.push(nearby);
   }
   home_img = '<img id="home_deed" src="images/home_off.png" style="float:right;padding:0 0 5px 5px;cursor:pointer;" onmouseenter="this.src=\'images/home_hover.png\';" onmouseleave="this.src=\'images/home_off.png\';" onclick="set_home(\'' + deed.tag + '\', this)" title="Set as home" />';
-  if (Cookies.get('wu_map_home_deed') === deed.tag) {
+  if (localStorage.getItem('wu_map_home_deed') === deed.tag) {
     home_img = '<img id="home_deed" src="images/home_on.png" style="float:right;padding:0 0 5px 5px;cursor:pointer;" onclick="clear_home(this)" title="Clear home location" />';
   }
   infowin = new google.maps.InfoWindow({
