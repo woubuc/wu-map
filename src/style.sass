@@ -198,6 +198,62 @@ a#sidebartoggle
 		border-radius: $radius $radius 0 0
 		+shadow
 
+#serverinfo
+	display: none
+	position: absolute
+	top: 15px
+	right: 15px
+	width: 180px
+	z-index: 12
+	background: white
+	border-radius: $radius
+	cursor: pointer
+	+shadow
+	+transition
+
+	@media all and (max-width: 599px)
+		display: none !important
+
+	p
+		padding: 10px
+		font-size: 13px
+		line-height: 16px
+		color: #444
+		font-weight: 500
+
+		span#serverinfo_status
+			display: block
+			float: left
+			width: 12px
+			height: 12px
+			margin: 2px 8px 0 2px
+			border-radius: 6px
+			background: #C5513F
+
+			&.online
+				background: #3EC550
+
+	#serverinfo_harvest
+		border-top: 1px solid #ddd
+		padding-bottom: 4px
+		display: none
+
+		h2
+			color: #777
+			font-weight: 500
+			font-size: 12px
+			padding: 8px 10px 2px 10px
+
+		p
+			font-weight: 400
+			padding: 4px 10px
+
+
+	&.small
+		width: 80px
+		p span.label, h2 span, p span.type
+			display: none
+
 
 #searchbox
 	position: absolute
@@ -302,7 +358,83 @@ a#sidebartoggle
 			&:hover
 				background-color: lighten($c_border, 10%)
 
+
+#vote_reminder
+	display: none
+	position: absolute
+	top: 15px
+	left: 395px
+	width: 400px
+	height: 46px
+	line-height: 46px
+	z-index: 20
+	background: white
+	border-radius: $radius
+	text-align: center
+	+shadow
+	+transition
+
+	p
+		font-size: 14px
+		display: block
+
+		a
+			color: $c_blue
+
+	span
+		font-weight: 500
+		font-size: 12px
+		color: #aaa
+		line-height: 32px
+		cursor: pointer
+		+transition
+
+		&:hover
+			background: #eee
+
+		&.close_full
+			display: none
+
+		&.close
+			float: right
+			border-left: 1px solid #ddd
+			width: 46px
+			height: 46px
+			line-height: 46px
+			font-size: 16px
+			border-radius: 0 $radius $radius 0
+
 body
+	&.no_sidebar
+		#vote_reminder
+			@media all and (max-width: 999px)
+				width: auto
+				right: 210px
+
+				height: auto
+
+				span.close
+					display: none
+
+				span.close_full
+					display: block
+					border-top: 1px solid #ddd
+
+			@media all and (max-width: 919px)
+				right: 15px
+
+				span.close_full
+					line-height: 46px
+
+			@media all and (max-width: 699px)
+				left: 60px
+
+			@media all and (max-width: 399px)
+				top: 0
+				left: 0
+				right: 0
+				border-radius: 0
+
 	&.sidebar
 
 		a#sidebartoggle
@@ -323,6 +455,11 @@ body
 			@media all and (max-width: 699px)
 				display: none
 
+		#serverinfo
+
+			@media all and (max-width: 899px)
+				display: none !important
+
 		#map
 			left: 300px
 			width: calc(100% - 300px)
@@ -330,6 +467,43 @@ body
 			@media all and (max-width: 399px)
 				left: 260px
 				width: calc(100% - 260px)
+
+		#vote_reminder
+			left: 695px
+
+			@media all and (max-width: 1304px)
+				width: auto
+				right: 210px
+
+				height: auto
+
+				span.close
+					display: none
+
+				span.close_full
+					display: block
+					border-top: 1px solid #ddd
+
+			@media all and (max-width: 1209px)
+				right: 15px
+
+				span.close_full
+					line-height: 46px
+
+			@media all and (max-width: 1029px)
+				left: 360px
+
+			@media all and (max-width: 679px)
+				left: 300px
+				top: 0
+				right: 0
+				border-radius: 0
+
+			@media all and (max-width: 599px)
+				top: 0
+				left: 0
+				right: 0
+				border-radius: 0
 
 #addform
 	display: none

@@ -4,6 +4,9 @@ html
 		title Sklotopolis Map
 		meta(name='viewport' content='width=device-width, initial-scale=1')
 
+		script function pegasus(a,b){return b=new XMLHttpRequest,b.open("GET",a),a=[],b.onreadystatechange=b.then=function(c,d,e,f){if(c&&c.call&&(a=[,c,d]),4==b.readyState&&(e=a[0|b.status/200])){try{f=JSON.parse(b.responseText)}catch(g){f=null}e(f,b)}},b.send(),b}
+		script var statsRequest = pegasus('http://188.226.191.32:8000/stats.json');
+
 		link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700')
 		link(rel='stylesheet' href='style.css')
 		script(src='http://cdnjs.cloudflare.com/ajax/libs/transparency/0.11.0/transparency.min.js')
@@ -48,10 +51,24 @@ html
 			h2 Links
 			a.small(href='http://sklotopolis.freeforums.net/thread/39/map' target='_bank') Forum discussion
 			a.small(href='http://sklotopolis.tk' target='_blank') Sklotopolis website
+			a.small(href='http://5.45.109.131/unlimited/mapdump.png' target='_blank') Original mapdump
 
 			.div
 
 			p.disclaimer This interactive map is community-made. It is not associated with the Sklotopolis server or Wurm Unlimited. #[br] #[a(href='https://github.com/woubuc' target='_blank') Programmed by woubuc] - #[a(href='https://github.com/woubuc/wu-map/issues' target='_blank') Problems?]
+
+		#serverinfo(onclick='toggle_serverinfo_size()')
+			p
+				span#serverinfo_status.online
+				span#serverinfo_players 0
+				span.label  players online
+			#serverinfo_harvest
+				h2 In season
+					span  right now
+				#serverinfo_harvest_items
+					p
+						span.plant
+						span.type
 
 		#searchbox
 			input#search(type='text' placeholder='Search Sklotopolis map' onkeyup='search()' onfocus='search()' onblur='hide_search()' autocomplete='off')
@@ -61,6 +78,11 @@ html
 					span
 						em.name
 						em.mayor
+
+		#vote_reminder
+			span.close(onclick='vote_reminder_close();') x
+			p Don't forget you can #[a(href='http://wurm-unlimited.com/server/28/' onclick='vote_reminder_close();' target='_blank') vote for our server] daily
+			span.close_full(onclick='vote_reminder_close();') close
 			
 
 		#addform(onclick='hide_add_form()')

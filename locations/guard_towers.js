@@ -299,8 +299,8 @@ guard_towers = [
     y: 2514,
     creator: 'Lordofrus'
   }, {
-    x: 628,
-    y: 1318,
+    x: 626,
+    y: 1379,
     creator: 'Borgal'
   }, {
     x: 1228,
@@ -310,5 +310,89 @@ guard_towers = [
     x: 3075,
     y: 1455,
     creator: 'Xenon'
+  }, {
+    x: 1031,
+    y: 1225,
+    creator: 'Dlow'
+  }, {
+    x: 437,
+    y: 3077,
+    creator: 'Liam'
+  }, {
+    x: 1228,
+    y: 1071,
+    creator: 'Rikko'
+  }, {
+    x: 658,
+    y: 2828,
+    creator: 'DwemerManiac'
+  }, {
+    x: 769,
+    y: 1581,
+    creator: 'Ratzo & Yelruh'
+  }, {
+    x: 1501,
+    y: 890,
+    creator: 'Dallanar'
+  }, {
+    x: 1445,
+    y: 887,
+    creator: 'Dallanar'
+  }, {
+    x: 1374,
+    y: 880,
+    creator: 'Dallanar'
+  }, {
+    x: 1337,
+    y: 839,
+    creator: 'Dallanar'
+  }, {
+    x: 1295,
+    y: 798,
+    creator: 'Dallanar'
+  }, {
+    x: 3445,
+    y: 2607,
+    creator: 'Plasson'
+  }, {
+    x: 3343,
+    y: 2607,
+    creator: 'Plasson'
+  }, {
+    x: 1332,
+    y: 1031,
+    creator: 'Hampe'
+  }, {
+    x: 2628,
+    y: 3679,
+    creator: 'Reese'
+  }, {
+    x: 670,
+    y: 2804,
+    creator: 'DwemerManiac'
+  }, {
+    x: 730,
+    y: 2800,
+    creator: 'DwemerManiac'
+  }, {
+    x: 2603,
+    y: 3270,
+    creator: 'Kezei'
+  }, {
+    x: 1390,
+    y: 396,
+    creator: 'Zigackly'
+  }, {
+    x: 1294,
+    y: 442,
+    creator: 'Zigackly'
+  }, {
+    x: 1233,
+    y: 413,
+    creator: 'Zigackly'
+  }, {
+    x: 692,
+    y: 794,
+    creator: 'Apex'
   }
 ];

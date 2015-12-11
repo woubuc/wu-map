@@ -41,7 +41,7 @@ projection =
 		y: point.y / projection.coord_multiplier
 
 init = ->
-
+	init_moved = no
 	# Create map object
 	map = new google.maps.Map document.getElementById('map'),
 		center:
@@ -130,6 +130,7 @@ init = ->
 
 		if window.location.hash.substr(1) is i.tag
 			show_deed_on_map i.tag
+			init_moved = yes
 
 
 	# Guard towers
@@ -187,16 +188,7 @@ init = ->
 
 
 	hash = window.location.hash.substr(1)
-	if hash.indexOf(',') isnt -1 # Old URLs
-		hash = hash.split(',')
-		if hash.length is 2
-			coords =
-				x: parseInt(hash[0])
-				y: parseInt(hash[1])
-			map.panTo projection.fromPointToLatLng(projection.fromCoords(coords))
-			show_coords_info coords
-
-	else if hash.indexOf('_') isnt -1 # New URLs
+	if hash.indexOf('_') isnt -1 # New URLs
 		hash = hash.split('_')
 		if hash.length is 2
 			coords =
@@ -204,12 +196,86 @@ init = ->
 				y: parseInt(hash[1])
 			map.panTo projection.fromPointToLatLng(projection.fromCoords(coords))
 			show_coords_info coords
+			init_moved = yes
+	else if not init_moved
+		home_deed = Cookies.get('wu_map_home_deed')
+		if home_deed?
+			show_deed_on_map(home_deed, no)
 
 	map.addListener 'zoom_changed', close_infowin
 
 	if window.innerWidth > 1024
-		toggle_sidebar()
+		document.body.className = 'sidebar'
+	else
+		document.body.className = 'no_sidebar'
 
+	statsRequest.then update_stats, (err, xhr) ->
+		console.log err if console?
+
+	last_reminder = Cookies.get('wu_map_vote_reminder')
+	if last_reminder?
+		d = new Date()
+		timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear()
+		if last_reminder isnt timestr
+			vote_reminder_open()
+	else
+		vote_reminder_open()
+
+
+	serverinfo_size = Cookies.get('wu_map_serverinfo_size')
+	if serverinfo_size?
+		document.getElementById('serverinfo').className = serverinfo_size
+		Cookies.set('wu_map_serverinfo_size', serverinfo_size)
+
+
+	setInterval ->
+		console.log 'Updating stats.json' if console?
+		pegasus('http://188.226.191.32:8000/stats.json').then update_stats, (err, xhr) ->
+			console.log err if console?
+	, 30000
+
+
+vote_reminder_open = ->
+	document.getElementById('vote_reminder').style.display = 'block'
+
+vote_reminder_close = ->
+	document.getElementById('vote_reminder').style.display = 'none'
+	d = new Date()
+	timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear()
+	Cookies.set('wu_map_vote_reminder', timestr)
+
+
+update_stats = (data, xhr) ->
+	document.getElementById('serverinfo_status').className = if data.online then 'online' else 'offline'
+	document.getElementById('serverinfo_players').innerText = data.players
+	document.getElementById('serverinfo').style.display = 'block'
+
+	harvest = []
+
+	check = (starfall, week, plant, type) ->
+		if data.starfall is starfall and data.week is week
+			harvest.push
+				plant: plant
+				type: ' ' + type
+
+	check 'Leaf', 1, 'Olive', 'trees'
+	check 'Leaf', 2, 'Oleander', 'bushes'
+	check 'Bear', 1, 'Camellia', 'bushes'
+	check 'Bear', 2, 'Lavender', 'bushes'
+	check 'Bear', 3, 'Rose', 'bushes'
+	check 'Bear', 4, 'Maple', 'trees'
+	check 'Fire', 1, 'Olive', 'trees'
+	check 'Raven', 1, 'Grape', 'bushes'
+	check 'Raven', 3, 'Apple', 'trees'
+	check 'Dancers', 1, 'Walnut', 'trees'
+	check 'Omen', 1, 'Lemon', 'trees'
+	check 'Silence', 3, 'Chestnut', 'trees'
+	check 'White Shark', 1, 'Cherry', 'trees'
+
+	if harvest.length > 0
+		Transparency.render document.getElementById('serverinfo_harvest_items'), harvest
+
+		document.getElementById('serverinfo_harvest').style.display = 'block'
 
 close_infowin = ->
 	if infowin isnt ''
@@ -218,20 +284,36 @@ close_infowin = ->
 
 
 toggle_sidebar = ->
-	if document.body.className is ''
+	if document.body.className is 'no_sidebar'
 		document.body.className = 'sidebar'
 	else
-		document.body.className = ''
+		document.body.className = 'no_sidebar'
 
 	setTimeout ->
 		google.maps.event.trigger map, 'resize'
 	, 100
 
+
+toggle_serverinfo_size = ->
+	el = document.getElementById('serverinfo')
+	size = if el.className is '' then 'small' else ''
+	el.className = size
+	Cookies.set('wu_map_serverinfo_size', size)
+
+# Home functions
+set_home = (tag, img) ->
+	Cookies.set('wu_map_home_deed', tag)
+	show_deed_info(tag)
+
+clear_home = ->
+	Cookies.expire('wu_map_home_deed')
+
+
 # Deed functions
-show_deed_on_map = (tag) ->
+show_deed_on_map = (tag, showInfo = yes) ->
 	deed = deeds[deed_tags[tag]]
 	map.panTo projection.fromPointToLatLng(projection.fromCoords(x: deed.x, y: deed.y))
-	show_deed_info(tag)
+	show_deed_info(tag) if showInfo
 
 	return false
 
@@ -304,8 +386,14 @@ show_deed_info = (tag) ->
 	nearby = find_nearby_locations(x: deed.x, y: deed.y)
 	props.push nearby if nearby
 
+	home_img = '<img id="home_deed" src="images/home_off.png" style="float:right;padding:0 0 5px 5px;cursor:pointer;" onmouseenter="this.src=\'images/home_hover.png\';" onmouseleave="this.src=\'images/home_off.png\';" onclick="set_home(\'' + deed.tag + '\', this)" title="Set as home" />'
+
+	if Cookies.get('wu_map_home_deed') is deed.tag
+		home_img = '<img id="home_deed" src="images/home_on.png" style="float:right;padding:0 0 5px 5px;cursor:pointer;" onclick="clear_home(this)" title="Clear home location" />'
+
 	infowin = new google.maps.InfoWindow
-		content: '<div id="content">
+		content: '<div id="content" style="min-width:200px">
+			<span>' + home_img + '</span>
 			<h2>' + deed.name + '</h2>
 			<div id="bodyContent">
 				' + props.join('') + '

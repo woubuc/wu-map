@@ -112,6 +112,11 @@ resources = [
     y: 2355,
     size: 'large'
   }, {
+    type: 'tar',
+    x: 903,
+    y: 320,
+    size: 'small'
+  }, {
     type: 'mine',
     x: 966,
     y: 793,
@@ -123,5 +128,10 @@ resources = [
     y: 3726,
     ores: ['iron'],
     features: ['forge', 'large anvil']
+  }, {
+    type: 'mine',
+    x: 596,
+    y: 1096,
+    ores: ['iron', 'silver']
   }
 ];

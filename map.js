@@ -1,4 +1,4 @@
-var change_map, close_infowin, deed_tags, distance, filter, find_nearby_locations, hide_add_form, hide_search, infowin, init, map, marker, projection, search, share_coords, share_deed, show_add_form, show_add_menu, show_coords_info, show_coords_on_map, show_deed_info, show_deed_on_map, toggle_markers, toggle_sidebar, update_markers,
+var change_map, clear_home, close_infowin, deed_tags, distance, filter, find_nearby_locations, hide_add_form, hide_search, infowin, init, map, marker, projection, search, set_home, share_coords, share_deed, show_add_form, show_add_menu, show_coords_info, show_coords_on_map, show_deed_info, show_deed_on_map, toggle_markers, toggle_serverinfo_size, toggle_sidebar, update_markers, update_stats, vote_reminder_close, vote_reminder_open,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 map = '';
@@ -88,7 +88,8 @@ projection = {
 };
 
 init = function() {
-  var Sklotopolis, Tiled, coords, coordsDiv, hash, i, j, k, len, len1, len2, len3, len4, m, p, q, r;
+  var Sklotopolis, Tiled, coords, coordsDiv, d, hash, home_deed, i, init_moved, j, k, last_reminder, len, len1, len2, len3, len4, m, p, q, r, serverinfo_size, timestr;
+  init_moved = false;
   map = new google.maps.Map(document.getElementById('map'), {
     center: {
       lat: -80.035400390625,
@@ -193,6 +194,7 @@ init = function() {
     i.marker.addListener('click', show_deed_info.bind(null, i.tag));
     if (window.location.hash.substr(1) === i.tag) {
       show_deed_on_map(i.tag);
+      init_moved = true;
     }
   }
   for (m = 0, len1 = guard_towers.length; m < len1; m++) {
@@ -276,17 +278,7 @@ init = function() {
     }));
   }
   hash = window.location.hash.substr(1);
-  if (hash.indexOf(',') !== -1) {
-    hash = hash.split(',');
-    if (hash.length === 2) {
-      coords = {
-        x: parseInt(hash[0]),
-        y: parseInt(hash[1])
-      };
-      map.panTo(projection.fromPointToLatLng(projection.fromCoords(coords)));
-      show_coords_info(coords);
-    }
-  } else if (hash.indexOf('_') !== -1) {
+  if (hash.indexOf('_') !== -1) {
     hash = hash.split('_');
     if (hash.length === 2) {
       coords = {
@@ -295,11 +287,94 @@ init = function() {
       };
       map.panTo(projection.fromPointToLatLng(projection.fromCoords(coords)));
       show_coords_info(coords);
+      init_moved = true;
+    }
+  } else if (!init_moved) {
+    home_deed = Cookies.get('wu_map_home_deed');
+    if (home_deed != null) {
+      show_deed_on_map(home_deed, false);
     }
   }
   map.addListener('zoom_changed', close_infowin);
   if (window.innerWidth > 1024) {
-    return toggle_sidebar();
+    document.body.className = 'sidebar';
+  } else {
+    document.body.className = 'no_sidebar';
+  }
+  statsRequest.then(update_stats, function(err, xhr) {
+    if (typeof console !== "undefined" && console !== null) {
+      return console.log(err);
+    }
+  });
+  last_reminder = Cookies.get('wu_map_vote_reminder');
+  if (last_reminder != null) {
+    d = new Date();
+    timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear();
+    if (last_reminder !== timestr) {
+      vote_reminder_open();
+    }
+  } else {
+    vote_reminder_open();
+  }
+  serverinfo_size = Cookies.get('wu_map_serverinfo_size');
+  if (serverinfo_size != null) {
+    document.getElementById('serverinfo').className = serverinfo_size;
+    Cookies.set('wu_map_serverinfo_size', serverinfo_size);
+  }
+  return setInterval(function() {
+    if (typeof console !== "undefined" && console !== null) {
+      console.log('Updating stats.json');
+    }
+    return pegasus('http://188.226.191.32:8000/stats.json').then(update_stats, function(err, xhr) {
+      if (typeof console !== "undefined" && console !== null) {
+        return console.log(err);
+      }
+    });
+  }, 30000);
+};
+
+vote_reminder_open = function() {
+  return document.getElementById('vote_reminder').style.display = 'block';
+};
+
+vote_reminder_close = function() {
+  var d, timestr;
+  document.getElementById('vote_reminder').style.display = 'none';
+  d = new Date();
+  timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear();
+  return Cookies.set('wu_map_vote_reminder', timestr);
+};
+
+update_stats = function(data, xhr) {
+  var check, harvest;
+  document.getElementById('serverinfo_status').className = data.online ? 'online' : 'offline';
+  document.getElementById('serverinfo_players').innerText = data.players;
+  document.getElementById('serverinfo').style.display = 'block';
+  harvest = [];
+  check = function(starfall, week, plant, type) {
+    if (data.starfall === starfall && data.week === week) {
+      return harvest.push({
+        plant: plant,
+        type: ' ' + type
+      });
+    }
+  };
+  check('Leaf', 1, 'Olive', 'trees');
+  check('Leaf', 2, 'Oleander', 'bushes');
+  check('Bear', 1, 'Camellia', 'bushes');
+  check('Bear', 2, 'Lavender', 'bushes');
+  check('Bear', 3, 'Rose', 'bushes');
+  check('Bear', 4, 'Maple', 'trees');
+  check('Fire', 1, 'Olive', 'trees');
+  check('Raven', 1, 'Grape', 'bushes');
+  check('Raven', 3, 'Apple', 'trees');
+  check('Dancers', 1, 'Walnut', 'trees');
+  check('Omen', 1, 'Lemon', 'trees');
+  check('Silence', 3, 'Chestnut', 'trees');
+  check('White Shark', 1, 'Cherry', 'trees');
+  if (harvest.length > 0) {
+    Transparency.render(document.getElementById('serverinfo_harvest_items'), harvest);
+    return document.getElementById('serverinfo_harvest').style.display = 'block';
   }
 };
 
@@ -311,29 +386,51 @@ close_infowin = function() {
 };
 
 toggle_sidebar = function() {
-  if (document.body.className === '') {
+  if (document.body.className === 'no_sidebar') {
     document.body.className = 'sidebar';
   } else {
-    document.body.className = '';
+    document.body.className = 'no_sidebar';
   }
   return setTimeout(function() {
     return google.maps.event.trigger(map, 'resize');
   }, 100);
 };
 
-show_deed_on_map = function(tag) {
+toggle_serverinfo_size = function() {
+  var el, size;
+  el = document.getElementById('serverinfo');
+  size = el.className === '' ? 'small' : '';
+  el.className = size;
+  return Cookies.set('wu_map_serverinfo_size', size);
+};
+
+set_home = function(tag, img) {
+  Cookies.set('wu_map_home_deed', tag);
+  return show_deed_info(tag);
+};
+
+clear_home = function() {
+  return Cookies.expire('wu_map_home_deed');
+};
+
+show_deed_on_map = function(tag, showInfo) {
   var deed;
+  if (showInfo == null) {
+    showInfo = true;
+  }
   deed = deeds[deed_tags[tag]];
   map.panTo(projection.fromPointToLatLng(projection.fromCoords({
     x: deed.x,
     y: deed.y
   })));
-  show_deed_info(tag);
+  if (showInfo) {
+    show_deed_info(tag);
+  }
   return false;
 };
 
 show_deed_info = function(tag) {
-  var deed, html, latLng, nearby, props;
+  var deed, home_img, html, latLng, nearby, props;
   deed = deeds[deed_tags[tag]];
   if (!filter.deeds) {
     filter.deeds = true;
@@ -414,8 +511,12 @@ show_deed_info = function(tag) {
   if (nearby) {
     props.push(nearby);
   }
+  home_img = '<img id="home_deed" src="images/home_off.png" style="float:right;padding:0 0 5px 5px;cursor:pointer;" onmouseenter="this.src=\'images/home_hover.png\';" onmouseleave="this.src=\'images/home_off.png\';" onclick="set_home(\'' + deed.tag + '\', this)" title="Set as home" />';
+  if (Cookies.get('wu_map_home_deed') === deed.tag) {
+    home_img = '<img id="home_deed" src="images/home_on.png" style="float:right;padding:0 0 5px 5px;cursor:pointer;" onclick="clear_home(this)" title="Clear home location" />';
+  }
   infowin = new google.maps.InfoWindow({
-    content: '<div id="content"> <h2>' + deed.name + '</h2> <div id="bodyContent">' + props.join('') + '<p style="padding-top:10px"><a href="#' + deed.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_deed(\'' + deed.tag + '\', this)">Share this location</a></p> </div> </div>'
+    content: '<div id="content" style="min-width:200px"> <span>' + home_img + '</span> <h2>' + deed.name + '</h2> <div id="bodyContent">' + props.join('') + '<p style="padding-top:10px"><a href="#' + deed.tag + '" style="display:inline-block;color:white;padding:3px 6px;border-radius:3px;font-size:13px;background:#2196F3;cursor:pointer;" onclick="share_deed(\'' + deed.tag + '\', this)">Share this location</a></p> </div> </div>'
   });
   deed.marker.setMap(map);
   infowin.open(map, deed.marker);

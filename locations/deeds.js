@@ -50,7 +50,9 @@ deeds = [
     tag: 'zigsburg',
     mayor: 'Zigackly',
     x: 1550,
-    y: 336
+    y: 336,
+    mayor: 'Zigackly',
+    type: 'solo'
   }, {
     name: 'Cedar Grove',
     tag: 'cedar-grove',
@@ -102,7 +104,7 @@ deeds = [
     mayor: 'Kezei',
     x: 2641,
     y: 3500,
-    features: ['harbour', 'resources', 'recruiting']
+    features: ['trader', 'merchant', 'market', 'inn', 'harbour', 'recruiting']
   }, {
     name: 'Deathlands',
     tag: 'deathlands',
@@ -734,5 +736,102 @@ deeds = [
     y: 2684,
     mayor: 'Freelance',
     type: 'small'
+  }, {
+    name: 'Seal Cove',
+    tag: 'seal-cove',
+    x: 1474,
+    y: 1603,
+    mayor: 'Wulfsige',
+    type: 'solo'
+  }, {
+    name: 'Monotropa',
+    tag: 'monotropa',
+    x: 880,
+    y: 701,
+    mayor: 'Kilem',
+    type: 'small'
+  }, {
+    name: 'Farm Point',
+    tag: 'farm-point',
+    x: 892,
+    y: 1332,
+    mayor: 'Yeva',
+    type: 'solo'
+  }, {
+    name: 'Pine Lake',
+    tag: 'pine-lake',
+    x: 2556,
+    y: 2280,
+    mayor: 'Harzim',
+    type: 'solo'
+  }, {
+    name: 'Littlehub',
+    tag: 'littlehub',
+    x: 805,
+    y: 1308,
+    mayor: 'Thalos',
+    features: ['harbour', 'recruiting'],
+    type: 'solo'
+  }, {
+    name: 'Archimedes Hall',
+    tag: 'archimedes-hall',
+    x: 2496,
+    y: 810,
+    mayor: 'Archimedes',
+    type: 'solo'
+  }, {
+    name: 'Enigma',
+    tag: 'enigma',
+    x: 742,
+    y: 276,
+    mayor: 'Zortanis',
+    features: ['recruiting'],
+    type: 'solo'
+  }, {
+    name: 'West Point',
+    tag: 'west-point',
+    x: 540,
+    y: 1100,
+    mayor: 'Sarren',
+    features: ['harbour', 'inn'],
+    type: 'solo'
+  }, {
+    name: 'Novus Castellum',
+    tag: 'novus-castellum',
+    x: 578,
+    y: 1990,
+    mayor: 'Kassanrda',
+    features: ['harbour', 'recruiting'],
+    type: 'solo'
+  }, {
+    name: 'The Anvil of Ice',
+    tag: 'anvil-of-ice',
+    x: 1472,
+    y: 2293,
+    mayor: 'ElofValantor',
+    type: 'solo'
+  }, {
+    name: 'Well of Souls',
+    tag: 'well-of-souls',
+    x: 2715,
+    y: 682,
+    mayor: 'Zealord',
+    features: ['harbour', 'recruiting'],
+    type: 'small'
+  }, {
+    name: 'Pirate Bay',
+    tag: 'pirate-bay',
+    x: 2548,
+    y: 778,
+    mayor: 'CookieMuncher & Cryke',
+    features: ['trader', 'market', 'harbour', 'inn', 'recruiting'],
+    type: 'large'
+  }, {
+    name: 'Celosia',
+    tag: 'celosia',
+    x: 1991,
+    y: 639,
+    mayor: 'Nuinethir',
+    type: 'solo'
   }
 ];
