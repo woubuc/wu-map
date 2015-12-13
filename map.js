@@ -1,4 +1,4 @@
-var change_map, clear_home, close_infowin, deed_tags, distance, filter, find_nearby_locations, hide_add_form, hide_search, infowin, init, map, marker, projection, search, set_home, share_coords, share_deed, show_add_form, show_add_menu, show_coords_info, show_coords_on_map, show_deed_info, show_deed_on_map, toggle_markers, toggle_serverinfo_size, toggle_sidebar, update_markers, update_stats, vote_reminder_close, vote_reminder_open,
+var change_map, clear_home, close_infowin, deed_tags, distance, filter, find_nearby_locations, hide_add_form, hide_search, infowin, init, map, marker, projection, search, set_home, share_coords, share_deed, show_add_form, show_coords_info, show_coords_on_map, show_deed_info, show_deed_on_map, toggle_markers, toggle_serverinfo_size, toggle_sidebar, update_markers, update_stats, vote_reminder_close, vote_reminder_open,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 map = '';
@@ -264,7 +264,7 @@ init = function() {
         x: i.x,
         y: i.y
       })),
-      map: null,
+      map: map,
       icon: {
         url: 'images/tree.png',
         size: new google.maps.Size(32, 37),
@@ -332,7 +332,7 @@ init = function() {
         return console.log(err);
       }
     });
-  }, 30000);
+  }, 61000);
 };
 
 vote_reminder_open = function() {
@@ -348,7 +348,7 @@ vote_reminder_close = function() {
 };
 
 update_stats = function(data, xhr) {
-  var check, harvest;
+  var check, harvest, i, k, len, len1, m, plants, ref, starfallNames;
   document.getElementById('serverinfo_status').className = data.online ? 'online' : 'offline';
   if (document.getElementById('serverinfo_players').textContent != null) {
     document.getElementById('serverinfo_players').textContent = data.players;
@@ -357,20 +357,37 @@ update_stats = function(data, xhr) {
   }
   document.getElementById('serverinfo').style.display = 'block';
   harvest = [];
+  starfallNames = ['Diamond', 'Saw', 'Digging', 'Leaf', 'Bear\'s', 'Snake', 'White Shark', 'Fire', 'Raven', 'Dancer', 'Omen', 'Silence'];
   check = function(starfall, week, plant, type) {
-    if (data.starfall === starfall && data.week === week) {
-      return harvest.push({
-        plant: plant,
-        type: ' ' + type
-      });
+    var nextStarfall, ref, starfallNum;
+    if (week === 1) {
+      if (data.starfall !== starfall) {
+        return;
+      }
+    } else {
+      starfallNum = starfallNames.indexOf(starfall);
+      nextStarfall = starfallNames[starfallNum + 1 === starfallNames.length ? 0 : starfallNum + 1];
+      if ((ref = data.starfall) !== starfall && ref !== nextStarfall) {
+        return;
+      }
+      if (data.starfall === starfall && data.week < week) {
+        return;
+      }
+      if (data.starfall === nextStarfall && data.week >= week) {
+        return;
+      }
     }
+    return harvest.push({
+      plant: plant,
+      type: ' ' + type
+    });
   };
   check('Leaf', 1, 'Olive', 'trees');
   check('Leaf', 2, 'Oleander', 'bushes');
-  check('Bear', 1, 'Camellia', 'bushes');
-  check('Bear', 2, 'Lavender', 'bushes');
-  check('Bear', 3, 'Rose', 'bushes');
-  check('Bear', 4, 'Maple', 'trees');
+  check('Bear\'s', 1, 'Camellia', 'bushes');
+  check('Bear\'s', 2, 'Lavender', 'bushes');
+  check('Bear\'s', 3, 'Rose', 'bushes');
+  check('Bear\'s', 4, 'Maple', 'trees');
   check('Fire', 1, 'Olive', 'trees');
   check('Raven', 1, 'Grape', 'bushes');
   check('Raven', 3, 'Apple', 'trees');
@@ -378,7 +395,28 @@ update_stats = function(data, xhr) {
   check('Omen', 1, 'Lemon', 'trees');
   check('Silence', 3, 'Chestnut', 'trees');
   check('White Shark', 1, 'Cherry', 'trees');
+  for (k = 0, len = trees.length; k < len; k++) {
+    i = trees[k];
+    i.harvest = false;
+    i.marker.setIcon('images/tree.png');
+  }
   if (harvest.length > 0) {
+    plants = (function() {
+      var len1, m, results1;
+      results1 = [];
+      for (m = 0, len1 = harvest.length; m < len1; m++) {
+        i = harvest[m];
+        results1.push(i.plant.toLowerCase());
+      }
+      return results1;
+    })();
+    for (m = 0, len1 = trees.length; m < len1; m++) {
+      i = trees[m];
+      if (ref = i.type.toLowerCase(), indexOf.call(plants, ref) >= 0) {
+        i.harvest = true;
+        i.marker.setIcon('images/tree_harvest.png');
+      }
+    }
     Transparency.render(document.getElementById('serverinfo_harvest_items'), harvest);
     return document.getElementById('serverinfo_harvest').style.display = 'block';
   }
@@ -664,7 +702,17 @@ show_coords_info = function(coords) {
         if (i.x === coords.x && i.y === coords.y) {
           found = true;
           coords_marker = i.marker;
-          props.push('<p>The forest in this area is mostly <strong style="font-weight:500">' + i.type + ' trees</strong>.</p>');
+          if (i.bushes) {
+            props.push('<p>There are a lot of <strong style="font-weight:500">' + i.type + ' bushes</strong> around here.</p>');
+            if (i.harvest) {
+              props.push('<p>These bushes can be harvested right now.</p>');
+            }
+          } else {
+            props.push('<p>The forest in this area is mostly <strong style="font-weight:500">' + i.type + ' trees</strong>.</p>');
+            if (i.harvest) {
+              props.push('<p>These trees can be harvested right now.</p>');
+            }
+          }
         }
       }
     }
@@ -798,16 +846,6 @@ find_nearby_locations = function(coords) {
   return '<br>' + nearby.join('');
 };
 
-show_add_menu = function() {
-  var el;
-  el = document.getElementById('addmenu');
-  if (el.className === 'open') {
-    return el.className = '';
-  } else {
-    return el.className = 'open';
-  }
-};
-
 show_add_form = function(which) {
   var url;
   url = (function() {
@@ -829,8 +867,7 @@ show_add_form = function(which) {
     }
   })();
   document.getElementById('addform').style.display = 'block';
-  document.getElementById('addform').childNodes[0].src = url;
-  return document.getElementById('addmenu').className = '';
+  return document.getElementById('addform').childNodes[0].src = url;
 };
 
 hide_add_form = function() {
@@ -845,65 +882,196 @@ hide_search = function() {
 };
 
 search = function() {
-  var c, coords, i, k, len, len1, len2, len3, m, max_length, p, q, results, searchtext, val;
+  var c, closest, coords, deed, dist, home_deed, i, k, len, len1, len2, len3, len4, len5, len6, len7, len8, location, m, max_length, p, q, r, results, s, searchtext, t, u, v, val;
   searchtext = document.getElementById('search').value.toLowerCase();
   results = [];
   if (searchtext !== '') {
-    if (searchtext.indexOf(',') !== -1) {
-      coords = searchtext.split(',');
-      for (i = k = 0, len = coords.length; k < len; i = ++k) {
-        val = coords[i];
-        coords[i] = val.replace(/([XxYy]|\s)/g, '');
+    if (searchtext.indexOf(' near ') > -1 || searchtext.indexOf('nearby ') > -1) {
+      deed = null;
+      if (searchtext.indexOf(' near ') > -1) {
+        location = searchtext.split(' near ');
+        searchtext = location[0];
+        location = location[1];
+        if (location !== '') {
+          home_deed = localStorage.getItem('wu_map_home_deed');
+          if ((location === 'm' || location === 'me') && (home_deed != null)) {
+            deed = deeds[deed_tags[home_deed]];
+          } else if (location === 'n' || location === 'nt') {
+            deed = deeds[deed_tags['new-town']];
+          } else {
+            for (k = 0, len = deeds.length; k < len; k++) {
+              i = deeds[k];
+              if (i.name.toLowerCase().indexOf(location) !== -1) {
+                deed = i;
+                break;
+              }
+            }
+          }
+        }
+      } else {
+        searchtext = searchtext.replace('nearby ', '');
+        if (searchtext !== '') {
+          home_deed = localStorage.getItem('wu_map_home_deed');
+          if (home_deed != null) {
+            deed = deeds[deed_tags[home_deed]];
+          }
+        }
       }
-      if (!isNaN(coords[0]) && !isNaN(coords[1])) {
-        if (coords[0] > 0 && coords[1] > 0) {
+      if (deed !== null) {
+        closest = {
+          resource: {
+            found: false,
+            dist: 4096
+          },
+          forest: {
+            found: false,
+            dist: 4096
+          }
+        };
+        for (m = 0, len1 = resources.length; m < len1; m++) {
+          i = resources[m];
+          if (i.type === 'mine') {
+
+          } else {
+            if ((i.size + ' ' + i.type).toLowerCase().indexOf(searchtext) !== -1) {
+              dist = distance(deed.x, deed.y, i.x, i.y);
+              if (dist < closest.resource.dist) {
+                closest.resource = {
+                  dist: dist,
+                  found: true,
+                  name: i.size.charAt(0).toUpperCase() + i.size.slice(1) + ' ' + i.type + ' deposit',
+                  tag: i.x + '_' + i.y,
+                  "class": 'resource',
+                  sub: 'Closest one to ' + deed.name,
+                  onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+                };
+              }
+            }
+          }
+        }
+        for (p = 0, len2 = trees.length; p < len2; p++) {
+          i = trees[p];
+          if ((i.type + ' forest').toLowerCase().indexOf(searchtext) !== -1) {
+            dist = distance(deed.x, deed.y, i.x, i.y);
+            if (dist < closest.forest.dist) {
+              closest.forest = {
+                dist: dist,
+                found: true,
+                name: i.type.charAt(0).toUpperCase() + i.type.slice(1) + ' forest',
+                tag: i.x + '_' + i.y,
+                "class": 'forest',
+                sub: 'Closest one to ' + deed.name,
+                onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+              };
+            }
+          }
+        }
+        if (closest.resource.found) {
+          results.push(closest.resource);
+        }
+        if (closest.forest.found) {
+          results.push(closest.forest);
+        }
+      }
+    } else {
+      if (searchtext.indexOf(',') !== -1) {
+        coords = searchtext.split(',');
+        for (i = q = 0, len3 = coords.length; q < len3; i = ++q) {
+          val = coords[i];
+          coords[i] = val.replace(/([XxYy]|\s)/g, '');
+        }
+        if (!isNaN(coords[0]) && !isNaN(coords[1])) {
+          if (coords[0] > 0 && coords[1] > 0) {
+            results.push({
+              name: 'X' + coords[0] + ', Y' + coords[1],
+              sub: 'Go to coordinates',
+              tag: coords[0] + '_' + coords[1],
+              "class": 'coords',
+              onclick: 'show_coords_on_map(' + Math.round(coords[0]) + ',' + Math.round(coords[1]) + ')'
+            });
+          }
+        }
+      }
+      for (r = 0, len4 = poi.length; r < len4; r++) {
+        i = poi[r];
+        if (results.length > 8) {
+          break;
+        }
+        if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
           results.push({
-            name: 'X' + coords[0] + ', Y' + coords[1],
-            sub: 'Go to coordinates',
-            tag: coords[0] + '_' + coords[1],
-            "class": 'coords',
-            onclick: 'show_coords_on_map(' + Math.round(coords[0]) + ',' + Math.round(coords[1]) + ')'
+            name: i.name,
+            x: i.x,
+            y: i.y,
+            "class": i.type == null ? 'poi' : 'poi_' + i.type,
+            tag: i.x + '_' + i.y,
+            onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
           });
         }
       }
-    }
-    for (m = 0, len1 = poi.length; m < len1; m++) {
-      i = poi[m];
-      if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
-        results.push({
-          name: i.name,
-          x: i.x,
-          y: i.y,
-          "class": i.type == null ? 'poi' : 'poi_' + i.type,
-          tag: i.x + '_' + i.y,
-          onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
-        });
-      }
-    }
-    for (p = 0, len2 = deeds.length; p < len2; p++) {
-      i = deeds[p];
-      if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
-        results.push(i);
-      } else if (i.mayor != null) {
-        if (i.mayor.toLowerCase().indexOf(searchtext) !== -1) {
+      for (s = 0, len5 = deeds.length; s < len5; s++) {
+        i = deeds[s];
+        if (results.length > 8) {
+          break;
+        }
+        if (i.name.toLowerCase().indexOf(searchtext) !== -1) {
           results.push(i);
+        } else if (i.mayor != null) {
+          if (i.mayor.toLowerCase().indexOf(searchtext) !== -1) {
+            results.push(i);
+          }
         }
       }
-    }
-    for (q = 0, len3 = guard_towers.length; q < len3; q++) {
-      i = guard_towers[q];
-      if (i.creator == null) {
-        continue;
+      for (t = 0, len6 = guard_towers.length; t < len6; t++) {
+        i = guard_towers[t];
+        if (results.length > 8) {
+          break;
+        }
+        if (i.creator == null) {
+          continue;
+        }
+        if (i.creator.toLowerCase().indexOf(searchtext) !== -1) {
+          c = i.creator.toLowerCase().indexOf(searchtext);
+          results.push({
+            name: 'Guard tower at ' + i.x + ', ' + i.y,
+            sub: 'Built by ' + i.creator.slice(0, c) + '<strong>' + i.creator.slice(c, c + searchtext.length) + '</strong>' + i.creator.slice(c + searchtext.length),
+            tag: i.x + '_' + i.y,
+            "class": 'guard_tower',
+            onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+          });
+        }
       }
-      if (i.creator.toLowerCase().indexOf(searchtext) !== -1) {
-        c = i.creator.toLowerCase().indexOf(searchtext);
-        results.push({
-          name: 'Guard tower at ' + i.x + ', ' + i.y,
-          sub: 'Built by ' + i.creator.slice(0, c) + '<strong>' + i.creator.slice(c, c + searchtext.length) + '</strong>' + i.creator.slice(c + searchtext.length),
-          tag: i.x + '_' + i.y,
-          "class": 'guard_tower',
-          onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
-        });
+      for (u = 0, len7 = trees.length; u < len7; u++) {
+        i = trees[u];
+        if (results.length > 8) {
+          break;
+        }
+        if ((i.type + ' forest').toLowerCase().indexOf(searchtext) !== -1) {
+          results.push({
+            name: i.type.charAt(0).toUpperCase() + i.type.slice(1) + ' forest',
+            tag: i.x + '_' + i.y,
+            "class": 'forest',
+            sub: 'X' + i.x + ', Y' + i.y,
+            onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+          });
+        }
+      }
+      for (v = 0, len8 = resources.length; v < len8; v++) {
+        i = resources[v];
+        if (results.length > 8) {
+          break;
+        }
+        if (i.type === 'mine') {
+          continue;
+        }
+        if ((i.size + ' ' + i.type).toLowerCase().indexOf(searchtext) !== -1) {
+          results.push({
+            name: i.size.charAt(0).toUpperCase() + i.size.slice(1) + ' ' + i.type + ' deposit',
+            tag: i.x + '_' + i.y,
+            "class": 'resource',
+            sub: 'X' + i.x + ', Y' + i.y,
+            onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+          });
+        }
       }
     }
     max_length = (function() {
@@ -1006,7 +1174,7 @@ filter = {
   guard_towers: true,
   resources: true,
   poi: true,
-  trees: false
+  trees: true
 };
 
 toggle_markers = function(which) {
@@ -1107,6 +1275,16 @@ change_map = function(type) {
 
 distance = function(coord_a, coord_b) {
   var x, y;
+  if (arguments.length === 4) {
+    coord_a = {
+      x: arguments[0],
+      y: arguments[1]
+    };
+    coord_b = {
+      x: arguments[2],
+      y: arguments[3]
+    };
+  }
   x = coord_b.x - coord_a.x;
   x = x * x;
   y = coord_b.y - coord_a.y;

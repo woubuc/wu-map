@@ -279,6 +279,8 @@ a#sidebartoggle {
         background-image: url("images/deed_solo_icon.png"); }
       #searchbox #searchresults a.location.ruins {
         background-image: url("images/ruins_icon.png"); }
+      #searchbox #searchresults a.location.forest {
+        background-image: url("images/tree_icon.png"); }
       #searchbox #searchresults a.location.coords {
         background-image: url("images/location_icon.png"); }
       #searchbox #searchresults a.location span {

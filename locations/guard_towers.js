@@ -352,11 +352,11 @@ guard_towers = [
     creator: 'Dallanar'
   }, {
     x: 3445,
-    y: 2607,
+    y: 2598,
     creator: 'Plasson'
   }, {
     x: 3343,
-    y: 2607,
+    y: 2590,
     creator: 'Plasson'
   }, {
     x: 1332,
@@ -394,5 +394,45 @@ guard_towers = [
     x: 692,
     y: 794,
     creator: 'Apex'
+  }, {
+    x: 841,
+    y: 2707,
+    ceator: 'Lunaman'
+  }, {
+    x: 835,
+    y: 1385,
+    creator: 'Arndegot'
+  }, {
+    x: 890,
+    y: 1385,
+    creator: 'Arndegot'
+  }, {
+    x: 727,
+    y: 1370,
+    creator: 'Arndegot'
+  }, {
+    x: 675,
+    y: 1370,
+    creator: 'Arndegot'
+  }, {
+    x: 754,
+    y: 1310,
+    creator: 'Arndegot'
+  }, {
+    x: 754,
+    y: 1250,
+    creator: 'Arndegot'
+  }, {
+    x: 573,
+    y: 1450,
+    creator: 'Borgal'
+  }, {
+    x: 2489,
+    y: 813,
+    creator: 'Archimedes'
+  }, {
+    x: 819,
+    y: 1247,
+    creator: 'Thalos'
   }
 ];

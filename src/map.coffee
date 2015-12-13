@@ -177,7 +177,7 @@ init = ->
 	for i in trees
 		i.marker = new google.maps.Marker
 			position: projection.fromPointToLatLng(projection.fromCoords(x: i.x, y: i.y))
-			map: null
+			map: map
 			icon:
 				url: 'images/tree.png'
 				size: new google.maps.Size(32, 37)
@@ -229,11 +229,12 @@ init = ->
 		localStorage.setItem('wu_map_serverinfo_size', serverinfo_size)
 
 
+	# Update info every minute
 	setInterval ->
 		console.log 'Updating stats.json' if console?
 		pegasus('http://188.226.191.32:8000/stats.json').then update_stats, (err, xhr) ->
 			console.log err if console?
-	, 30000
+	, 61000
 
 
 vote_reminder_open = ->
@@ -244,7 +245,6 @@ vote_reminder_close = ->
 	d = new Date()
 	timestr = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear()
 	localStorage.setItem('wu_map_vote_reminder', timestr)
-
 
 update_stats = (data, xhr) ->
 
@@ -257,18 +257,48 @@ update_stats = (data, xhr) ->
 
 	harvest = []
 
+	starfallNames = [
+		'Diamond',
+		'Saw',
+		'Digging',
+		'Leaf',
+		'Bear\'s',
+		'Snake',
+		'White Shark',
+		'Fire',
+		'Raven',
+		'Dancer',
+		'Omen',
+		'Silence'
+	]
+
 	check = (starfall, week, plant, type) ->
-		if data.starfall is starfall and data.week is week
-			harvest.push
-				plant: plant
-				type: ' ' + type
+		if week is 1
+			# Not the starfall we're looking for
+			return if data.starfall isnt starfall
+		else
+			starfallNum = starfallNames.indexOf(starfall)
+			nextStarfall = starfallNames[if starfallNum + 1 is starfallNames.length then 0 else starfallNum + 1]
+
+			# This is not the starfall we're looking for
+			return if data.starfall not in [starfall, nextStarfall]
+
+			# Week is too early
+			return if data.starfall is starfall and data.week < week
+
+			# Week is too late
+			return if data.starfall is nextStarfall and data.week >= week
+		
+		harvest.push
+			plant: plant
+			type: ' ' + type
 
 	check 'Leaf', 1, 'Olive', 'trees'
 	check 'Leaf', 2, 'Oleander', 'bushes'
-	check 'Bear', 1, 'Camellia', 'bushes'
-	check 'Bear', 2, 'Lavender', 'bushes'
-	check 'Bear', 3, 'Rose', 'bushes'
-	check 'Bear', 4, 'Maple', 'trees'
+	check 'Bear\'s', 1, 'Camellia', 'bushes'
+	check 'Bear\'s', 2, 'Lavender', 'bushes'
+	check 'Bear\'s', 3, 'Rose', 'bushes'
+	check 'Bear\'s', 4, 'Maple', 'trees'
 	check 'Fire', 1, 'Olive', 'trees'
 	check 'Raven', 1, 'Grape', 'bushes'
 	check 'Raven', 3, 'Apple', 'trees'
@@ -277,7 +307,17 @@ update_stats = (data, xhr) ->
 	check 'Silence', 3, 'Chestnut', 'trees'
 	check 'White Shark', 1, 'Cherry', 'trees'
 
+	for i in trees
+		i.harvest = no
+		i.marker.setIcon 'images/tree.png'
+
 	if harvest.length > 0
+		plants = (i.plant.toLowerCase() for i in harvest)
+		for i in trees
+			if i.type.toLowerCase() in plants
+				i.harvest = yes
+				i.marker.setIcon 'images/tree_harvest.png'
+
 		Transparency.render document.getElementById('serverinfo_harvest_items'), harvest
 
 		document.getElementById('serverinfo_harvest').style.display = 'block'
@@ -510,7 +550,14 @@ show_coords_info = (coords) ->
 				if i.x is coords.x and i.y is coords.y
 					found = yes
 					coords_marker = i.marker
-					props.push '<p>The forest in this area is mostly <strong style="font-weight:500">' + i.type + ' trees</strong>.</p>'
+					if i.bushes
+						props.push '<p>There are a lot of <strong style="font-weight:500">' + i.type + ' bushes</strong> around here.</p>'
+						if i.harvest
+							props.push '<p>These bushes can be harvested right now.</p>'
+					else
+						props.push '<p>The forest in this area is mostly <strong style="font-weight:500">' + i.type + ' trees</strong>.</p>'
+						if i.harvest
+							props.push '<p>These trees can be harvested right now.</p>'
 
 
 	props.push '<p>There seems to be nothing special here</p>' if not found
@@ -608,13 +655,6 @@ find_nearby_locations = (coords) ->
 	return false if nearby.length is 0
 	return '<br>' + nearby.join('')
 
-# Add menu
-show_add_menu = ->
-	el = document.getElementById('addmenu')
-	if el.className is 'open'
-		el.className = ''
-	else
-		el.className = 'open'
 
 show_add_form = (which) ->
 	url = switch which
@@ -627,7 +667,6 @@ show_add_form = (which) ->
 		when 'report' then 'https://docs.google.com/forms/d/1R3gbLKem9Hw4cM73pxdqT-LJRtZBxJr_TXTjNGYLcNE/viewform?embedded=true&hl=en'
 	document.getElementById('addform').style.display = 'block'
 	document.getElementById('addform').childNodes[0].src = url
-	document.getElementById('addmenu').className = ''
 
 hide_add_form = ->
 	document.getElementById('addform').style.display = 'none'
@@ -645,48 +684,152 @@ search = ->
 
 	if searchtext isnt ''
 
-		# Coordinates
-		if searchtext.indexOf(',') isnt -1
-			coords = searchtext.split(',')
-			coords[i] = val.replace(/([XxYy]|\s)/g, '') for val, i in coords # Remove 'X', 'Y' and spaces
-			if not isNaN(coords[0]) and not isNaN(coords[1])
-				if coords[0] > 0 and coords[1] > 0
+		if searchtext.indexOf(' near ') > -1 or searchtext.indexOf('nearby ') > -1
+
+			deed = null
+			if searchtext.indexOf(' near ') > -1
+				location = searchtext.split(' near ')
+				searchtext = location[0]
+				location = location[1]
+
+				if location isnt ''
+
+					
+					home_deed = localStorage.getItem('wu_map_home_deed')
+					if location in ['m', 'me'] and home_deed?
+						deed = deeds[deed_tags[home_deed]]
+					else if location in ['n', 'nt']
+						deed = deeds[deed_tags['new-town']]
+					else
+						for i in deeds
+							if i.name.toLowerCase().indexOf(location) isnt -1
+								deed = i
+								break
+
+			else
+				searchtext = searchtext.replace('nearby ', '')
+				if searchtext isnt ''
+					home_deed = localStorage.getItem('wu_map_home_deed')
+					if home_deed?
+						deed = deeds[deed_tags[home_deed]]
+
+			if deed isnt null
+
+				# Forests
+				closest = 
+					resource:
+						found: no
+						dist: 4096
+					forest:
+						found: no
+						dist: 4096
+
+				for i in resources
+					if i.type is 'mine'
+
+					else
+						if (i.size + ' ' + i.type).toLowerCase().indexOf(searchtext) isnt -1
+							dist = distance deed.x, deed.y, i.x, i.y
+							if dist < closest.resource.dist
+								closest.resource =
+									dist: dist
+									found: yes
+									name: i.size.charAt(0).toUpperCase() + i.size.slice(1) + ' ' + i.type + ' deposit'
+									tag: i.x + '_' + i.y
+									class: 'resource'
+									sub: 'Closest one to ' + deed.name
+									onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+
+				for i in trees
+					if (i.type + ' forest').toLowerCase().indexOf(searchtext) isnt -1
+						dist = distance deed.x, deed.y, i.x, i.y
+						if dist < closest.forest.dist
+							closest.forest =
+								dist: dist
+								found: yes
+								name: i.type.charAt(0).toUpperCase() + i.type.slice(1) + ' forest'
+								tag: i.x + '_' + i.y
+								class: 'forest'
+								sub: 'Closest one to ' + deed.name
+								onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+
+				if closest.resource.found
+					results.push closest.resource
+
+				if closest.forest.found
+					results.push closest.forest
+
+		else # Simple search string
+
+			# Coordinates
+			if searchtext.indexOf(',') isnt -1
+				coords = searchtext.split(',')
+				coords[i] = val.replace(/([XxYy]|\s)/g, '') for val, i in coords # Remove 'X', 'Y' and spaces
+				if not isNaN(coords[0]) and not isNaN(coords[1])
+					if coords[0] > 0 and coords[1] > 0
+						results.push
+							name: 'X' + coords[0] + ', Y' + coords[1]
+							sub: 'Go to coordinates'
+							tag: coords[0] + '_' + coords[1]
+							class: 'coords'
+							onclick: 'show_coords_on_map(' + Math.round(coords[0]) + ',' + Math.round(coords[1]) + ')'
+
+			# POI
+			for i in poi
+				break if results.length > 8
+				if i.name.toLowerCase().indexOf(searchtext) isnt -1
 					results.push
-						name: 'X' + coords[0] + ', Y' + coords[1]
-						sub: 'Go to coordinates'
-						tag: coords[0] + '_' + coords[1]
-						class: 'coords'
-						onclick: 'show_coords_on_map(' + Math.round(coords[0]) + ',' + Math.round(coords[1]) + ')'
+						name: i.name
+						x: i.x
+						y: i.y
+						class: if not i.type? then 'poi' else 'poi_' + i.type
+						tag: i.x + '_' + i.y
+						onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
 
-		# POI
-		for i in poi
-			if i.name.toLowerCase().indexOf(searchtext) isnt -1
-				results.push
-					name: i.name
-					x: i.x
-					y: i.y
-					class: if not i.type? then 'poi' else 'poi_' + i.type
-					tag: i.x + '_' + i.y
-					onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
-
-		# Deeds
-		for i in deeds
-			if i.name.toLowerCase().indexOf(searchtext) isnt -1
-				results.push i
-			else if i.mayor?
-				if i.mayor.toLowerCase().indexOf(searchtext) isnt -1
+			# Deeds
+			for i in deeds
+				break if results.length > 8
+				if i.name.toLowerCase().indexOf(searchtext) isnt -1
 					results.push i
+				else if i.mayor?
+					if i.mayor.toLowerCase().indexOf(searchtext) isnt -1
+						results.push i
 
-		for i in guard_towers
-			continue if not i.creator?
-			if i.creator.toLowerCase().indexOf(searchtext) isnt -1
-				c = i.creator.toLowerCase().indexOf(searchtext)
-				results.push
-					name: 'Guard tower at ' + i.x + ', ' + i.y
-					sub: 'Built by ' + i.creator.slice(0, c) + '<strong>' + i.creator.slice(c, c + searchtext.length) + '</strong>' + i.creator.slice(c + searchtext.length)
-					tag: i.x + '_' + i.y
-					class: 'guard_tower'
-					onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+			for i in guard_towers
+				break if results.length > 8
+				continue if not i.creator?
+				if i.creator.toLowerCase().indexOf(searchtext) isnt -1
+					c = i.creator.toLowerCase().indexOf(searchtext)
+					results.push
+						name: 'Guard tower at ' + i.x + ', ' + i.y
+						sub: 'Built by ' + i.creator.slice(0, c) + '<strong>' + i.creator.slice(c, c + searchtext.length) + '</strong>' + i.creator.slice(c + searchtext.length)
+						tag: i.x + '_' + i.y
+						class: 'guard_tower'
+						onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+
+			# Forests
+			for i in trees
+				break if results.length > 8
+				if (i.type + ' forest').toLowerCase().indexOf(searchtext) isnt -1
+					results.push
+						name: i.type.charAt(0).toUpperCase() + i.type.slice(1) + ' forest'
+						tag: i.x + '_' + i.y
+						class: 'forest'
+						sub: 'X' + i.x + ', Y' + i.y
+						onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+
+			# Resources
+			for i in resources
+				break if results.length > 8
+				continue if i.type is 'mine'
+				if (i.size + ' ' + i.type).toLowerCase().indexOf(searchtext) isnt -1
+					results.push
+						name: i.size.charAt(0).toUpperCase() + i.size.slice(1) + ' ' + i.type + ' deposit'
+						tag: i.x + '_' + i.y
+						class: 'resource'
+						sub: 'X' + i.x + ', Y' + i.y
+						onclick: 'show_coords_on_map(' + i.x + ',' + i.y + ')'
+
 
 		max_length = switch
 			when window.innerHeight < 380 then 4
@@ -747,7 +890,7 @@ filter =
 	guard_towers: on
 	resources: on
 	poi: on
-	trees: off
+	trees: on
 
 toggle_markers = (which) ->
 	# Set filter
@@ -821,8 +964,16 @@ change_map = (type) ->
 
 # Find distance between two coordinates
 distance = (coord_a, coord_b) ->
-  x = coord_b.x - coord_a.x
-  x = x * x
-  y = coord_b.y - coord_a.y
-  y = y * y
-  return Math.sqrt(x + y)
+	if arguments.length is 4
+		coord_a =
+			x: arguments[0]
+			y: arguments[1]
+		coord_b =
+			x: arguments[2]
+			y: arguments[3]
+
+	x = coord_b.x - coord_a.x
+	x = x * x
+	y = coord_b.y - coord_a.y
+	y = y * y
+	return Math.sqrt(x + y)

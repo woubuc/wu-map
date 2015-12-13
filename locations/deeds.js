@@ -129,11 +129,11 @@ deeds = [
   }, {
     name: 'Phules Paradise',
     tag: 'phules-paradise',
-    type: 'solo',
     mayor: 'Andistyr',
     x: 1448,
     y: 350,
-    features: ['resources']
+    features: ['inn'],
+    type: 'small'
   }, {
     name: 'Hokrasut',
     tag: 'hokrasut',
@@ -832,6 +832,28 @@ deeds = [
     x: 1991,
     y: 639,
     mayor: 'Nuinethir',
+    type: 'solo'
+  }, {
+    name: 'SkyRift',
+    tag: 'skyrift',
+    x: 3620,
+    y: 1649,
+    mayor: 'Ptahil',
+    type: 'solo'
+  }, {
+    name: 'Northshore Docks',
+    tag: 'northshore-docks',
+    x: 1410,
+    y: 355,
+    mayor: 'Borieck',
+    features: ['harbour'],
+    type: 'solo'
+  }, {
+    name: 'Knocktopher',
+    tag: 'knocktopher',
+    x: 1948,
+    y: 730,
+    mayor: 'Ravenquoth',
     type: 'solo'
   }
 ];
