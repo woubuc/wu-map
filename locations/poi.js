@@ -27,6 +27,12 @@ poi = [
     type: 'statue',
     description: 'The first player-built Colossus. Constructed by Miskleur'
   }, {
+    name: 'Colossus of Magranon',
+    x: 1111,
+    y: 1116,
+    type: 'statue',
+    description: 'Constructed by Miskleur for the city of Gades'
+  }, {
     name: 'Colossus of Fo',
     x: 1122,
     y: 1118,
@@ -38,14 +44,15 @@ poi = [
     y: 553,
     type: 'bridge'
   }, {
+    name: 'Observatory Tower',
+    x: 989,
+    y: 773,
+    type: 'tower',
+    description: 'Climb this tower to the vista on the top floor. You can see New Town, North Lake and a rich collection of deeds along the eastern bound highway.'
+  }, {
     name: 'Path of Love Tile',
     x: 3133,
     y: 3543,
-    unique: false
-  }, {
-    name: 'Path of Love Tile',
-    x: 2669,
-    y: 3515,
     unique: false
   }, {
     name: 'Path of Love Tile',
@@ -61,6 +68,12 @@ poi = [
     name: 'Fountain',
     x: 3548,
     y: 2604,
+    type: 'fountain',
+    unique: false
+  }, {
+    name: 'Fountain',
+    x: 843,
+    y: 1533,
     type: 'fountain',
     unique: false
   }

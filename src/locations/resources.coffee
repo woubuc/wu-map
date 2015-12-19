@@ -29,6 +29,11 @@ resources = [
 	y: 810
 	size: 'medium'
 ,
+	type: 'clay'
+	x: 974
+	y: 3815
+	size: 'large'
+,
 	type: 'tar'
 	x: 824
 	y: 683
@@ -53,6 +58,16 @@ resources = [
 	x: 2663
 	y: 371
 	size: 'small'
+,
+	type: 'tar'
+	x: 1050
+	y: 490
+	size: 'small'
+,
+	type: 'peat'
+	x: 2790
+	y: 862
+	size: 'large'
 ,
 	type: 'tar'
 	x: 611
@@ -113,6 +128,10 @@ resources = [
 	x: 903
 	y: 320
 	size: 'small'
+,
+	type: 'tar'
+	x: 710
+	y: 494
 ,
 	type: 'mine'
 	x: 966

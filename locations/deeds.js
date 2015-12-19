@@ -100,11 +100,11 @@ deeds = [
   }, {
     name: 'Highwater',
     tag: 'highwater',
-    type: 'small',
+    type: 'large',
     mayor: 'Kezei',
     x: 2641,
     y: 3500,
-    features: ['trader', 'merchant', 'market', 'inn', 'harbour', 'recruiting']
+    features: ['trader', 'merchant', 'market', 'inn', 'harbour', 'mailbox', 'recruiting']
   }, {
     name: 'Deathlands',
     tag: 'deathlands',
@@ -714,7 +714,7 @@ deeds = [
     mayor: 'Thorgar',
     type: 'small'
   }, {
-    name: 'Fo\'s Forest Trade Post',
+    name: 'Hell\'s Pass',
     tag: 'fos-forest-trade-post',
     x: 1118,
     y: 808,
@@ -855,5 +855,102 @@ deeds = [
     y: 730,
     mayor: 'Ravenquoth',
     type: 'solo'
+  }, {
+    name: 'Rice Paddy',
+    tag: 'rice-paddy',
+    x: 979,
+    y: 712,
+    mayor: 'ChinTuFat',
+    type: 'solo'
+  }, {
+    name: 'Inextremx',
+    tag: 'inextremx',
+    x: 1206,
+    y: 846,
+    mayor: 'Inextremx',
+    type: 'solo'
+  }, {
+    name: 'Farms of Dwemeria',
+    tag: 'farms-of-dwemeria',
+    x: 995,
+    y: 2509,
+    mayor: 'JustBob',
+    type: 'solo'
+  }, {
+    name: 'Samia Bay',
+    tag: 'samia-bay',
+    x: 528,
+    y: 609,
+    mayor: 'Tranderas',
+    type: 'solo'
+  }, {
+    name: 'Port Hudson',
+    tag: 'port-hudson',
+    x: 442,
+    y: 3190,
+    mayor: 'Tyrannus',
+    features: ['harbour', 'recruiting'],
+    type: 'solo'
+  }, {
+    name: 'Highgarden',
+    tag: 'highgarden',
+    x: 1075,
+    y: 1658,
+    mayor: 'Moxie',
+    type: 'small'
+  }, {
+    name: 'Wardruna Cove',
+    tag: 'wardruna-cove',
+    x: 778,
+    y: 2738,
+    mayor: 'Cyrus',
+    features: ['trader'],
+    type: 'small'
+  }, {
+    name: 'Silgus',
+    tag: 'silgus',
+    x: 849,
+    y: 598,
+    mayor: 'Syleth',
+    type: 'solo'
+  }, {
+    name: 'LoveFear-Docks',
+    tag: 'lovefear-docks',
+    x: 2024,
+    y: 3388,
+    mayor: 'DoneFear',
+    features: ['harbour'],
+    type: 'small'
+  }, {
+    name: 'Dark Leaf Harbor',
+    tag: 'dark-leaf-harbor',
+    x: 1203,
+    y: 952,
+    mayor: 'Innik',
+    type: 'solo'
+  }, {
+    name: 'Sephir',
+    tag: 'sephir',
+    x: 3144,
+    y: 1848,
+    mayor: 'Solee',
+    features: ['recruiting'],
+    type: 'small'
+  }, {
+    name: 'Aevum',
+    tag: 'aevum',
+    x: 1362,
+    y: 1100,
+    mayor: 'Mutz',
+    features: ['recruiting'],
+    type: 'small'
+  }, {
+    name: 'Arvika',
+    tag: 'arvika',
+    x: 582,
+    y: 514,
+    mayor: 'Zeafaw',
+    features: ['recruiting'],
+    type: 'small'
   }
 ];
