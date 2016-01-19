@@ -40,9 +40,10 @@ poi = [
     description: 'Constructed by Encode'
   }, {
     name: 'Bridge to White Light Island',
-    x: 2318,
-    y: 553,
-    type: 'bridge'
+    x: 2282,
+    y: 542,
+    type: 'bridge',
+    description: 'Constructed by Bluegreen'
   }, {
     name: 'Observatory Tower',
     x: 989,
@@ -75,6 +76,60 @@ poi = [
     x: 843,
     y: 1533,
     type: 'fountain',
+    unique: false
+  }, {
+    name: 'Littlehub Forest Well',
+    x: 752,
+    y: 1310,
+    type: 'fountain',
+    unique: false
+  }, {
+    name: 'Path of Knowledge Tile',
+    x: 979,
+    y: 705,
+    description: 'Also contains an altar dedicated to Vynora.'
+  }, {
+    name: 'Path of Knowledge Tile',
+    x: 812,
+    y: 2664,
+    unique: false
+  }, {
+    name: 'Path of Love Tile',
+    x: 819,
+    y: 1292,
+    description: ''
+  }, {
+    name: 'Colossus of Vynora',
+    x: 863,
+    y: 810,
+    type: 'statue',
+    description: 'Constructed by Damine'
+  }, {
+    name: 'Colossus of Magranon',
+    x: 1974,
+    y: 3361,
+    type: 'statue',
+    description: 'Constructed by Yela'
+  }, {
+    name: 'Lake Xenon Canal Bridge',
+    x: 3216,
+    y: 1449,
+    type: 'bridge',
+    description: 'Constructed by Xenon, Velan & Mizova'
+  }, {
+    name: 'BG Tunnel - Northern Entrance',
+    x: 1230,
+    y: 1100,
+    description: 'Constructed by BG Town citizens'
+  }, {
+    name: 'BG Tunnel - Southern Entrance',
+    x: 1132,
+    y: 1654,
+    description: 'Constructed by BG Town citizens'
+  }, {
+    name: 'Path of Love Tile',
+    x: 2518,
+    y: 785,
     unique: false
   }
 ];

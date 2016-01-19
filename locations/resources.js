@@ -136,6 +136,31 @@ resources = [
     x: 710,
     y: 494
   }, {
+    type: 'clay',
+    x: 1697,
+    y: 3772,
+    size: 'medium'
+  }, {
+    type: 'tar',
+    x: 2125,
+    y: 1019,
+    size: 'tar'
+  }, {
+    type: 'clay',
+    x: 400,
+    y: 1968,
+    size: 'small'
+  }, {
+    type: 'tar',
+    x: 1171,
+    y: 3693,
+    size: 'large'
+  }, {
+    type: 'tar',
+    x: 500,
+    y: 470,
+    size: 'large'
+  }, {
     type: 'mine',
     x: 966,
     y: 793,
@@ -152,5 +177,11 @@ resources = [
     x: 596,
     y: 1096,
     ores: ['iron', 'silver']
+  }, {
+    type: 'mine',
+    x: 886,
+    y: 2196,
+    ores: ['iron', 'copper'],
+    features: ['forge', 'large anvil']
   }
 ];

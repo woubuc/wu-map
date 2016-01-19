@@ -539,4 +539,168 @@ guard_towers = [
 	x: 488
 	y: 3078
 	creator: 'Liam'
+,
+	x: 951
+	y: 1555
+	creator: 'Thalos'
+,
+	x: 951
+	y: 1606
+	creator: 'Thalos'
+,
+	x: 1865
+	y: 3846
+	creator: 'Yela'
+,
+	x: 501
+	y: 438
+	creator: 'Exor'
+,
+	x: 429
+	y: 2434
+	creator: 'LordOfRus'
+,
+	x: 1083
+	y: 1707
+	creator: 'Jegsus'
+,
+	x: 1025
+	y: 1681
+	creator: 'Moxie'
+,
+	x: 1076
+	y: 1630
+	creator: 'Jegsus'
+,
+	x: 1980
+	y: 730
+	creator: 'Ravenquoth'
+,
+	x: 3465
+	y: 1310
+	creator: 'Mizova'
+,
+	x: 923
+	y: 2773
+	creator: 'DwemerManiac'
+,
+	x: 616
+	y: 2911
+	creator: 'DwemerManiac'
+,
+	x: 620
+	y: 2961
+	creator: 'DwemerManiac'
+,
+	x: 2597
+	y: 3475
+	creator: 'Kezei'
+,
+	x: 2598
+	y: 3532
+	creator: 'Kezei'
+,
+	x: 569
+	y: 1523
+	creator: 'Borgal'
+,
+	x: 3042
+	y: 1386
+	creator: 'Xenon'
+,
+	x: 3023
+	y: 1440
+	creator: 'Xenon'
+,
+	x: 619
+	y: 2922
+	creator: 'DwemerManiac'
+,
+	x: 619
+	y: 2975
+	creator: 'DwemerManiac'
+,
+	x: 619
+	y: 3022
+	creator: 'DwemerManiac'
+,
+	x: 2278
+	y: 768
+	creator: 'Bluegreen, Captain'
+,
+	x: 998
+	y: 1360
+	creator: 'Thalos'
+,
+	x: 1834
+	y: 2974
+	creator: 'Orvig'
+,
+	x: 1008
+	y: 1319
+	creator: 'Thalos'
+,
+	x: 573
+	y: 1580
+	creator: 'Borgal'
+,
+	x: 1865
+	y: 3846
+	creator: 'Yela'
+,
+	x: 868
+	y: 772
+	creator: 'gm'
+,
+	x: 909
+	y: 580
+	creator: 'Mato'
+,
+	x: 1834
+	y: 2974
+	creator: 'Orvig'
+,
+	x: 569
+	y: 1829
+	creator: 'Diablos'
+,
+	x: 518
+	y: 1827
+	creator: 'Diablos'
+,
+	x: 468
+	y: 1830
+	creator: 'Diablos'
+,
+	x: 1865
+	y: 3846
+	creator: 'Yela'
+,
+	x: 2539
+	y: 766
+	creator: 'Cryke'
+,
+	x: 1244
+	y: 692
+	creator: 'Temmie'
+,
+	x: 755
+	y: 2124
+	creator: 'Rigger'
+,
+	x: 448
+	y: 3147
+	creator: 'Tyrannus'
+,
+	x: 846
+	y: 2427
+	creator: 'Hoof'
+,
+	x: 2599
+	y: 3533
+	creator: 'Kezei'
+,
+	x: 3219
+	y: 2075
+	creator: 'Jalexber'
 ]

@@ -36,13 +36,6 @@ deeds = [
 	mayor: 'Borgal'
 	type: 'solo'
 ,
-	name: 'Tholen Farmstead'
-	tag: 'tholen-farmstead'
-	mayor: 'Cunemous'
-	x: 1025
-	y: 770
-	features: ['resources', 'recruiting']
-,
 	name: 'Zigsburg'
 	tag: 'zigsburg'
 	mayor: 'Zigackly'
@@ -129,7 +122,7 @@ deeds = [
 	mayor: 'Andistyr'
 	x: 1448
 	y: 350
-	features: ['inn']
+	features: ['inn', 'mailbox']
 	type: 'small'
 ,
 	name: 'Hokrasut'
@@ -170,27 +163,12 @@ deeds = [
 	y: 480
 	features: ['recruiting']
 ,
-	name: 'Castle Glittertown'
-	tag: 'castle-glittertown'
-	mayor: 'Capi'
-	x: 348
-	y: 312
-	type: 'small'
-,
 	name: 'Coastal Watch'
 	tag: 'coastal-watch'
 	type: 'solo'
 	mayor: 'Exor'
 	x: 414
 	y: 430
-,
-	name: 'Fonswood'
-	tag: 'fonswood'
-	type: 'small'
-	mayor: 'Tunk'
-	x: 862
-	y: 801
-	features: ['recruiting']
 ,
 	name: 'Dragon\'s Breath Castle'
 	tag: 'dragons-breath-castle'
@@ -427,14 +405,6 @@ deeds = [
 	mayor: 'Arion'
 	type: 'small'
 ,
-	name: 'Birchpine Town'
-	mayor: 'Legionary'
-	tag: 'birchpine-town'
-	x: 1230
-	y: 772
-	type: 'solo'
-	features: ['recruiting']
-,
 	name: 'Arn\'s place'
 	tag: 'arns-place'
 	mayor: 'ArnDeGot'
@@ -514,13 +484,6 @@ deeds = [
 	x: 440
 	y: 3080
 	mayor: 'Liam'
-	type: 'solo'
-,
-	name: 'Forest Silence'
-	tag: 'forest-silence'
-	x: 1629
-	y: 1110
-	mayor: 'Guffil'
 	type: 'solo'
 ,
 	name: 'Blackmere Basin'
@@ -748,11 +711,11 @@ deeds = [
 	mayor: 'Kilem'
 	type: 'small'
 ,	
-	name: 'Farm Point'
-	tag: 'farm-point'
+	name: 'Lost Woods'
+	tag: 'lost-woods'
 	x: 892
 	y: 1332
-	mayor: 'Yeva'
+	mayor: 'Yeva, Emili'
 	type: 'solo'
 ,
 	name: 'Pine Lake'
@@ -949,4 +912,388 @@ deeds = [
 	mayor: 'Zeafaw'
 	features: ['recruiting']
 	type: 'small'
+,
+	name: 'Moon Tree'
+	tag: 'moon-tree'
+	x: 3665
+	y: 2393
+	mayor: 'Sazaraki'
+	type: 'solo'
+,
+	name: 'Link\'s Spot'
+	tag: 'links-spot'
+	x: 1865
+	y: 3852
+	mayor: 'Link'
+	type: 'small'
+,
+	name: 'Amdarilla'
+	tag: 'amdarilla'
+	x: 1586
+	y: 2740
+	mayor: 'Stormhander'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Aquashire'
+	tag: 'aquashire'
+	x: 376
+	y: 2454
+	mayor: 'LordOfRus'
+	features: ['harbour', 'recruiting']
+	type: 'solo'
+,
+	name: 'Point of No Return'
+	tag: 'point-of-no-return'
+	x: 540
+	y: 1913
+	mayor: 'Rigger'
+	type: 'solo'
+,
+	name: 'Loch Niss'
+	tag: 'loch-niss'
+	x: 354
+	y: 373
+	mayor: 'Nissy'
+	type: 'solo'
+,
+	name: 'Jolly Roger Bay'
+	tag: 'jolly-roger-bay'
+	x: 818
+	y: 1188
+	mayor: 'Tranderas'
+	type: 'solo'
+,
+	name: 'Blaine'
+	tag: 'blaine'
+	x: 529
+	y: 647
+	mayor: 'ChrisDolmeth'
+	features: ['recruiting']
+	type: 'small'
+,
+	name: 'Firefly'
+	tag: 'firefly'
+	x: 1094
+	y: 616
+	mayor: 'Tiega'
+	type: 'solo'
+,
+	name: 'Castle Glittercrown'
+	tag: 'castle-glittercrown'
+	x: 348
+	y: 312
+	mayor: 'Capi'
+	features: ['harbour', 'recruiting']
+	type: 'small'
+,
+	name: 'Nameless'
+	tag: 'nameless'
+	x: 1009
+	y: 2260
+	mayor: 'Digradi'
+	type: 'solo'
+,
+	name: 'Toxtopia'
+	tag: 'toxtopia'
+	x: 2169
+	y: 995
+	mayor: 'ToXiCTBaG'
+	type: 'solo'
+,
+	name: 'Tulum'
+	tag: 'tulum'
+	x: 330
+	y: 1840
+	mayor: 'Diablos'
+	features: ['harbour', 'mailbox']
+	type: 'solo'
+,
+	name: 'Arvika Farm'
+	tag: 'arvika-farm'
+	x: 444
+	y: 483
+	mayor: 'Siligon'
+	type: 'solo'
+,
+	name: 'Pine Grove'
+	tag: 'pine-grove'
+	x: 1045
+	y: 676
+	mayor: 'Pyelitis'
+	type: 'small'
+,
+	name: 'Ransville'
+	tag: 'ransville'
+	x: 2069
+	y: 963
+	mayor: 'Randall \& WaterMonster'
+	type: 'small'
+,
+	name: 'Tholen Farmstead'
+	tag: 'tholen-farmstead'
+	x: 1026
+	y: 750
+	mayor: 'Cunemous'
+	features: ['merchant', 'inn', 'recruiting']
+	type: 'small'
+,
+	name: 'Hillside'
+	tag: 'hillside'
+	x: 1930
+	y: 2905
+	mayor: 'Orvig'
+	type: 'solo'
+,
+	name: 'Minowick'
+	tag: 'minowick'
+	x: 3461
+	y: 1226
+	mayor: 'Turelis'
+	type: 'solo'
+,
+	name: 'Memphis\' Mountain Home'
+	tag: 'memphis-mountain-home'
+	x: 1079
+	y: 2113
+	mayor: 'Memphis'
+	type: 'solo'
+,
+	name: 'End of The Line Trading Partners'
+	tag: 'end-of-the-line-trading-partners'
+	x: 2480
+	y: 3478
+	mayor: 'Maratdesade'
+	features: ['recruiting']
+	type: 'small'
+,
+	name: 'Verdent Hill'
+	tag: 'verdent-hill'
+	x: 1316
+	y: 807
+	mayor: 'Emass'
+	type: 'solo'
+,
+	name: 'Littlehub'
+	tag: 'littlehub'
+	x: 805
+	y: 1308
+	mayor: 'Thalos'
+	features: ['harbour', 'inn', 'mailbox', 'recruiting']
+	type: 'small'
+,
+	name: 'Southern Acres'
+	tag: 'southern-acres'
+	x: 846
+	y: 693
+	mayor: 'Airconman'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Cameltoe'
+	tag: 'cameltoe'
+	x: 2051
+	y: 1370
+	mayor: 'Xloey'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Goiania'
+	tag: 'goiania'
+	x: 470
+	y: 2017
+	mayor: 'Trustvainer'
+	type: 'solo'
+,
+	name: 'New Banana Land'
+	tag: 'new-banana-land'
+	x: 1625
+	y: 3737
+	mayor: 'Nana'
+	type: 'solo'
+,
+	name: 'Moonwood'
+	tag: 'moonwood'
+	x: 1590
+	y: 3708
+	mayor: 'Draedo'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Raven Watch'
+	tag: 'raven-watch'
+	x: 3152
+	y: 1546
+	mayor: 'Velan'
+	type: 'solo'
+,
+	name: 'Belgica'
+	tag: 'belgica'
+	x: 1164
+	y: 385
+	mayor: 'Djjorno54'
+	features: ['trader', 'recruiting']
+	type: 'small'
+,
+	name: 'Brunnr Hollow'
+	tag: 'brunnr-hollow'
+	x: 795
+	y: 623
+	mayor: 'Brunnr'
+	type: 'solo'
+,
+	name: 'Heimdal\'s Hut'
+	tag: 'heimdals-hut'
+	x: 857
+	y: 1361
+	mayor: 'Heimdal'
+	type: 'solo'
+,
+	name: 'Narnia'
+	tag: 'narnia'
+	x: 1099
+	y: 897
+	mayor: 'Artenn'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Lakeridge'
+	tag: 'lakeridge'
+	x: 630
+	y: 1680
+	mayor: 'Kamaka'
+	type: 'solo'
+,
+	name: 'To Mato Plant'
+	tag: 'to-mato-plant'
+	x: 901
+	y: 584
+	mayor: 'Mato'
+	features: ['recruiting']
+	type: 'small'
+,
+	name: 'Spring\'s Reserve'
+	tag: 'springs-reserve'
+	x: 1071
+	y: 677
+	mayor: 'ShangXIq'
+	type: 'solo'
+,
+	name: 'Temmie Village'
+	tag: 'temmie-village'
+	x: 1222
+	y: 606
+	mayor: 'Temmie'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'New Moon Harbour'
+	tag: 'new-moon-harbour'
+	x: 1010
+	y: 1777
+	mayor: 'Lasin'
+	type: 'small'
+,
+	name: 'Viking Haven'
+	tag: 'viking-haven'
+	x: 1157
+	y: 910
+	mayor: 'Tjalfe'
+	type: 'small'
+,
+	name: 'Pinegrove'
+	tag: 'pinegrove'
+	x: 1447
+	y: 421
+	mayor: 'Styisback'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Cargonia'
+	tag: 'cargonia'
+	x: 641
+	y: 2279
+	mayor: 'Noll'
+	type: 'solo'
+,
+	name: 'Fyresong Rest'
+	tag: 'fyresong-rest'
+	x: 1984
+	y: 474
+	mayor: 'Airica'
+	features: ['harbour', 'inn', 'mailbox']
+	type: 'small'
+,
+	name: 'Shadow Den'
+	tag: 'shadow-den'
+	x: 847
+	y: 2385
+	mayor: 'Rogasmo'
+	type: 'solo'
+,
+	name: 'Tiny Toon'
+	tag: 'tiny-toon'
+	x: 3234
+	y: 2069
+	mayor: 'Jalexber'
+	type: 'solo'
+,
+	name: 'Luxious Cloitus'
+	tag: 'luxious-cloitus'
+	x: 2283
+	y: 1403
+	mayor: 'Farmer'
+	type: 'solo'
+,
+	name: 'Tribbleation'
+	tag: 'tribbleation'
+	x: 380
+	y: 1462
+	mayor: 'Tribblemaker'
+	features: ['mailbox']
+	type: 'small'
+,
+	name: 'Paradise'
+	tag: 'paradise'
+	x: 1052
+	y: 3843
+	mayor: 'Sassy'
+	type: 'solo'
+,
+	name: 'Moriathun'
+	tag: 'moriathun'
+	x: 3158
+	y: 2068
+	mayor: 'Easy'
+	type: 'solo'
+,
+	name: 'Williams Mountainside Retreat'
+	tag: 'williams-mountainside-retreat'
+	x: 2152
+	y: 1091
+	mayor: 'Williamsmith'
+	features: ['recruiting']
+	type: 'small'
+,
+	name: 'Tevinter'
+	tag: 'tevinter'
+	x: 2841
+	y: 1754
+	mayor: 'Madjester'
+	type: 'solo'
+,
+	name: 'Shadows Rest'
+	tag: 'shadows-rest'
+	x: 866
+	y: 3772
+	mayor: 'Oriss'
+	type: 'solo'
+,
+	name: 'Ranger\'s Cottage'
+	tag: 'rangers-cottage'
+	x: 1278
+	y: 986
+	mayor: 'Lyandar'
+	features: ['']
+	type: 'solo'
 ]
