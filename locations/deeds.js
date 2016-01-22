@@ -795,7 +795,8 @@ deeds = [
     x: 1991,
     y: 639,
     mayor: 'Nuinethir',
-    type: 'solo'
+    features: ['mailbox'],
+    type: 'small'
   }, {
     name: 'SkyRift',
     tag: 'skyrift',
@@ -879,11 +880,11 @@ deeds = [
   }, {
     name: 'LoveFear-Docks',
     tag: 'lovefear-docks',
-    x: 2024,
-    y: 3388,
-    mayor: 'DoneFear',
-    features: ['harbour'],
-    type: 'small'
+    x: 524,
+    y: 2331,
+    mayor: 'Lovelace',
+    features: ['harbour', 'market', 'mailbox'],
+    type: 'solo'
   }, {
     name: 'Dark Leaf Harbor',
     tag: 'dark-leaf-harbor',
@@ -955,8 +956,8 @@ deeds = [
   }, {
     name: 'Loch Niss',
     tag: 'loch-niss',
-    x: 354,
-    y: 373,
+    x: 3056,
+    y: 3694,
     mayor: 'Nissy',
     type: 'solo'
   }, {
@@ -1128,6 +1129,7 @@ deeds = [
     x: 3152,
     y: 1546,
     mayor: 'Velan',
+    features: ['mailbox'],
     type: 'solo'
   }, {
     name: 'Belgica',
@@ -1138,8 +1140,8 @@ deeds = [
     features: ['trader', 'recruiting'],
     type: 'small'
   }, {
-    name: 'Brunnr Hollow',
-    tag: 'brunnr-hollow',
+    name: 'Brunnr Burrow',
+    tag: 'brunnr-burrow',
     x: 795,
     y: 623,
     mayor: 'Brunnr',
@@ -1223,7 +1225,7 @@ deeds = [
     tag: 'fyresong-rest',
     x: 1984,
     y: 474,
-    mayor: 'Airica',
+    mayor: 'Airica (aka Nuinethir)',
     features: ['harbour', 'inn', 'mailbox'],
     type: 'small'
   }, {
@@ -1297,6 +1299,94 @@ deeds = [
     x: 1278,
     y: 986,
     mayor: 'Lyandar',
+    features: [''],
+    type: 'solo'
+  }, {
+    name: 'Citadel of the Order of Khaos',
+    tag: 'citadel-of-the-order-of-khaos',
+    x: 2242,
+    y: 1311,
+    mayor: 'Korvalia',
+    features: [''],
+    type: 'small'
+  }, {
+    name: 'Port Phobic',
+    tag: 'port-phobic',
+    x: 449,
+    y: 2373,
+    mayor: 'Phobicice',
+    features: [''],
+    type: 'small'
+  }, {
+    name: 'Frostfire',
+    tag: 'frostfire',
+    x: 2838,
+    y: 1666,
+    mayor: 'Rhianna',
+    features: [''],
+    type: 'solo'
+  }, {
+    name: 'Port Dirt Poor',
+    tag: 'port-dirt-poor',
+    x: 365,
+    y: 3386,
+    mayor: 'Sorensen',
+    features: ['harbour'],
+    type: 'solo'
+  }, {
+    name: 'Karthwasten',
+    tag: 'karthwasten',
+    x: 787,
+    y: 517,
+    mayor: 'Karthannar',
+    features: [''],
+    type: 'solo'
+  }, {
+    name: 'CzapleNowe',
+    tag: 'czaplenowe',
+    x: 735,
+    y: 1251,
+    mayor: 'Czemiel',
+    features: [''],
+    type: 'solo'
+  }, {
+    name: 'Valaria',
+    tag: 'valaria',
+    x: 1655,
+    y: 856,
+    mayor: 'Edson',
+    features: ['recruiting'],
+    type: 'small'
+  }, {
+    name: 'Little Norway',
+    tag: 'little-norway',
+    x: 468,
+    y: 1169,
+    mayor: 'Kaasa',
+    features: [''],
+    type: 'small'
+  }, {
+    name: 'Crystalzcastel',
+    tag: 'crystalzcastel',
+    x: 3051,
+    y: 1843,
+    mayor: 'Solee',
+    features: ['recruiting'],
+    type: 'solo'
+  }, {
+    name: 'Phrog On The Lake',
+    tag: 'phrog-on-the-lake',
+    x: 2009,
+    y: 1376,
+    mayor: 'Phrog',
+    features: [''],
+    type: 'solo'
+  }, {
+    name: 'Lost Pines',
+    tag: 'lost-pines',
+    x: 1006,
+    y: 659,
+    mayor: 'BrokSonic',
     features: [''],
     type: 'solo'
   }
