@@ -128,4 +128,14 @@ poi = [
 	x: 2518
 	y: 785
 	unique: no
+,
+	name: 'Path of Knowledge Tile'
+	x: 815
+	y: 1254
+	unique: no
+,
+	name: 'Path of Knowledge Tile'
+	x: 1973
+	y: 470
+	description: 'Located at Fyresong Rest'
 ]
