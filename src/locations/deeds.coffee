@@ -178,14 +178,6 @@ deeds = [
 	y: 3260
 	features: ['harbour']
 ,
-	name: 'The Odd Place'
-	tag: 'odd-place'
-	type: 'solo'
-	mayor: 'Kanashio'
-	x: 2615
-	y: 345
-	features: ['recruiting']
-,
 	name: 'Oak Shores'
 	tag: 'oak-shores'
 	type: 'small'
@@ -249,13 +241,6 @@ deeds = [
 	mayor: 'Quip'
 	x: 1100
 	y: 374
-,
-	name: 'Angus'
-	tag: 'angus'
-	mayor: 'Grangus'
-	type: 'small'
-	x: 3260
-	y: 1404
 ,
 	name: 'Bear Mountain'
 	tag: 'bear-mountain'
@@ -650,7 +635,8 @@ deeds = [
 	x: 3508
 	y: 1421
 	mayor: 'Mizova'
-	type: 'solo'
+	features: ['harbour', 'mailbox', 'market', 'inn']
+	type: 'large'
 ,
 	name: 'Easthaven Trade Harbour'
 	tag: 'easthaven-trade-harbour'
@@ -890,14 +876,6 @@ deeds = [
 	mayor: 'Innik'
 	type: 'solo'
 ,
-	name: 'Sephir'
-	tag: 'sephir'
-	x: 3144
-	y: 1848
-	mayor: 'Solee'
-	features: ['recruiting']
-	type: 'small'
-,
 	name: 'Aevum'
 	tag: 'aevum'
 	x: 1362
@@ -1026,8 +1004,8 @@ deeds = [
 ,
 	name: 'Ransville'
 	tag: 'ransville'
-	x: 2069
-	y: 963
+	x: 2098
+	y: 962
 	mayor: 'Randall \& WaterMonster'
 	type: 'small'
 ,
@@ -1093,11 +1071,11 @@ deeds = [
 ,
 	name: 'Cameltoe'
 	tag: 'cameltoe'
-	x: 2051
-	y: 1370
+	x: 2061
+	y: 1361
 	mayor: 'Xloey'
-	features: ['recruiting']
-	type: 'solo'
+	features: ['']
+	type: 'small'
 ,
 	name: 'Goiania'
 	tag: 'goiania'
@@ -1247,10 +1225,10 @@ deeds = [
 	mayor: 'Farmer'
 	type: 'solo'
 ,
-	name: 'Tribbleation'
+	name: 'Tribbleation (wrong data, please resubmit)'
 	tag: 'tribbleation'
-	x: 380
-	y: 1462
+	x: 232
+	y: 1260
 	mayor: 'Tribblemaker'
 	features: ['mailbox']
 	type: 'small'
@@ -1274,7 +1252,7 @@ deeds = [
 	x: 2152
 	y: 1091
 	mayor: 'Williamsmith'
-	features: ['recruiting']
+	features: ['recruiting', 'mailbox']
 	type: 'small'
 ,
 	name: 'Tevinter'
@@ -1385,5 +1363,140 @@ deeds = [
 	y: 659
 	mayor: 'BrokSonic'
 	features: ['']
+	type: 'solo'
+,
+	name: 'The Clay Port'
+	tag: 'the-clay-port'
+	x: 3476
+	y: 1746
+	mayor: 'Feii'
+	type: 'small'
+,
+	name: 'Port Williams'
+	tag: 'port-williams'
+	x: 1388
+	y: 399
+	mayor: 'Williamsmithsh'
+	features: ['harbour', 'inn', 'mailbox']
+	type: 'solo'
+,
+	name: 'Providence'
+	tag: 'providence'
+	x: 2744
+	y: 758
+	mayor: 'Ridgeback'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Silverlake'
+	tag: 'silverlake'
+	x: 433
+	y: 2469
+	mayor: 'Opene'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Wolfmere'
+	tag: 'wolfmere'
+	x: 2555
+	y: 859
+	mayor: 'Nxtreme'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Whymsyshire'
+	tag: 'whymsyshire'
+	x: 1904
+	y: 1348
+	mayor: 'Pinkamena'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Valhalla Station'
+	tag: 'valhalla-station'
+	x: 995
+	y: 2509
+	mayor: 'Darbie'
+	features: ['']
+	type: 'small'
+,
+	name: 'Raven Rock'
+	tag: 'raven-rock'
+	x: 3347
+	y: 3825
+	mayor: 'ShadowWarrior'
+	features: ['']
+	type: 'small'
+,
+	name: 'Bilgemoor'
+	tag: 'bilgemoor'
+	x: 1638
+	y: 912
+	mayor: 'Fumbleduck'
+	features: ['harbour', 'inn', 'mailbox']
+	type: 'small'
+,
+	name: 'La Croix'
+	tag: 'la-croix'
+	x: 3586
+	y: 2314
+	mayor: 'Poragon'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Mencheres'
+	tag: 'mencheres'
+	x: 1312
+	y: 963
+	mayor: 'Stygianfury'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Pirate Bay\'s Faubourg'
+	tag: 'pirate-bays-faubourg'
+	x: 2535
+	y: 751
+	mayor: 'Myot'
+	features: ['harbour']
+	type: 'solo'
+,
+	name: 'Blackwatch Lake'
+	tag: 'blackwatch-lake'
+	x: 1814
+	y: 1004
+	mayor: 'Cadderly'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Smurfland'
+	tag: 'smurfland'
+	x: 1766
+	y: 932
+	mayor: 'Tigar'
+	features: ['']
+	type: 'small'
+,
+	name: 'DeValois Shipyard'
+	tag: 'devalois-shipyard'
+	x: 1730
+	y: 422
+	mayor: 'DeValois'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Merwede'
+	tag: 'merwede'
+	x: 3622
+	y: 1400
+	mayor: 'Falco'
+	features: ['harbour']
+	type: 'solo'
+,
+	name: 'Port Azeur'
+	tag: 'port-azeur'
+	x: 3424
+	y: 1814
+	mayor: 'Azeuras'
+	features: ['recruiting']
 	type: 'solo'
 ]

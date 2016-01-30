@@ -435,10 +435,6 @@ guard_towers = [
     y: 1247,
     creator: 'Thalos'
   }, {
-    x: 3512,
-    y: 1428,
-    creator: 'Mizova'
-  }, {
     x: 733,
     y: 2269,
     creator: 'Chris'
@@ -742,5 +738,29 @@ guard_towers = [
     x: 998,
     y: 666,
     creator: 'BrokSonic'
+  }, {
+    x: 2438,
+    y: 1367,
+    creator: 'Xloey'
+  }, {
+    x: 2561,
+    y: 1405,
+    creator: 'Xenon'
+  }, {
+    x: 2152,
+    y: 1099,
+    creator: 'Williamsmith'
+  }, {
+    x: 800,
+    y: 575,
+    creator: 'Brunnr'
+  }, {
+    x: 3477,
+    y: 1750,
+    creator: 'Feii'
+  }, {
+    x: 1694,
+    y: 363,
+    creator: 'Weatherwax'
   }
 ];

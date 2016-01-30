@@ -153,10 +153,15 @@ resources = [
 	y: 3693
 	size: 'large'
 ,
-	type: 'tar'
-	x: 500
-	y: 470
+	type: 'peat'
+	x: 687
+	y: 1615
 	size: 'large'
+,
+	type: 'tar'
+	x: 779
+	y: 2056
+	size: 'small'
 ,
 	type: 'mine'
 	x: 966
