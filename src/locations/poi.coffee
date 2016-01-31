@@ -138,4 +138,17 @@ poi = [
 	x: 1973
 	y: 470
 	description: 'Located at Fyresong Rest'
+,
+	name: 'Colossus of Vynora'
+	x: 2281
+	y: 571
+	type: 'statue'
+	description: 'Constructed by Bluegreen, Golden Altar of Vynora underneath'
+,
+	name: 'Colossus of Magranon'
+	x: 3626
+	y: 797
+	type: 'statue'
+	description: 'Constructed by Mike'
+
 ]
