@@ -153,5 +153,43 @@ poi = [
     y: 797,
     type: 'statue',
     description: 'Constructed by Mike'
+  }, {
+    name: 'Rope Bridge Maze',
+    x: 1460,
+    y: 378,
+    description: 'Constructed by Andistyr'
+  }, {
+    name: 'Colossus of Vynora',
+    x: 3477,
+    y: 1444,
+    type: 'statue',
+    description: 'Constructed by Digradi'
+  }, {
+    name: 'Colossus of Fo',
+    x: 3463,
+    y: 1444,
+    type: 'statue',
+    description: 'Constructed by Mizova'
+  }, {
+    name: 'Colossus of Magnaron',
+    x: 3449,
+    y: 1444,
+    type: 'statue',
+    description: 'Melketh'
+  }, {
+    name: 'Colossus of Fo',
+    x: 2156,
+    y: 1132,
+    type: 'statue'
+  }, {
+    name: 'Path of Love Tile',
+    x: 2177,
+    y: 1263
+  }, {
+    name: 'Taint Canal Bridge',
+    x: 2006,
+    y: 1305,
+    type: 'bridge',
+    description: 'Constructed by Xloey'
   }
 ];

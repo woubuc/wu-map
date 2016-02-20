@@ -188,5 +188,11 @@ resources = [
     y: 2196,
     ores: ['iron', 'copper'],
     features: ['forge', 'large anvil']
+  }, {
+    type: 'mine',
+    x: 3289,
+    y: 1316,
+    ores: ['iron'],
+    features: ['forge', 'large anvil']
   }
 ];

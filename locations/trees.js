@@ -22,10 +22,6 @@ trees = [
     x: 1164,
     y: 829
   }, {
-    type: 'willow',
-    x: 3040,
-    y: 313
-  }, {
     type: 'pine',
     x: 2579,
     y: 2167
@@ -277,5 +273,25 @@ trees = [
     type: 'apple',
     x: 1644,
     y: 3713
+  }, {
+    type: 'fir',
+    x: 3032,
+    y: 652
+  }, {
+    type: 'olive',
+    x: 2118,
+    y: 603
+  }, {
+    type: 'maple',
+    x: 1696,
+    y: 1589
+  }, {
+    type: 'cherry',
+    x: 2136,
+    y: 2340
+  }, {
+    type: 'cedar',
+    x: 2346,
+    y: 1740
   }
 ];

@@ -303,13 +303,6 @@ deeds = [
 	x: 484
 	y: 541
 ,
-	name: 'Santuary'
-	tag: 'santuary'
-	mayor: 'Toriad'
-	type: 'solo'
-	x: 2689
-	y: 2974
-,
 	name: 'Ashenfort'
 	tag: 'ashenfort'
 	mayor: 'Meado'
@@ -988,13 +981,6 @@ deeds = [
 	features: ['harbour', 'mailbox']
 	type: 'solo'
 ,
-	name: 'Arvika Farm'
-	tag: 'arvika-farm'
-	x: 444
-	y: 483
-	mayor: 'Siligon'
-	type: 'solo'
-,
 	name: 'Pine Grove'
 	tag: 'pine-grove'
 	x: 1045
@@ -1181,14 +1167,6 @@ deeds = [
 	mayor: 'Tjalfe'
 	type: 'small'
 ,
-	name: 'Pinegrove'
-	tag: 'pinegrove'
-	x: 1447
-	y: 421
-	mayor: 'Styisback'
-	features: ['']
-	type: 'solo'
-,
 	name: 'Cargonia'
 	tag: 'cargonia'
 	x: 641
@@ -1259,7 +1237,7 @@ deeds = [
 	tag: 'tevinter'
 	x: 2841
 	y: 1754
-	mayor: 'Madjester'
+	mayor: 'Lokce'
 	type: 'solo'
 ,
 	name: 'Shadows Rest'
@@ -1314,7 +1292,7 @@ deeds = [
 	x: 787
 	y: 517
 	mayor: 'Karthannar'
-	features: ['']
+	features: ['mailbox']
 	type: 'solo'
 ,
 	name: 'CzapleNowe'
@@ -1436,14 +1414,6 @@ deeds = [
 	features: ['harbour', 'inn', 'mailbox']
 	type: 'small'
 ,
-	name: 'La Croix'
-	tag: 'la-croix'
-	x: 3586
-	y: 2314
-	mayor: 'Poragon'
-	features: ['']
-	type: 'solo'
-,
 	name: 'Mencheres'
 	tag: 'mencheres'
 	x: 1312
@@ -1498,5 +1468,213 @@ deeds = [
 	y: 1814
 	mayor: 'Azeuras'
 	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Wolfmere'
+	tag: 'wolfmere'
+	x: 2555
+	y: 859
+	mayor: 'Nxtreme'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Hillside Hideout'
+	tag: 'hillside-hideout'
+	x: 3100
+	y: 3031
+	mayor: 'Nightcore'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Severo Vostochnaya Metalworks'
+	tag: 'severo-vostochnaya-metalworks'
+	x: 3252
+	y: 824
+	mayor: 'Dzhra'
+	features: ['']
+	type: 'small'
+,
+	name: 'Severo Vostochnaya'
+	tag: 'severo-vostochnaya'
+	x: 3587
+	y: 354
+	mayor: 'Hannibal'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Ravenedge'
+	tag: 'Ravenedge'
+	x: 1751
+	y: 394
+	mayor: 'Jekmar'
+	features: ['harbour']
+	type: 'solo'
+,
+	name: 'Lakebridge'
+	tag: 'lakebridge'
+	x: 1682
+	y: 969
+	mayor: 'StraightSIX'
+	features: ['recruting']
+	type: 'solo'
+,
+	name: 'Steelwall'
+	tag: 'steelwall'
+	x: 1749
+	y: 493
+	mayor: 'Duncann'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Clay Coast Harbor'
+	tag: 'clay-coast-harbor'
+	x: 629
+	y: 2306
+	mayor: 'Madjester'
+	features: ['harbour', 'mailbox']
+	type: 'solo'
+,
+	name: 'The Mist'
+	tag: 'the-mist'
+	x: 440
+	y: 483
+	mayor: 'Rydia'
+	features: ['mailbox']
+	type: 'solo'
+,
+	name: 'Vale of the Silent'
+	tag: 'vale-of-the-silent'
+	x: 2795
+	y: 553
+	mayor: 'Axinex'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Mount Everlong'
+	tag: 'mount-everlong'
+	x: 2908
+	y: 1914
+	mayor: 'Azeuras'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Springton'
+	tag: 'springton'
+	x: 3674
+	y: 1323
+	mayor: 'GamerGuyJoe'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Piotroszkowo'
+	tag: 'piotroszkowo'
+	x: 3856
+	y: 2018
+	mayor: 'Petronus'
+	features: ['recruiting']
+	type: 'solo'
+,
+	name: 'Pomorze'
+	tag: 'pomorze'
+	x: 3679
+	y: 1681
+	mayor: 'Czemiel'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Fort Tiffany'
+	tag: 'fort-tiffany'
+	x: 1230
+	y: 2986
+	mayor: 'Sprong'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Myrdal'
+	tag: 'myrdal'
+	x: 1736
+	y: 1068
+	mayor: 'Thormyrdal'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Falkreath Farm'
+	tag: 'falkreath-farm'
+	x: 1686
+	y: 784
+	mayor: 'Ekatski'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Kelsey\'s Retreat'
+	tag: 'kelseys-retreat'
+	x: 1055
+	y: 3795
+	mayor: 'Kelsey'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Majula'
+	tag: 'majula'
+	x: 724
+	y: 566
+	mayor: 'Bungatron'
+	features: ['trader']
+	type: 'solo'
+,
+	name: 'Lindenwood Manor'
+	tag: 'lindenwood-manor'
+	x: 2979
+	y: 3048
+	mayor: 'Turgvaali'
+	features: ['']
+	type: 'solo'
+,
+	name: 'La Croixan Isle'
+	tag: 'la-croixan-isle'
+	x: 3687
+	y: 477
+	mayor: 'Poragon'
+	features: ['harbour']
+	type: 'solo'
+,
+	name: 'Emon'
+	tag: 'emon'
+	x: 1706
+	y: 855
+	mayor: 'Zamster'
+	features: ['']
+	type: 'small'
+,
+	name: 'Maple Enclave'
+	tag: 'maple-enclave'
+	x: 2391
+	y: 2008
+	mayor: 'Yunga'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Pleasant Valley'
+	tag: 'pleasant-valley'
+	x: 960
+	y: 630
+	mayor: 'Raxxar'
+	features: ['']
+	type: 'solo'
+,
+	name: 'Ravenhome'
+	tag: 'Ravenhome'
+	x: 381
+	y: 1902
+	mayor: 'Ravenloft'
+	features: ['']
+	type: 'solo'
+,
+	name: 'The Quagmire'
+	tag: 'the-quagmire'
+	x: 507
+	y: 674
+	mayor: 'Giggity'
+	features: ['']
 	type: 'solo'
 ]
